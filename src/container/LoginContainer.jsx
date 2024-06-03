@@ -1,85 +1,74 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-import Heading from "../components/Heading";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Img from "../components/Img";
+import { useNavigate } from "react-router-dom";
+import InputGroup from "../components/InputGroup";
+import FormButton from "../components/FormButton";
 
 export function LoginContainer() {
+  const navigate = useNavigate();
+
+  const handleCreateAccountClick = () => {
+    navigate("/register");
+  };
+
   return (
-    <>
-      <Helmet>
-        <title>Login</title>
-      </Helmet>
-      <div className="w-fill bg-indigo-A200">
-        <div className="relative h-[1024px] bg-indigo-400 pr-[31px] sm:pr-5">
-          <div className="absolute bottom-0 left-[0.00px] top-0 my-auto flex h-max w-[68%] flex-col items-start gap-[82px] rounded-br[40px] rounded-br[40px]">
-            <a href="#" className="self-center">
-              <Heading as="h1">Sign in</Heading>
-            </a>
-            <div className="mb-[131px] ml-[7px] flex w-[54%] flex-col items-center md:ml-0 md:w-full">
-              <div className="flex flex-col items-start self-strech">
-                <Button
-                  shape="square"
-                  className="relative z-[1] ml-3.5 min-w-[79px] font-bold md:ml-0"
-                >
-                  Email
-                </Button>
-                <div className="relative mt-[-22px] h-[29px] self-stretch rounded-lg border border-solid border-grey-700" />
-              </div>
-              <div className="mt-[99px] flex flex-col items-start self-strech">
-                <Button
-                  size="lg"
-                  shape="square"
-                  className="relative z-[2] ml-3.5 min-w-[122px] font-bold md:ml-0"
-                >
-                  Password
-                </Button>
-                <Input shape="round" name="createfrom" className="mt-[-46px]" />
-              </div>
-              <Heading
-                size="xs"
-                as="h2"
-                className="mt-[21px] self-end !text-grey-700"
-              >
-                Forgot your password?
-              </Heading>
-              <Button
-                color="indigo_400"
-                size="md"
-                shape="round"
-                className="mt-[57px] w-full font-inter font-bold sm:px-5"
+    <div className="bg-indigo-500">
+      <div className="flex gap-5 max-md:gap-0">
+        <section className="flex flex-col p-0 w-[67%]">
+          <form className="flex flex-col grow pr-6 w-full text-xl font-bold bg-white rounded-[0px_40px_40px_0px] text-stone-500 max-md:px-5 max-md:max-w-full max-sm:pr-6 max-sm:pl-3 max-sm:-mr-px">
+            <h2 className="self-center mt-12 text-4xl text-black max-md:mt-10">
+              Sign In
+            </h2>
+            <div className="flex flex-col self-end mt-5 max-w-full w-[654px] max-md:w-full">
+              <InputGroup type="email" label="Email" name="email" id="email" />
+            </div>
+            <div className="flex flex-col self-end mt-5 max-w-full w-[654px] max-md:w-full">
+              <InputGroup
+                type="password"
+                label="Password"
+                name="password"
+                id="password"
+              />
+            </div>
+            <div className="flex justify-center mt-1">
+              <a href="/forgot_password" className="text-indigo-500 text-sm">
+                Forgot Password?
+              </a>
+            </div>
+            <div className="flex flex-col items-center">
+              <FormButton
+                type="submit"
+                className="justify-center items-center px-4 py-2 my-4 text-2xl text-white bg-indigo-500 rounded-md w-auto"
               >
                 Sign in
-              </Button>
-              <Heading
-                size="xs"
-                as="h3"
-                className="mt-[37px] h-[25px] w-[26px] !text-grey-700"
-              >
-                Or
-              </Heading>
-              <Button
-                size="md"
-                shape="round"
-                className="mt-[37px] w-full border border-solid border-indigo-400 font-inter font-bold !text-indigo-400 sm:px-5"
+              </FormButton>
+              <p className="self-center text-center mt-2">Or</p>
+              <FormButton
+                type="button"
+                onClick={handleCreateAccountClick}
+                className="justify-center items-center px-4 py-2 my-4 text-2xl text-indigo-500 bg-white rounded-md border border-indigo-500 border-solid w-auto"
               >
                 Create Account
-              </Button>
+              </FormButton>
             </div>
-          </div>
-          <Img
+          </form>
+        </section>
+        <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
+          <figure className="flex z-10 flex-col mt-7 max-md:max-w-full">
+            <img
+              loading="lazy"
+              src="./assets/img/career_compass_logo.png"
+              alt="career compass logo"
+              className="max-w-full aspect-[2.13] w-[420px]"
+            />
+          </figure>
+          <img
+            loading="lazy"
             src="./assets/img/chart_girl.png"
-            alt="home image"
-            className="absolute right-[10%] top-[10%] m-auto h-[531px] w-[47%]"
-          />
-          <Img
-            src="./assets/img/career_compass_logo.png"
-            alt="Career compass"
-            className="absolute right-[2%] top-[5%] m-auto h-[167px] w-[30%] object-cover"
+            alt="home page icon"
+            className="self-end mt-5 max-w-full aspect-[0.93] w-[514px]"
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
