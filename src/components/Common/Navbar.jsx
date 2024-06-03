@@ -7,7 +7,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = ({ logo, links, primaryFontColor, primaryColor }) => {
     return (
-        <BootstrapNavbar expand="lg" style={{ backgroundColor: primaryColor }}>
+        <BootstrapNavbar expand="lg" style={{ backgroundColor: primaryColor , position: 'sticky', top: '0' , width:' 100%' }} >
             <BootstrapNavbar.Brand href="#home">
                 <img src={logo} alt="Logo" style={{ height: '80px', width: '200' }} />
             </BootstrapNavbar.Brand>

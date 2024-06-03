@@ -1,26 +1,62 @@
-import React from 'react';
+import React from "react";
+import Form from "react-bootstrap/Form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
 
 
 const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
-    return (
-        <div className="container-fluid h-50" style={{height:"200px",  background:primaryColor }} >
-            <div className="row">
-
-                <div className="col-md-6 mt-4" style={{  display: 'flex', flexDirection: 'column' }}>
-                    <h2 className="text-center" style={{ color: primaryFontColor }}>Find The Perfect Job For You</h2>
-                    <h6 className="text-center" style={{ color: primaryFontColor }}>Search your career opportunity through 12,800 jobs.</h6>
-                    {/* Add search functionality here */}
-                </div>
-
-
-                <div className="col-md-6">
-                    <img src="your-image-url" alt="Image" className="img-fluid" />
-                </div>
-
+  return (
+    <div className="container-fluid" style={{ background: primaryColor }}>
+      <div className="row">
+        <div className="col-md-6 p-5" style={{}}>
+          <div>
+            <div className="hero-text px-5">
+              <h2 className="" style={{ color: primaryFontColor }}>
+                Find The Perfect
+              </h2>
+              <h2 className="" style={{ color: primaryFontColor }}>
+                Job For You
+              </h2>
+              <h6 className="" style={{ color: primaryFontColor }}>
+                Search your career opportunity through 12,800 jobs.
+              </h6>
             </div>
+            <div className="search-bar p-5">
+              <Form className="d-flex">
+                <Form.Control
+                  type="search"
+                  placeholder="Search"
+                  className="me-2"
+                  aria-label="Search"
+                />
+                <span
+                  className="input-group-text"
+                  style={{
+                    backgroundColor: primaryColor,
+                    color: primaryFontColor,
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSearch} />
+                </span>
+              </Form>
+            </div>
+          </div>
+
+          {/* Add search functionality here */}
         </div>
-    );
+
+        <div className="col-md-6">
+          <div className="hero-image">
+          <Img
+            src="./assets/img/candidateHeroImg.png"
+            alt="Career compass"
+          />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TextAndImageSection;
-
