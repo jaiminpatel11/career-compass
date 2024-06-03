@@ -49,8 +49,8 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
 
         <div className="col-md-6">
           <div className="hero-image">
-          <div className="hero-image">
-            <img src={candidateHeroImg} alt="Hero" style={{ width: '100%', height: '100%' }} />
+          <div className="hero-image d-flex justify-content-end">
+            <img src={candidateHeroImg} alt="Hero" style={{ width: '70%', height: '70%' }} />
           </div>          
           </div>
         </div>
