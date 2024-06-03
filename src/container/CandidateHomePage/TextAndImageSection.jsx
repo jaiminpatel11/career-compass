@@ -2,6 +2,7 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import  candidateHeroImg from "../../assets/candidateHeroImg.png" 
 
 
 
@@ -48,10 +49,9 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
 
         <div className="col-md-6">
           <div className="hero-image">
-          <Img
-            src="./assets/img/candidateHeroImg.png"
-            alt="Career compass"
-          />
+          <div className="hero-image">
+            <img src={candidateHeroImg} alt="Hero" style={{ width: '100%', height: '100%' }} />
+          </div>          
           </div>
         </div>
       </div>
