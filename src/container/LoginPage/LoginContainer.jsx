@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import InputGroup from "../components/InputGroup";
-import FormButton from "../components/FormButton";
+import InputGroup from "../../components/InputGroup";
+import FormButton from "../../components/FormButton";
 
 export function LoginContainer() {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React from "react";
-import InputGroup from "../components/InputGroup";
-import FormButton from "../components/FormButton";
+import InputGroup from "../../components/InputGroup";
+import FormButton from "../../components/FormButton";
 
 export function RegisterContainer() {
   return (
