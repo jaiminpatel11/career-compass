@@ -28,12 +28,12 @@ const RegisterPage = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" style={{ background: primaryColor }}>
       <div className="row">
-        <div className="col-md-4">
+        <div className="col-md-4  order-sm-1 order-2 ">
           <div
             className="sidebar"
-            style={{ background: primaryColor, height: "100vh" }}
+            style={{ background: primaryColor, height: "100vh", position:'relative' }}
           >
             <div className="logo">
               <img
@@ -42,90 +42,142 @@ const RegisterPage = () => {
                 className="img-fluid"
               />
             </div>
-            <div className="logo">
+            <div className="fluid-image">
               <img
                 src="./assets/img/home_page_icon.png"
                 alt="home page icon"
                 className="img-fluid"
+                style={{ position: "absolute", top: "25%", left: "50%" }}
               />
             </div>
           </div>
         </div>
-        <div className="col-md-8 ">
-          <div className="login-container text-center mt-5">
-            <h1>Create Account</h1>
-          </div>
+        <div
+          className="col-md-8 order-sm-2 order-1 "
+          style={{
+            background: primaryFontColor,
+            borderRadius: "40px 0 0 40px",
+          }}
+        >
           <div className="container mt-5 ">
-            <form>
-              <div className="row">
-                <div className="col-md-6 mt-5">
-                  <div class="mb-3 mt-5 text-center">
-                    <TextField
-                      type="email"
-                      id="outlined-basic"
-                      label="Email"
-                      variant="outlined"
-                      name="email"
-                    />
-                  </div>
-                  <div class="mb-3 text-center">
-                    <TextField
-                      type="password"
-                      id="outlined-basic"
-                      label="Password"
-                      variant="outlined"
-                      name="password"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6 mt-5">
-                  <div class="mb-3 mt-5 text-center">
-                    <TextField
-                      type="email"
-                      id="outlined-basic"
-                      label="Email"
-                      variant="outlined"
-                      name="email"
-                    />
-                  </div>
-                  <div class="mb-3 text-center">
-                    <TextField
-                      type="password"
-                      id="outlined-basic"
-                      label="Password"
-                      variant="outlined"
-                      name="password"
-                    />
-                  </div>
-                </div>
+            <div className="row mt-5">
+              <div className="heading text-center">
+                <h1>Create Account</h1>
               </div>
-              <FormControl fullWidth>
-                <InputLabel id="role">Age</InputLabel>
-                <Select
-                  labelId="role"
-                  id="demo-role-select"
-                  //   value={}
-                  label="Role"
-                  //   onChange={handleChange}
-                >
-                  <MenuItem value={"candidate"}>Job Seeker</MenuItem>
-                  <MenuItem value={"employer"}>Employer</MenuItem>
-                </Select>
-              </FormControl>
-
-              <div className="flex flex-col text-center items-center mt-5">
-                <FormButton type="submit" className="justify-center ">
-                  Create Account
-                </FormButton>
-                <p className="self-center text-center mt-2">Or</p>
-                <FormButton
-                  type="button"
-                  className="justify-center items-center "
-                >
-                  Sign in
-                </FormButton>
+              <div className="col-md-2"></div>
+              <div className="col-md-8 pt-5 mt-5">
+                <form>
+                  <div
+                    className="registrationDetails"
+                    style={{ display: "flex", justifyContent: "space-evenly", flexWrap:"wrap" }}
+                  >
+                    <div class="mb-3 text-center">
+                      <TextField
+                        type="text"
+                        id="outlined-basic"
+                        label="Name"
+                        variant="outlined"
+                        name="email"
+                        style={{ width: "250px" }}
+                      />
+                    </div>
+                    <div class="mb-3 text-center">
+                      <TextField
+                        type="email"
+                        id="outlined-basic"
+                        label="Email"
+                        variant="outlined"
+                        name="email"
+                        style={{ width: "250px" }}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="registrationDetails"
+                    style={{ display: "flex", justifyContent: "space-evenly", flexWrap:"wrap" }}
+                  >
+                    <div class="mb-3 text-center">
+                      <TextField
+                        type="password"
+                        id="outlined-basic"
+                        label="Password"
+                        variant="outlined"
+                        name="password"
+                        style={{ width: "250px" }}
+                      />
+                    </div>
+                    <div class="mb-3 text-center">
+                      <TextField
+                        type="Confirmpassword"
+                        id="outlined-basic"
+                        label="Confirm Password"
+                        variant="outlined"
+                        name="Confirmpassword"
+                        style={{ width: "250px" }}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="ageDetails"
+                    style={{ display: "flex", justifyContent: "space-evenly", flexWrap:"wrap" }}
+                  >
+                    <FormControl style={{ width: "250px" }}>
+                      <InputLabel id="role">Role</InputLabel>
+                      <Select
+                        labelId="role"
+                        id="demo-role-select"
+                        //   value={}
+                        label="Role"
+                        //   onChange={handleChange}
+                      >
+                        <MenuItem value={"candidate"}>Job Seeker</MenuItem>
+                        <MenuItem value={"employer"}>Employer</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <div class="mb-3 text-center">
+                      <TextField
+                        type="phoneNumber"
+                        id="outlined-basic"
+                        label="Phone Number"
+                        variant="outlined"
+                        name="phoneNumber"
+                        style={{ width: "250px" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col text-center items-center mt-5 pt-5">
+                    <button
+                      type="submit"
+                      style={{
+                        backgroundColor: primaryColor,
+                        color: primaryFontColor,
+                        width: "250px",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        border: "1px solid",
+                      }}
+                    >
+                      Sign Up
+                    </button>
+                    <p className="self-center text-center mt-2">Or</p>
+                    <button
+                      type="submit"
+                      style={{
+                        backgroundColor: primaryFontColor,
+                        color: primaryColor,
+                        width: "250px",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        border: "1px solid",
+                      }}
+                    >
+                      Sign n
+                    </button>
+                  </div>
+                </form>
               </div>
-            </form>
+              <div className="col-md-2"></div>
+            </div>
           </div>
         </div>
       </div>

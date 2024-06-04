@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import InputGroup from "../../components/InputGroup";
-import FormButton from "../../components/FormButton";
 import { TextField } from "@mui/material";
+import { border } from "@mui/system";
 
 const LoginPage = () => {
   const [primaryColor, setPrimaryColor] = useState("");
@@ -23,16 +22,22 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" style={{ background: primaryColor }}>
       <div className="row">
-        <div className="col-md-8 ">
-          <div className="login-container text-center mt-5">
-            <h1>Sign In</h1>
+        <div
+          className="col-md-8 "
+          style={{
+            background: primaryFontColor,
+            borderRadius: "0 40px 40px 0",
+          }}
+        >
+          <div className="heading text-center mt-5">
+            <h1 className="pt-3">Sign In</h1>
           </div>
-          <div className="container mt-5 ">
+          <div className="container mt-4 ">
             <div className="row">
               <div className="col-md-3"></div>
-              <div className="col-md-6 mt-5">
+              <div className="col-md-6 mt-4">
                 <form>
                   <div class="mb-3 mt-5 text-center">
                     <TextField
@@ -41,6 +46,7 @@ const LoginPage = () => {
                       label="Email"
                       variant="outlined"
                       name="email"
+                      style={{width:'250px'}}
                     />
                   </div>
                   <div class="mb-3 text-center">
@@ -50,27 +56,22 @@ const LoginPage = () => {
                       label="Password"
                       variant="outlined"
                       name="password"
+                      style={{width:'250px'}}
                     />
                   </div>
-                  <div className="flex text-center mt-1">
+                  <div className="flex text-center mb-3" >
                     <a
                       href="/forgot_password"
-                      className="text-indigo-500 text-sm"
+                      className="text-sm"
+                      style={{ color: primaryColor , marginLeft:'90px' }}
                     >
                       Forgot Password?
                     </a>
                   </div>
-                  <div className="flex flex-col text-center items-center">
-                    <FormButton type="submit" className="justify-center ">
-                      Sign in
-                    </FormButton>
+                  <div className="flex flex-col text-center items-center pt-5">
+                    <button type="submit" style={{backgroundColor:primaryColor, color: primaryFontColor, width:'250px', padding:'10px', borderRadius: '10px', border: '1px solid'  }}>Sign In</button>
                     <p className="self-center text-center mt-2">Or</p>
-                    <FormButton
-                      type="button"
-                      className="justify-center items-center "
-                    >
-                      Create Account
-                    </FormButton>
+                    <button type="submit" style={{backgroundColor:primaryFontColor, color:primaryColor , width:'250px', padding:'10px', borderRadius: '10px', border: '1px solid'  }}>Sign Up</button>
                   </div>
                 </form>
               </div>
@@ -81,7 +82,11 @@ const LoginPage = () => {
         <div className="col-md-4">
           <div
             className="sidebar"
-            style={{ background: primaryColor, height: "100vh" }}
+            style={{
+              background: primaryColor,
+              height: "100vh",
+              position: "relative",
+            }}
           >
             <div className="logo">
               <img
@@ -90,11 +95,12 @@ const LoginPage = () => {
                 className="img-fluid"
               />
             </div>
-            <div className="logo">
+            <div className="fluid-image">
               <img
                 src="./assets/img/chart_girl.png"
                 alt="home page icon"
                 className="img-fluid"
+                style={{ position: "absolute", top: "25%", right: "50%" }}
               />
             </div>
           </div>
