@@ -3,7 +3,7 @@ import InputGroup from "../../components/InputGroup";
 import FormButton from "../../components/FormButton";
 import { TextField } from "@mui/material";
 
-const LoginPage = () => {
+const ForgotPasswordPage = () => {
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
@@ -24,10 +24,31 @@ const LoginPage = () => {
 
   return (
     <div className="container-fluid">
+      <div className="row" style={{ background: primaryColor }}>
+        <div className="col-md-6">
+          <div className="logo">
+            <img
+              src="./assets/img/career_compass_logo.png"
+              alt="career compass logo"
+              className="img-fluid"
+            />
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="logo">
+            <img
+              src="./assets/img/secure_files.png"
+              alt="home page icon"
+              style={{ width: "200px" }}
+              className="img-fluid"
+            />
+          </div>
+        </div>
+      </div>
       <div className="row">
         <div className="col-md-8 ">
           <div className="login-container text-center mt-5">
-            <h1>Sign In</h1>
+            <h1>Forgot your Password?</h1>
           </div>
           <div className="container mt-5 ">
             <div className="row">
@@ -52,24 +73,18 @@ const LoginPage = () => {
                       name="password"
                     />
                   </div>
-                  <div className="flex text-center mt-1">
-                    <a
-                      href="/forgot_password"
-                      className="text-indigo-500 text-sm"
-                    >
-                      Forgot Password?
-                    </a>
+                  <div class="mb-3 text-center">
+                    <TextField
+                      type="password"
+                      id="outlined-basic"
+                      label="Confirm Password"
+                      variant="outlined"
+                      name="confirmpassword"
+                    />
                   </div>
                   <div className="flex flex-col text-center items-center">
                     <FormButton type="submit" className="justify-center ">
-                      Sign in
-                    </FormButton>
-                    <p className="self-center text-center mt-2">Or</p>
-                    <FormButton
-                      type="button"
-                      className="justify-center items-center "
-                    >
-                      Create Account
+                      Reset Password
                     </FormButton>
                   </div>
                 </form>
@@ -78,30 +93,9 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-4">
-          <div
-            className="sidebar"
-            style={{ background: primaryColor, height: "100vh" }}
-          >
-            <div className="logo">
-              <img
-                src="./assets/img/career_compass_logo.png"
-                alt="career compass logo"
-                className="img-fluid"
-              />
-            </div>
-            <div className="logo">
-              <img
-                src="./assets/img/chart_girl.png"
-                alt="home page icon"
-                className="img-fluid"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default ForgotPasswordPage;

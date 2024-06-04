@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import CandidateHomePage from "./container/CandidateHomePage/CandidateHomePage";
-import {LoginContainer} from "./container/LoginPage/LoginContainer";
-import {ForgotPasswordContainer} from "./container/LoginPage/ForgotPasswordContainer";
-import {RegisterContainer} from "./container/SignupPage/RegisterContainer";
+import LoginContainer from "./container/LoginPage/LoginPage";
+import ForgotPasswordContainer from "./container/LoginPage/ForgotPasswordPage";
+import RegisterContainer from "./container/SignupPage/RegisterPage";
 
 const AppRoutes = () => {
   return (
