@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Common/Navbar";
 import TextAndImageSection from "./TextAndImageSection";
 import SearchByCategory from "./SearchByCategory";
+import CandidateRightFitDialog from "./CandidateRightFitDialog";
+import PopularCities from "./PopularCities"
 const CandidateHomePage = ({name}) => {
 
     const links = [
@@ -36,13 +38,20 @@ const CandidateHomePage = ({name}) => {
                 primaryFontColor={primaryFontColor}
                 primaryColor={primaryColor}
             />
-            <TextAndImageSection
-                primaryColor={primaryColor}
-                primaryFontColor={primaryFontColor}
-            />
+                <TextAndImageSection
+                    primaryColor={primaryColor}
+                    primaryFontColor={primaryFontColor}
+                />
             <SearchByCategory
                 SecondaryFontColor={secondaryFontColor}
                 CardColor={cardColor}
+            />
+            <CandidateRightFitDialog
+                 primaryFontColor={primaryFontColor}
+                 primaryColor={primaryColor}
+            />
+            <PopularCities
+                SecondaryFontColor={secondaryFontColor}
             />
         </div>
     );
