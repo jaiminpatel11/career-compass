@@ -22,7 +22,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="container-fluid" style={{ background: primaryColor }}>
-      <div className="row d-md-block d-none" style={{ height: "40vh" }}>
+      <div className="row d-md-block d-none " style={{ height: "40vh" }}>
         <div className="topbar" style={{ position: "relative" }}>
           <div className="col-md-4">
             <div className="logo">
@@ -45,7 +45,7 @@ const ForgotPasswordPage = () => {
           </div>
         </div>
       </div>
-      <div className="row forgot-pass-form" style={{background: primaryFontColor}}>
+      <div className="row forgot-pass-form " style={{background: primaryFontColor, borderRadius:'40px 40px 0 0'}}>
       <div className=" d-sm-block d-md-none" style={{background:primaryColor}}>
                 <div className="logo">
                   <img
