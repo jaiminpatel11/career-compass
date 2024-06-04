@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import InputGroup from "../../components/InputGroup";
-import FormButton from "../../components/FormButton";
 import { TextField } from "@mui/material";
 
 const ForgotPasswordPage = () => {
@@ -23,8 +21,8 @@ const ForgotPasswordPage = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
-      <div className="row" style={{ background: primaryColor, height: "40vh" }}>
+    <div className="container-fluid" style={{ background: primaryColor }}>
+      <div className="row" style={{ height: "40vh" }}>
         <div className="topbar" style={{ position: "relative" }}>
           <div className="col-md-4">
             <div className="logo">
@@ -47,7 +45,7 @@ const ForgotPasswordPage = () => {
           </div>
         </div>
       </div>
-      <div className="row">
+      <div className="row" style={{background: primaryFontColor, borderRadius: '40px 40px 0 0'}}>
         <div className="heading text-center mt-5">
           <h1>Forgot your Password?</h1>
         </div>
