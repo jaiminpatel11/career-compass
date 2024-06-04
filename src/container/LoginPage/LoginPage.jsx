@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
-import { border } from "@mui/system";
+import '../LoginPage/login.css'
 
 const LoginPage = () => {
   const [primaryColor, setPrimaryColor] = useState("");
@@ -24,20 +24,29 @@ const LoginPage = () => {
   return (
     <div className="container-fluid" style={{ background: primaryColor }}>
       <div className="row">
+      <div className=" d-sm-block d-md-none" style={{background:primaryColor}}>
+                <div className="logo">
+                  <img
+                    src="./assets/img/career_compass_logo.png"
+                    alt="career compass logo"
+                    className=""
+                    style={{height: '70px', width:"auto"}}
+                  />
+                </div>
+              </div>
         <div
-          className="col-md-8 "
+          className="col-md-8 login-form-col "
           style={{
             background: primaryFontColor,
-            borderRadius: "0 40px 40px 0",
           }}
         >
           <div className="heading text-center mt-5">
             <h1 className="pt-3">Sign In</h1>
           </div>
-          <div className="container mt-4 ">
+          <div className="container mt-0 mt-md-4 ">
             <div className="row">
               <div className="col-md-3"></div>
-              <div className="col-md-6 mt-4">
+              <div className="col-md-6 mt-0 mt-md-4">
                 <form>
                   <div class="mb-3 mt-5 text-center">
                     <TextField
@@ -46,7 +55,7 @@ const LoginPage = () => {
                       label="Email"
                       variant="outlined"
                       name="email"
-                      style={{width:'250px'}}
+                      className="login-field"
                     />
                   </div>
                   <div class="mb-3 text-center">
@@ -56,22 +65,22 @@ const LoginPage = () => {
                       label="Password"
                       variant="outlined"
                       name="password"
-                      style={{width:'250px'}}
+                      className="login-field"
                     />
                   </div>
                   <div className="flex text-center mb-3" >
                     <a
                       href="/forgot_password"
-                      className="text-sm"
-                      style={{ color: primaryColor , marginLeft:'90px' }}
+                      className="text-sm login-forgot-pass"
+                      style={{ color: primaryColor  }}
                     >
                       Forgot Password?
                     </a>
                   </div>
-                  <div className="flex flex-col text-center items-center pt-5">
-                    <button type="submit" style={{backgroundColor:primaryColor, color: primaryFontColor, width:'250px', padding:'10px', borderRadius: '10px', border: '1px solid'  }}>Sign In</button>
+                  <div className="flex flex-col mb-5 text-center items-center login-btns">
+                    <button type="submit" style={{backgroundColor:primaryColor, color: primaryFontColor, padding:'12px', borderRadius: '10px', border: '1px solid'  }}>Sign In</button>
                     <p className="self-center text-center mt-2">Or</p>
-                    <button type="submit" style={{backgroundColor:primaryFontColor, color:primaryColor , width:'250px', padding:'10px', borderRadius: '10px', border: '1px solid'  }}>Sign Up</button>
+                    <button type="submit" style={{backgroundColor:primaryFontColor, color:primaryColor , padding:'12px', borderRadius: '10px', border: '1px solid'  }}>Sign Up</button>
                   </div>
                 </form>
               </div>
@@ -88,7 +97,7 @@ const LoginPage = () => {
               position: "relative",
             }}
           >
-            <div className="logo">
+            <div className="logo d-none d-md-block">
               <img
                 src="./assets/img/career_compass_logo.png"
                 alt="career compass logo"
@@ -99,8 +108,7 @@ const LoginPage = () => {
               <img
                 src="./assets/img/chart_girl.png"
                 alt="home page icon"
-                className="img-fluid"
-                style={{ position: "absolute", top: "25%", right: "50%" }}
+                className="img-fluid position-absolute top-50 start-0 translate-middle"
               />
             </div>
           </div>

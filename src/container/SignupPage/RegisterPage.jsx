@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import FormButton from "../../components/FormButton";
 import {
   TextField,
   FormControl,
@@ -7,6 +6,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import '../SignupPage/Register.css';
 
 const RegisterPage = () => {
   const [primaryColor, setPrimaryColor] = useState("");
@@ -32,44 +32,60 @@ const RegisterPage = () => {
       <div className="row">
         <div className="col-md-4  order-sm-1 order-2 ">
           <div
-            className="sidebar"
-            style={{ background: primaryColor, height: "100vh", position:'relative' }}
+            className="sidebar position-relative"
+            style={{
+              background: primaryColor,
+              height: "100vh"
+            }}
           >
-            <div className="logo">
+            <div className="logo d-none d-md-block">
               <img
                 src="./assets/img/career_compass_logo.png"
                 alt="career compass logo"
                 className="img-fluid"
               />
             </div>
-            <div className="fluid-image">
+            <div className="fluid-image ">
               <img
                 src="./assets/img/home_page_icon.png"
                 alt="home page icon"
-                className="img-fluid"
-                style={{ position: "absolute", top: "25%", left: "50%" }}
+                className="img-fluid position-absolute top-50 start-100 start-md-0 translate-middle "
               />
             </div>
           </div>
         </div>
         <div
-          className="col-md-8 order-sm-2 order-1 "
+          className="col-md-8 order-sm-2 order-1 register-form-col"
           style={{
             background: primaryFontColor,
-            borderRadius: "40px 0 0 40px",
+            padding:'0'
           }}
         >
-          <div className="container mt-5 ">
-            <div className="row mt-5">
-              <div className="heading text-center">
+          <div className="container-fluid mt-md-5 mt-0 ">
+            <div className="row mt-md-5 mt-0 ">
+              <div className=" d-sm-block d-md-none" style={{background:primaryColor}}>
+                <div className="logo">
+                  <img
+                    src="./assets/img/career_compass_logo.png"
+                    alt="career compass logo"
+                    className=""
+                    style={{height: '70px', width:"auto"}}
+                  />
+                </div>
+              </div>
+              <div className="heading text-center mt-5 mt-md-0">
                 <h1>Create Account</h1>
               </div>
               <div className="col-md-2"></div>
-              <div className="col-md-8 pt-5 mt-5">
+              <div className="col-md-8 pt-5 mt-0 mt-md-5  ">
                 <form>
                   <div
                     className="registrationDetails"
-                    style={{ display: "flex", justifyContent: "space-evenly", flexWrap:"wrap" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      flexWrap: "wrap",
+                    }}
                   >
                     <div class="mb-3 text-center">
                       <TextField
@@ -94,7 +110,11 @@ const RegisterPage = () => {
                   </div>
                   <div
                     className="registrationDetails"
-                    style={{ display: "flex", justifyContent: "space-evenly", flexWrap:"wrap" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      flexWrap: "wrap",
+                    }}
                   >
                     <div class="mb-3 text-center">
                       <TextField
@@ -119,9 +139,13 @@ const RegisterPage = () => {
                   </div>
                   <div
                     className="ageDetails"
-                    style={{ display: "flex", justifyContent: "space-evenly", flexWrap:"wrap" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      flexWrap: "wrap",
+                    }}
                   >
-                    <FormControl style={{ width: "250px" }}>
+                    <FormControl style={{ width: "250px", marginBottom:'1rem' }}>
                       <InputLabel id="role">Role</InputLabel>
                       <Select
                         labelId="role"
@@ -145,14 +169,14 @@ const RegisterPage = () => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col text-center items-center mt-5 pt-5">
+                  <div className="flex flex-col text-center items-center mt-0 mt-md-5 mb-5 pt-5">
                     <button
                       type="submit"
                       style={{
                         backgroundColor: primaryColor,
                         color: primaryFontColor,
                         width: "250px",
-                        padding: "10px",
+                        padding: "12px",
                         borderRadius: "10px",
                         border: "1px solid",
                       }}
@@ -166,7 +190,7 @@ const RegisterPage = () => {
                         backgroundColor: primaryFontColor,
                         color: primaryColor,
                         width: "250px",
-                        padding: "10px",
+                        padding: "12px",
                         borderRadius: "10px",
                         border: "1px solid",
                       }}

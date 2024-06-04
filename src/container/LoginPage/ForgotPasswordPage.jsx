@@ -22,7 +22,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="container-fluid" style={{ background: primaryColor }}>
-      <div className="row" style={{ height: "40vh" }}>
+      <div className="row d-md-block d-none" style={{ height: "40vh" }}>
         <div className="topbar" style={{ position: "relative" }}>
           <div className="col-md-4">
             <div className="logo">
@@ -39,13 +39,23 @@ const ForgotPasswordPage = () => {
                 src="./assets/img/secure_files.png"
                 alt="home page icon"
                 className="img-fluid"
-                style={{ position: "absolute", top: "0%", right: "0%" }}
+                style={{ position: "absolute", top: "0%", right: "0%", width: '400px' }}
               />
             </div>
           </div>
         </div>
       </div>
-      <div className="row" style={{background: primaryFontColor, borderRadius: '40px 40px 0 0'}}>
+      <div className="row forgot-pass-form" style={{background: primaryFontColor}}>
+      <div className=" d-sm-block d-md-none" style={{background:primaryColor}}>
+                <div className="logo">
+                  <img
+                    src="./assets/img/career_compass_logo.png"
+                    alt="career compass logo"
+                    className=""
+                    style={{height: '70px', width:"auto"}}
+                  />
+                </div>
+              </div>
         <div className="heading text-center mt-5">
           <h1>Forgot your Password?</h1>
         </div>
@@ -82,7 +92,7 @@ const ForgotPasswordPage = () => {
                 style={{ width: "250px" }}
               />
             </div>
-            <div className="flex flex-col text-center items-center mt-5">
+            <div className="flex flex-col mb-5 text-center items-center mt-5">
               <button
                 type="submit"
                 style={{
@@ -100,6 +110,20 @@ const ForgotPasswordPage = () => {
           </form>
         </div>
         <div className="col-md-3"></div>
+      </div>
+      <div className="row d-sm-block d-md-none" style={{ height: "50vh" }}>
+        <div className="topbar" style={{ position: "relative" }}>
+          <div className="col-md-12">
+            <div className="fluid-image">
+              <img
+                src="./assets/img/secure_files.png"
+                alt="home page icon"
+                className="img-fluid"
+                style={{ position: "absolute", top: "25%", right: "0%" }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
