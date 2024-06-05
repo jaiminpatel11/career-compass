@@ -8,8 +8,8 @@ import RegisterContainer from "./container/SignupPage/RegisterPage";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<CandidateHomePage />} />
-      <Route path="/login" element={<LoginContainer />} />
+      <Route path="/home" element={<CandidateHomePage />} />
+      <Route path="/" element={<LoginContainer />} />
       <Route path="/register" element={<RegisterContainer />} />
       <Route path="/forgot_password" element={<ForgotPasswordContainer />} />
       {/* Add more routes here */}

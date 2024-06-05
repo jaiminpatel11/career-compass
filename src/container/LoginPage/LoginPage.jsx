@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "../LoginPage/login.css";
+import axios from "axios";
 
 const LoginPage = () => {
   // color theme
@@ -32,8 +36,12 @@ const LoginPage = () => {
   };
 
   // variables used in form
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,34 +51,50 @@ const LoginPage = () => {
   // function to remove error from text input
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === "email") {
-      setEmail(value);
-      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
-    } else if (name === "password") {
-      setPassword(value);
-      setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
-    }
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   // function to validate form and call api
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!email) {
+    if (!formData.email) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
 
-    if (!password) {
+    if (!formData.password) {
       newErrors.password = "Password is required";
     }
 
     if (Object.keys(newErrors).length === 0) {
-      // Perform the sign-in logic here
-      console.log("Form submitted:", { email, password });
+      console.log(formData);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/users/login",
+          formData
+        );
+        if (response.status === 200) {
+          // Login successful
+          // toast.success("Login Success", {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   autoClose: false,
+          // });
+          navigate("/home");
+        } else {
+          toast.error("Something went wrong!", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: false,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -114,7 +138,7 @@ const LoginPage = () => {
                       variant="outlined"
                       name="email"
                       className="login-field"
-                      value={email}
+                      value={formData.email}
                       onChange={handleInputChange}
                       error={!!errors.email}
                       helperText={errors.email}
@@ -128,7 +152,7 @@ const LoginPage = () => {
                       variant="outlined"
                       name="password"
                       className="login-field"
-                      value={password}
+                      value={formData.password}
                       onChange={handleInputChange}
                       error={!!errors.password}
                       helperText={errors.password}

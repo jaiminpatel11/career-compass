@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ForgotPasswordPage = () => {
   // color theme
@@ -28,9 +31,11 @@ const ForgotPasswordPage = () => {
   const navigate = useNavigate();
 
   // variables used in form
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,44 +48,53 @@ const ForgotPasswordPage = () => {
   // function to remove error from text input
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === "email") {
-      setEmail(value);
-      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
-    } else if (name === "password") {
-      setPassword(value);
-      setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
-    } else if (name === "confirmPassword") {
-      setConfirmPassword(value);
-      setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: "" }));
-    }
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   // function to validate form and call api
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!email) {
+    if (!formData.email) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
 
-    if (!password) {
+    if (!formData.password) {
       newErrors.password = "Password is required";
     }
 
-    if (!confirmPassword) {
+    if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Confirm Password is required";
-    } else if (password !== confirmPassword) {
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Password and Confirm Password do not match";
     }
 
     if (Object.keys(newErrors).length === 0) {
-      // Perform the password reset logic here
-      console.log("Form submitted:", { email, password });
-      navigate("/login");
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/users/forgot-password",
+          formData
+        );
+        if (response.status === 200) {
+          // toast.success("Password Reset Success", {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   autoClose: false,
+          // });
+          navigate("/");
+        } else {
+          toast.error("Something went wrong!", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: false,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -147,7 +161,7 @@ const ForgotPasswordPage = () => {
                 variant="outlined"
                 name="email"
                 style={{ width: "250px" }}
-                value={email}
+                value={formData.email}
                 onChange={handleInputChange}
                 error={!!errors.email}
                 helperText={errors.email}
@@ -161,7 +175,7 @@ const ForgotPasswordPage = () => {
                 variant="outlined"
                 name="password"
                 style={{ width: "250px" }}
-                value={password}
+                value={formData.password}
                 onChange={handleInputChange}
                 error={!!errors.password}
                 helperText={errors.password}
@@ -188,7 +202,7 @@ const ForgotPasswordPage = () => {
                 variant="outlined"
                 name="confirmPassword"
                 style={{ width: "250px" }}
-                value={confirmPassword}
+                value={formData.confirmPassword}
                 onChange={handleInputChange}
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword}

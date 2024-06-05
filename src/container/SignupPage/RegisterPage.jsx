@@ -8,9 +8,12 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
+import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import "../SignupPage/Register.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   // color theme
@@ -36,7 +39,7 @@ const RegisterPage = () => {
   // variable to go to handle click and naviagte to other page
   const navigate = useNavigate();
   const handleSigninClick = () => {
-    navigate("/login");
+    navigate("/");
   };
 
   // variables used in form
@@ -46,7 +49,6 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
     role: "",
-    phoneNumber: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -83,24 +85,41 @@ const RegisterPage = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
     if (!formData.role) newErrors.role = "Role is required";
-    if (!formData.phoneNumber) {
-      newErrors.phoneNumber = "Phone Number is required";
-    } else if (!phoneRegex.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Invalid phone number format";
-    }
 
     return newErrors;
   };
 
   // function to call api
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
       // Perform the registration logic here
-      console.log("Form submitted:", formData);
-      navigate("/login");
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/users/signup",
+          formData
+        );
+        if (response.status === 200) {
+          // toast.success("Registration Success", {
+          //   position: toast.POSITION.TOP_RIGHT,
+          //   autoClose: false,
+          // });
+          navigate("/");
+        } else {
+          toast.error("Something went wrong!", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: false,
+          });
+        }
+        console.log("Form submitted:", response.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
     } else {
+      // navigate("/login");
+
       setErrors(validationErrors);
     }
   };
@@ -168,7 +187,7 @@ const RegisterPage = () => {
                       flexWrap: "wrap",
                     }}
                   >
-                    <div class="mb-3 text-center">
+                    <div className="mb-3 text-center">
                       <TextField
                         type="text"
                         id="name"
@@ -182,7 +201,7 @@ const RegisterPage = () => {
                         helperText={errors.name}
                       />
                     </div>
-                    <div class="mb-3 text-center">
+                    <div className="mb-3 text-center">
                       <TextField
                         type="email"
                         id="email"
@@ -205,7 +224,7 @@ const RegisterPage = () => {
                       flexWrap: "wrap",
                     }}
                   >
-                    <div class="mb-3 text-center">
+                    <div className="mb-3 text-center">
                       <TextField
                         type={showPassword ? "text" : "password"}
                         id="password"
@@ -236,7 +255,7 @@ const RegisterPage = () => {
                         }}
                       />
                     </div>
-                    <div class="mb-3 text-center">
+                    <div className="mb-3 text-center">
                       <TextField
                         type={showConfirmPassword ? "text" : "password"}
                         id="confirmPassword"
@@ -290,7 +309,7 @@ const RegisterPage = () => {
                         onChange={handleInputChange}
                       >
                         <MenuItem value={"candidate"}>Job Seeker</MenuItem>
-                        <MenuItem value={"employer"}>Employer</MenuItem>
+                        <MenuItem value={"company"}>Company</MenuItem>
                       </Select>
                       {errors.role && (
                         <p style={{ color: "red", fontSize: "0.75rem" }}>
@@ -298,20 +317,6 @@ const RegisterPage = () => {
                         </p>
                       )}
                     </FormControl>
-                    <div class="mb-3 text-center">
-                      <TextField
-                        type="text"
-                        id="phoneNumber"
-                        label="Phone Number"
-                        variant="outlined"
-                        name="phoneNumber"
-                        style={{ width: "250px" }}
-                        value={formData.phoneNumber}
-                        onChange={handleInputChange}
-                        error={!!errors.phoneNumber}
-                        helperText={errors.phoneNumber}
-                      />
-                    </div>
                   </div>
                   <div className="flex flex-col text-center items-center mt-0 mt-md-5 mb-5 pt-5">
                     <button
