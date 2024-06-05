@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { TextField } from "@mui/material";
-import '../LoginPage/login.css'
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import "../LoginPage/login.css";
 
 const LoginPage = () => {
+  // color theme
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
   const [cardColor, setcardColor] = useState("");
 
+  // apply color theme tot elements
   useEffect(() => {
     // Fetch the CSS variables after component mounts
     const rootStyles = getComputedStyle(document.documentElement);
@@ -21,19 +25,73 @@ const LoginPage = () => {
     setcardColor(rootStyles.getPropertyValue("--card-color").trim());
   }, []);
 
+  // variable to go to handle click and naviagte to other page
+  const navigate = useNavigate();
+  const handleSignUpClick = () => {
+    navigate("/register");
+  };
+
+  // variables used in form
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  // password Visibility toogle
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  // function to remove error from text input
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "email") {
+      setEmail(value);
+      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+    } else if (name === "password") {
+      setPassword(value);
+      setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+    }
+  };
+
+  // function to validate form and call api
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+
+    if (Object.keys(newErrors).length === 0) {
+      // Perform the sign-in logic here
+      console.log("Form submitted:", { email, password });
+    } else {
+      setErrors(newErrors);
+    }
+  };
+
   return (
     <div className="container-fluid" style={{ background: primaryColor }}>
       <div className="row">
-      <div className=" d-sm-block d-md-none" style={{background:primaryColor}}>
-                <div className="logo">
-                  <img
-                    src="./assets/img/career_compass_logo.png"
-                    alt="career compass logo"
-                    className=""
-                    style={{height: '70px', width:"auto"}}
-                  />
-                </div>
-              </div>
+        <div
+          className=" d-sm-block d-md-none"
+          style={{ background: primaryColor }}
+        >
+          <div className="logo">
+            <img
+              src="./assets/img/career_compass_logo.png"
+              alt="career compass logo"
+              className=""
+              style={{ height: "70px", width: "auto" }}
+            />
+          </div>
+        </div>
         <div
           className="col-md-8 login-form-col "
           style={{
@@ -47,8 +105,8 @@ const LoginPage = () => {
             <div className="row">
               <div className="col-md-3"></div>
               <div className="col-md-6 mt-0 mt-md-4">
-                <form>
-                  <div class="mb-3 mt-5 text-center">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3 mt-5 text-center">
                     <TextField
                       type="email"
                       id="outlined-basic"
@@ -56,31 +114,79 @@ const LoginPage = () => {
                       variant="outlined"
                       name="email"
                       className="login-field"
+                      value={email}
+                      onChange={handleInputChange}
+                      error={!!errors.email}
+                      helperText={errors.email}
                     />
                   </div>
-                  <div class="mb-3 text-center">
+                  <div className="mb-3 text-center">
                     <TextField
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       id="outlined-basic"
                       label="Password"
                       variant="outlined"
                       name="password"
                       className="login-field"
+                      value={password}
+                      onChange={handleInputChange}
+                      error={!!errors.password}
+                      helperText={errors.password}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   </div>
-                  <div className="flex text-center mb-3" >
+                  <div className="flex text-center mb-3">
                     <a
                       href="/forgot_password"
                       className="text-sm login-forgot-pass"
-                      style={{ color: primaryColor  }}
+                      style={{ color: primaryColor }}
                     >
                       Forgot Password?
                     </a>
                   </div>
                   <div className="flex flex-col mb-5 text-center items-center login-btns">
-                    <button type="submit" style={{backgroundColor:primaryColor, color: primaryFontColor, padding:'12px', borderRadius: '10px', border: '1px solid'  }}>Sign In</button>
+                    <button
+                      type="submit"
+                      style={{
+                        backgroundColor: primaryColor,
+                        color: primaryFontColor,
+                        padding: "12px",
+                        borderRadius: "10px",
+                        border: "1px solid",
+                      }}
+                    >
+                      Sign In
+                    </button>
                     <p className="self-center text-center mt-2">Or</p>
-                    <button type="submit" style={{backgroundColor:primaryFontColor, color:primaryColor , padding:'12px', borderRadius: '10px', border: '1px solid'  }}>Sign Up</button>
+                    <button
+                      type="button"
+                      onClick={handleSignUpClick}
+                      style={{
+                        backgroundColor: primaryFontColor,
+                        color: primaryColor,
+                        padding: "12px",
+                        borderRadius: "10px",
+                        border: "1px solid",
+                      }}
+                    >
+                      Sign Up
+                    </button>
                   </div>
                 </form>
               </div>

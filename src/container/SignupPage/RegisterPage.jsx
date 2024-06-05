@@ -5,15 +5,21 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
-import '../SignupPage/Register.css';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import "../SignupPage/Register.css";
 
 const RegisterPage = () => {
+  // color theme
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
   const [cardColor, setcardColor] = useState("");
 
+  // apply color theme tot elements
   useEffect(() => {
     // Fetch the CSS variables after component mounts
     const rootStyles = getComputedStyle(document.documentElement);
@@ -27,6 +33,78 @@ const RegisterPage = () => {
     setcardColor(rootStyles.getPropertyValue("--card-color").trim());
   }, []);
 
+  // variable to go to handle click and naviagte to other page
+  const navigate = useNavigate();
+  const handleSigninClick = () => {
+    navigate("/login");
+  };
+
+  // variables used in form
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "",
+    phoneNumber: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // password Visibility toogle
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((show) => !show);
+
+  // function to remove error from text input
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  // function to validate form and call api
+  const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+    if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = "Confirm Password is required";
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+    if (!formData.role) newErrors.role = "Role is required";
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = "Phone Number is required";
+    } else if (!phoneRegex.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = "Invalid phone number format";
+    }
+
+    return newErrors;
+  };
+
+  // function to call api
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      // Perform the registration logic here
+      console.log("Form submitted:", formData);
+      navigate("/login");
+    } else {
+      setErrors(validationErrors);
+    }
+  };
+
   return (
     <div className="container-fluid" style={{ background: primaryColor }}>
       <div className="row">
@@ -35,7 +113,7 @@ const RegisterPage = () => {
             className="sidebar position-relative"
             style={{
               background: primaryColor,
-              height: "100vh"
+              height: "100vh",
             }}
           >
             <div className="logo d-none d-md-block">
@@ -58,18 +136,21 @@ const RegisterPage = () => {
           className="col-md-8 order-sm-2 order-1 register-form-col"
           style={{
             background: primaryFontColor,
-            padding:'0'
+            padding: "0",
           }}
         >
           <div className="container-fluid mt-md-5 mt-0 ">
             <div className="row mt-md-5 mt-0 ">
-              <div className=" d-sm-block d-md-none" style={{background:primaryColor}}>
+              <div
+                className=" d-sm-block d-md-none"
+                style={{ background: primaryColor }}
+              >
                 <div className="logo">
                   <img
                     src="./assets/img/career_compass_logo.png"
                     alt="career compass logo"
                     className=""
-                    style={{height: '70px', width:"auto"}}
+                    style={{ height: "70px", width: "auto" }}
                   />
                 </div>
               </div>
@@ -78,7 +159,7 @@ const RegisterPage = () => {
               </div>
               <div className="col-md-2"></div>
               <div className="col-md-8 pt-5 mt-0 mt-md-5  ">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div
                     className="registrationDetails"
                     style={{
@@ -90,21 +171,29 @@ const RegisterPage = () => {
                     <div class="mb-3 text-center">
                       <TextField
                         type="text"
-                        id="outlined-basic"
+                        id="name"
                         label="Name"
                         variant="outlined"
-                        name="email"
+                        name="name"
                         style={{ width: "250px" }}
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        error={!!errors.name}
+                        helperText={errors.name}
                       />
                     </div>
                     <div class="mb-3 text-center">
                       <TextField
                         type="email"
-                        id="outlined-basic"
+                        id="email"
                         label="Email"
                         variant="outlined"
                         name="email"
                         style={{ width: "250px" }}
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        error={!!errors.email}
+                        helperText={errors.email}
                       />
                     </div>
                   </div>
@@ -118,22 +207,64 @@ const RegisterPage = () => {
                   >
                     <div class="mb-3 text-center">
                       <TextField
-                        type="password"
-                        id="outlined-basic"
+                        type={showPassword ? "text" : "password"}
+                        id="password"
                         label="Password"
                         variant="outlined"
                         name="password"
                         style={{ width: "250px" }}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        error={!!errors.password}
+                        helperText={errors.password}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </div>
                     <div class="mb-3 text-center">
                       <TextField
-                        type="Confirmpassword"
-                        id="outlined-basic"
+                        type={showConfirmPassword ? "text" : "password"}
+                        id="confirmPassword"
                         label="Confirm Password"
                         variant="outlined"
-                        name="Confirmpassword"
+                        name="confirmPassword"
                         style={{ width: "250px" }}
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        error={!!errors.confirmPassword}
+                        helperText={errors.confirmPassword}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle confirm password visibility"
+                                onClick={handleClickShowConfirmPassword}
+                                edge="end"
+                              >
+                                {showConfirmPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </div>
                   </div>
@@ -145,27 +276,40 @@ const RegisterPage = () => {
                       flexWrap: "wrap",
                     }}
                   >
-                    <FormControl style={{ width: "250px", marginBottom:'1rem' }}>
+                    <FormControl
+                      style={{ width: "250px", marginBottom: "1rem" }}
+                      error={!!errors.role}
+                    >
                       <InputLabel id="role">Role</InputLabel>
                       <Select
                         labelId="role"
                         id="demo-role-select"
-                        //   value={}
+                        value={formData.role}
                         label="Role"
-                        //   onChange={handleChange}
+                        name="role"
+                        onChange={handleInputChange}
                       >
                         <MenuItem value={"candidate"}>Job Seeker</MenuItem>
                         <MenuItem value={"employer"}>Employer</MenuItem>
                       </Select>
+                      {errors.role && (
+                        <p style={{ color: "red", fontSize: "0.75rem" }}>
+                          {errors.role}
+                        </p>
+                      )}
                     </FormControl>
                     <div class="mb-3 text-center">
                       <TextField
-                        type="phoneNumber"
-                        id="outlined-basic"
+                        type="text"
+                        id="phoneNumber"
                         label="Phone Number"
                         variant="outlined"
                         name="phoneNumber"
                         style={{ width: "250px" }}
+                        value={formData.phoneNumber}
+                        onChange={handleInputChange}
+                        error={!!errors.phoneNumber}
+                        helperText={errors.phoneNumber}
                       />
                     </div>
                   </div>
@@ -186,6 +330,7 @@ const RegisterPage = () => {
                     <p className="self-center text-center mt-2">Or</p>
                     <button
                       type="submit"
+                      onClick={handleSigninClick}
                       style={{
                         backgroundColor: primaryFontColor,
                         color: primaryColor,
@@ -195,7 +340,7 @@ const RegisterPage = () => {
                         border: "1px solid",
                       }}
                     >
-                      Sign n
+                      Sign in
                     </button>
                   </div>
                 </form>
