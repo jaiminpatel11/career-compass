@@ -127,7 +127,7 @@ const RegisterPage = () => {
   return (
     <div className="container-fluid" style={{ background: primaryColor }}>
       <div className="row">
-        <div className="col-md-4  order-sm-1 order-2 ">
+        <div className="col-md-4  order-md-1 order-2 ">
           <div
             className="sidebar position-relative"
             style={{
@@ -152,7 +152,7 @@ const RegisterPage = () => {
           </div>
         </div>
         <div
-          className="col-md-8 order-sm-2 order-1 register-form-col"
+          className="col-md-8 order-md-2 order-1 register-form-col"
           style={{
             background: primaryFontColor,
             padding: "0",
