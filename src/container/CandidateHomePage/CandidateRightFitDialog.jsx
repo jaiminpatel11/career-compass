@@ -5,7 +5,7 @@ import candidaterightfit from "../../assets/yyy.png"
 const CandidateRightFitDialog = ({ primaryColor, primaryFontColor }) => {
 
     return (
-        <div className="container  p-md-5" style={{ background: primaryColor, borderRadius: "40px"}}>
+        <div className="container my-5 p-md-5" style={{ background: primaryColor, borderRadius: "40px"}}>
             <div className="row">
                 <div className="col-md-6 col-sm-12 px-0 px-md-5 text-center text-md-start">
                     <h1 className="mt-3" style={{ color: primaryFontColor }}>See Right away</h1>
