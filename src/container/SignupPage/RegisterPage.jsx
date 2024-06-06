@@ -7,13 +7,12 @@ import {
   MenuItem,
   InputAdornment,
   IconButton,
+  Alert,
 } from "@mui/material";
 import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import "../SignupPage/Register.css";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   // color theme
@@ -53,6 +52,7 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [alert, setAlert] = useState({ message: "", severity: "" });
 
   // password Visibility toogle
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -70,7 +70,6 @@ const RegisterPage = () => {
   const validateForm = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{10}$/;
 
     if (!formData.name) newErrors.name = "Name is required";
     if (!formData.email) {
@@ -102,24 +101,15 @@ const RegisterPage = () => {
           formData
         );
         if (response.status === 200) {
-          // toast.success("Registration Success", {
-          //   position: toast.POSITION.TOP_RIGHT,
-          //   autoClose: false,
-          // });
-          navigate("/");
+          setAlert({ message: "Sign Up Successfull", severity: "success" });
+          setTimeout(() => navigate("/"), 3000);
         } else {
-          toast.error("Something went wrong!", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: false,
-          });
+          setAlert({ message: response.data.msg, severity: "error" });
         }
-        console.log("Form submitted:", response.data);
       } catch (error) {
-        console.error("Error:", error);
+        setAlert({ message: error.response.data.msg, severity: "error" });
       }
     } else {
-      // navigate("/login");
-
       setErrors(validationErrors);
     }
   };
@@ -179,6 +169,15 @@ const RegisterPage = () => {
               <div className="col-md-2"></div>
               <div className="col-md-8 pt-5 mt-0 mt-md-5  ">
                 <form onSubmit={handleSubmit}>
+                  {alert.message && (
+                    <Alert
+                      className="mb-3"
+                      severity={alert.severity}
+                      onClose={() => setAlert({ message: "", severity: "" })}
+                    >
+                      {alert.message}
+                    </Alert>
+                  )}
                   <div
                     className="registrationDetails"
                     style={{
