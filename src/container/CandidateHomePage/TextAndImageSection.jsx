@@ -12,7 +12,7 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
       <div className="row">
         <div className="col-md-6 col-sm-12 p-md-5 p-0">
           <div>
-            <div className="hero-text px-md-5 px-0 text-center text-md-start ">
+            <div className="hero-text px-lg-5 px-0 text-center text-md-start ">
               <h1 className="" style={{ color: primaryFontColor }}>
                 Find The Perfect
               </h1>
@@ -23,7 +23,7 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
                 Search your career opportunity through 12,800 jobs.
               </h6>
             </div>
-            <div className="search-bar p-md-5 p-0">
+            <div className="search-bar p-lg-5 p-0">
               <Form className="d-flex justify-content-center justify-content-md-start">
                 <Form.Control
                   type="search"
