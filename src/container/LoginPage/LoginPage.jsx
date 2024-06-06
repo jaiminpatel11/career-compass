@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { TextField, InputAdornment, IconButton, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import "../LoginPage/login.css";
 import axios from "axios";
@@ -44,6 +42,7 @@ const LoginPage = () => {
   // const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [alert, setAlert] = useState({ message: "", severity: "" });
 
   // password Visibility toogle
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -80,20 +79,13 @@ const LoginPage = () => {
           formData
         );
         if (response.status === 200) {
-          // Login successful
-          // toast.success("Login Success", {
-          //   position: toast.POSITION.TOP_RIGHT,
-          //   autoClose: false,
-          // });
-          navigate("/home");
+          setAlert({ message: "Login Successfull", severity: "success" });
+          setTimeout(() => navigate("/home"), 3000);
         } else {
-          toast.error("Something went wrong!", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: false,
-          });
+          setAlert({ message: response.data.msg, severity: "error" });
         }
       } catch (error) {
-        console.error("Error:", error);
+        setAlert({ message: error.response.data.msg, severity: "error" });
       }
     } else {
       setErrors(newErrors);
@@ -130,6 +122,15 @@ const LoginPage = () => {
               <div className="col-md-3"></div>
               <div className="col-md-6 mt-0 mt-md-4">
                 <form onSubmit={handleSubmit}>
+                  {alert.message && (
+                    <Alert
+                      className="mb-3"
+                      severity={alert.severity}
+                      onClose={() => setAlert({ message: "", severity: "" })}
+                    >
+                      {alert.message}
+                    </Alert>
+                  )}
                   <div className="mb-3 mt-5 text-center">
                     <TextField
                       type="email"
