@@ -8,27 +8,27 @@ import  candidateHeroImg from "../../assets/candidateHeroImg.png"
 
 const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
   return (
-    <div className="container-fluid" style={{ background: primaryColor }}>
+    <div className="container-fluid text-sm-center" style={{ background: primaryColor }}>
       <div className="row">
-        <div className="col-md-6 p-5" style={{}}>
+        <div className="col-md-6 col-sm-12 p-md-5 p-0">
           <div>
-            <div className="hero-text px-5">
-              <h2 className="" style={{ color: primaryFontColor }}>
+            <div className="hero-text px-lg-5 px-0 text-center text-md-start ">
+              <h1 className="" style={{ color: primaryFontColor }}>
                 Find The Perfect
-              </h2>
-              <h2 className="" style={{ color: primaryFontColor }}>
+              </h1>
+              <h1 className="" style={{ color: primaryFontColor }}>
                 Job For You
-              </h2>
+              </h1>
               <h6 className="" style={{ color: primaryFontColor }}>
                 Search your career opportunity through 12,800 jobs.
               </h6>
             </div>
-            <div className="search-bar p-5">
-              <Form className="d-flex">
+            <div className="search-bar p-lg-5 p-0">
+              <Form className="d-flex justify-content-center justify-content-md-start">
                 <Form.Control
                   type="search"
                   placeholder="Search"
-                  className="me-2"
+                  className="me-2 home-form-search"
                   aria-label="Search"
                 />
                 <span
@@ -47,9 +47,9 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
           {/* Add search functionality here */}
         </div>
 
-        <div className="col-md-6">
+        <div className="col-md-6 col-sm-12  mt-5 mt-md-0">
           <div className="hero-image">
-          <div className="hero-image d-flex justify-content-end">
+          <div className="hero-image d-flex justify-content-center justify-content-md-end">
             <img src={candidateHeroImg} alt="Hero" style={{ width: '70%', height: '70%' }} />
           </div>          
           </div>
