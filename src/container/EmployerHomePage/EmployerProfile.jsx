@@ -63,15 +63,28 @@ const EmployerProfile = () => {
   const handleSubmit = async () => {
     try {
       const formDataWithImage = new FormData();
-      Object.keys(formData).forEach((key) => {
-        formDataWithImage.append(key, formData[key]);
-      });
+      formDataWithImage.append("email", formData.email);
+      formDataWithImage.append("companyName", formData.companyName);
+      formDataWithImage.append("industry", formData.industry);
+      formDataWithImage.append("companyDescription", formData.description);
+      formDataWithImage.append("address[street]", formData.street);
+      formDataWithImage.append("address[city]", formData.city);
+      formDataWithImage.append("address[country]", formData.country);
+      formDataWithImage.append("address[postalCode]", formData.postal);
 
       if (formData.companyLogo) {
         formDataWithImage.append('companyLogo', formData.companyLogo);
       }
 
-      const response = await axios.post("http://localhost:5000/api/createcompanyprofile", formDataWithImage);
+      const token = localStorage.getItem("token"); // Adjust based on how you store the token
+    
+      const response = await axios.post("http://localhost:5000/api/profile/createcompanyprofile", formDataWithImage, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY3MWM1ZWM5ZTJmYzFjNjJmNGRmMzIzIiwicm9sZSI6ImNvbXBhbnkifSwiaWF0IjoxNzE4NzMyNzY2LCJleHAiOjE3MTg3MzYzNjZ9.vuRiXIuhOd0lthKFmN9AeiQZ-P7VIcZvcSKdGCO9VOs",
+        },
+      });
+
       if (response.status === 201) {
         alert("Profile updated successfully!");
       } else {
@@ -265,7 +278,7 @@ const EmployerProfile = () => {
           </div>
         </div>
       </div>
-      
+
       <Footer
         PrimaryColor={primaryColor}
         PrimaryFontColor={primaryFontColor}
