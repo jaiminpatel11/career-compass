@@ -20,7 +20,7 @@ const CandidateHomePage = ({ name }) => {
     { text: "Find Job", url: "#" },
     { text: "Company", url: "#" },
     { text: "Blog", url: "#" },
-    { text: "Logout", url: "#", onClick: handleLogout() },
+    { text: "Logout", url: "#", onClick: handleLogout },
   ];
 
   const [primaryColor, setPrimaryColor] = useState("");
