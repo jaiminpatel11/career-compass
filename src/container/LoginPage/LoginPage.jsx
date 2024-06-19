@@ -71,21 +71,40 @@ const LoginPage = () => {
     }
 
     if (Object.keys(newErrors).length === 0) {
-      console.log(formData);
+      // console.log(formData);
+
+      const email = formData.email;
+      const password = formData.password;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
       try {
         const response = await axios.post(
           "http://localhost:5000/api/users/login",
-          formData
+          { email, password },
+          config
         );
         if (response.status === 200) {
+          sessionStorage.setItem("user", response.data.token);
           setAlert({ message: "Login Successfull", severity: "success" });
           setTimeout(() => navigate("/home"), 3000);
         } else {
           setAlert({ message: response.data.msg, severity: "error" });
         }
       } catch (error) {
-        setAlert({ message: error.response.data.msg, severity: "error" });
+        if (error.response && error.response.data) {
+          setAlert({ message: error.response.data.msg, severity: "error" });
+        } else {
+          console.log(error);
+          setAlert({
+            message: "An unexpected error occurred",
+            severity: "error",
+          });
+        }
       }
     } else {
       setErrors(newErrors);
