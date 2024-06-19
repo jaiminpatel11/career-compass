@@ -5,10 +5,14 @@ import LoginContainer from "./container/LoginPage/LoginPage";
 import ForgotPasswordContainer from "./container/LoginPage/ForgotPasswordPage";
 import RegisterContainer from "./container/SignupPage/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EmployerDashboard from "./container/EmployerHomePage/EmployerDashboard";
+import EmployerProfile from "./container/EmployerHomePage/EmployerProfile";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/candidate_home" element={<CandidateHomePage />} />
+      <Route path="/home" element={<EmployerDashboard />} />
       <Route path="/" element={<LoginContainer />} />
       <Route path="/register" element={<RegisterContainer />} />
       <Route path="/forgot_password" element={<ForgotPasswordContainer />} />
@@ -21,6 +25,7 @@ const AppRoutes = () => {
         }
       />
 
+      <Route path="/employer_profile" element={<EmployerProfile />} />
       {/* Add more routes here */}
     </Routes>
   );
