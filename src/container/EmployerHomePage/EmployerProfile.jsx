@@ -76,12 +76,14 @@ const EmployerProfile = () => {
         formDataWithImage.append('companyLogo', formData.companyLogo);
       }
 
-      const token = localStorage.getItem("token"); // Adjust based on how you store the token
+      const token = sessionStorage.getItem("user"); // Adjust based on how you store the token
+      console.log(token);
     
       const response = await axios.post("http://localhost:5000/api/profile/createcompanyprofile", formDataWithImage, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "x-auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY3MWM1ZWM5ZTJmYzFjNjJmNGRmMzIzIiwicm9sZSI6ImNvbXBhbnkifSwiaWF0IjoxNzE4NzMyNzY2LCJleHAiOjE3MTg3MzYzNjZ9.vuRiXIuhOd0lthKFmN9AeiQZ-P7VIcZvcSKdGCO9VOs",
+          "x-auth-token": token,
+          // "x-auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY3MWM1ZWM5ZTJmYzFjNjJmNGRmMzIzIiwicm9sZSI6ImNvbXBhbnkifSwiaWF0IjoxNzE4NzMyNzY2LCJleHAiOjE3MTg3MzYzNjZ9.vuRiXIuhOd0lthKFmN9AeiQZ-P7VIcZvcSKdGCO9VOs",
         },
       });
 

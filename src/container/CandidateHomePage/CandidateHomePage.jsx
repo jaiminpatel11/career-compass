@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Common/Navbar";
+import { useNavigate } from "react-router-dom";
 import TextAndImageSection from "./TextAndImageSection";
 import SearchByCategory from "./SearchByCategory";
 import CandidateRightFitDialog from "./CandidateRightFitDialog";
@@ -7,12 +8,21 @@ import PopularCities from "./PopularCities";
 import Footer from "../../components/Common/Footer";
 
 const CandidateHomePage = ({ name }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    console.log("handleLogout");
+    sessionStorage.removeItem("user");
+    navigate("/");
+  };
+
   const links = [
     { text: "Home", url: "#" },
     { text: "Find Job", url: "#" },
     { text: "Company", url: "#" },
     { text: "Blog", url: "#" },
+    { text: "Logout", url: "#", onClick: handleLogout },
   ];
+
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
