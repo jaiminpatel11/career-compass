@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.edit-profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: var(--primary-font-color);
+}
+
+.profile-pic {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-pic img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section-heading {
+  text-align: center;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+button.submit-button,
+button.cancel-button {
+  margin: 0.5rem;
+  width: 250px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+button.cancel-button {
+  background-color: #f5f5f5;
+  color: #4B4B4B;
+}

@@ -25,7 +25,7 @@ const Navbar = ({ logo, links, primaryFontColor, primaryColor }) => {
 
                 </Nav>
 
-                <Nav.Link href="#profile" style={{ color: primaryFontColor,marginRight:'10px', height:'60px',width:'60px', display:'flex', alignItems:'center'}}>
+                <Nav.Link href="/candidate_profile" style={{ color: primaryFontColor,marginRight:'10px', height:'60px',width:'60px', display:'flex', alignItems:'center'}}>
                         <FontAwesomeIcon icon={faUserCircle} size="3x" />
                 </Nav.Link>
 
