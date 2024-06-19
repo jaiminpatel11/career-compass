@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Common/Navbar";
 import Footer from "../../components/Common/Footer";
-import { TextField, Button, IconButton, Alert } from "@mui/material";
+import { TextField, Button, IconButton } from "@mui/material";
 import axios from "axios";
 import { Edit } from "@mui/icons-material";
-import "./CandidateProfilePage.css";
 
 const CandidateProfilePage = () => {
   const links = [
@@ -34,29 +33,44 @@ const CandidateProfilePage = () => {
     firstName: "",
     lastName: "",
     skills: "",
-    street: "",
-    city: "",
-    province: "",
-    country: "",
-    postal: "",
-    jobTitle: "",
-    jobDescription: "",
-    company: "",
-    startDate: "",
-    jobEndDate: "",
-    qualification: "",
-    institute: "",
-    educationEndDate: "",
+    address: {
+      street: "",
+      city: "",
+      province: "",
+      country: "",
+      postalCode: "",
+    },
+    experience: {
+      jobTitle: "",
+      jobDescription: "",
+      company: "",
+      startDate: "",
+      endDate: "",
+    },
+    education: {
+      qualification: "",
+      institute: "",
+      endDate: "",
+    },
   });
 
-  const [errors, setErrors] = useState({});
-  const [alert, setAlert] = useState({ message: "", severity: "" });
   const [profileImage, setProfileImage] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    const [parent, child] = name.split('.');
+    
+    if (child) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [parent]: {
+          ...prevData[parent],
+          [child]: value,
+        },
+      }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
   const handleImageChange = (event) => {
@@ -67,70 +81,50 @@ const CandidateProfilePage = () => {
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    const fieldsToValidate = [
-      "email",
-      "firstName",
-      "lastName",
-      "skills",
-      "street",
-      "city",
-      "province",
-      "country",
-      "postal",
-      "jobTitle",
-      "jobDescription",
-      "company",
-      "startDate",
-      "jobEndDate",
-      "qualification",
-      "institute",
-      "educationEndDate",
-    ];
-
-    fieldsToValidate.forEach((field) => {
-      if (!formData[field]) {
-        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-      }
-    });
-
-    return newErrors;
-  };
-
   const handleSubmit = async () => {
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        const formDataWithImage = new FormData();
-        Object.keys(formData).forEach(key => {
-          formDataWithImage.append(key, formData[key]);
-        });
-
-        if (formData.profileImage) {
-          formDataWithImage.append('profileImage', formData.profileImage);
-        }
-
-        const token = sessionStorage.getItem("user"); // Adjust based on how you store the token
-        const response = await axios.post("http://localhost:5000/api/profile/updatecandidateprofile", formDataWithImage, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "x-auth-token": token,
-          },
-        });
-
-        if (response.status === 201) {
-          setAlert({ message: "Profile updated successfully!", severity: "success" });
-        } else {
-          setAlert({ message: "Failed to update profile. Please try again.", severity: "error" });
-        }
-      } catch (error) {
-        setAlert({ message: "An error occurred while updating the profile.", severity: "error" });
+    try {
+      const formDataWithImage = new FormData();
+      formDataWithImage.append("firstName", formData.firstName);
+      formDataWithImage.append("lastName", formData.lastName);
+      formDataWithImage.append("skills", formData.skills);
+      formDataWithImage.append("address[street]", formData.address.street);
+      formDataWithImage.append("address[city]", formData.address.city);
+      formDataWithImage.append("address[province]", formData.address.province);
+      formDataWithImage.append("address[country]", formData.address.country);
+      formDataWithImage.append("address[postalCode]", formData.address.postalCode);
+      formDataWithImage.append("experience[jobTitle]", formData.experience.jobTitle);
+      formDataWithImage.append("experience[jobDescription]", formData.experience.jobDescription);
+      formDataWithImage.append("experience[company]", formData.experience.company);
+      formDataWithImage.append("experience[startDate]", formData.experience.startDate);
+      formDataWithImage.append("experience[endDate]", formData.experience.endDate);
+      formDataWithImage.append("education[qualification]", formData.education.qualification);
+      formDataWithImage.append("education[institute]", formData.education.institute);
+      formDataWithImage.append("education[endDate]", formData.education.endDate);
+  
+      if (formData.profileImage) {
+        formDataWithImage.append('profileImage', formData.profileImage);
       }
-    } else {
-      setErrors(validationErrors);
+  
+      const token = sessionStorage.getItem("user");
+  
+      const response = await axios.post("http://localhost:5000/api/userprofile/createUserProfile", formDataWithImage, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-auth-token": token,
+        },
+      });
+  
+      if (response.status === 201) {
+        alert("Profile updated successfully!");
+      } else {
+        alert("Failed to update profile. Please try again.");
+      }
+    } catch (error) {
+      console.log(error)
+      alert("An error occurred while updating the profile.");
     }
   };
+  
 
   const handleCancel = () => {
     setFormData({
@@ -138,19 +132,25 @@ const CandidateProfilePage = () => {
       firstName: "",
       lastName: "",
       skills: "",
-      street: "",
-      city: "",
-      province: "",
-      country: "",
-      postal: "",
-      jobTitle: "",
-      jobDescription: "",
-      company: "",
-      startDate: "",
-      jobEndDate: "",
-      qualification: "",
-      institute: "",
-      educationEndDate: "",
+      address: {
+        street: "",
+        city: "",
+        province: "",
+        country: "",
+        postalCode: "",
+      },
+      experience: {
+        jobTitle: "",
+        jobDescription: "",
+        company: "",
+        startDate: "",
+        endDate: "",
+      },
+      education: {
+        qualification: "",
+        institute: "",
+        endDate: "",
+      },
     });
     setProfileImage(null);
   };
@@ -208,15 +208,6 @@ const CandidateProfilePage = () => {
                 </label>
               </div>
             </div>
-            {alert.message && (
-              <Alert
-                className="mb-3"
-                severity={alert.severity}
-                onClose={() => setAlert({ message: "", severity: "" })}
-              >
-                {alert.message}
-              </Alert>
-            )}
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
               <h2 className="mb-2" style={{ color: secondaryFontColor }}>Account</h2>
               <TextField
@@ -227,8 +218,6 @@ const CandidateProfilePage = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.email}
-                helperText={errors.email}
               />
             </div>
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
@@ -241,8 +230,6 @@ const CandidateProfilePage = () => {
                 value={formData.firstName}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.firstName}
-                helperText={errors.firstName}
               />
               <TextField
                 fullWidth
@@ -252,8 +239,6 @@ const CandidateProfilePage = () => {
                 value={formData.lastName}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.lastName}
-                helperText={errors.lastName}
               />
               <TextField
                 fullWidth
@@ -265,8 +250,6 @@ const CandidateProfilePage = () => {
                 className="mb-3"
                 multiline
                 rows={4}
-                error={!!errors.skills}
-                helperText={errors.skills}
               />
             </div>
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
@@ -275,56 +258,46 @@ const CandidateProfilePage = () => {
                 fullWidth
                 variant="outlined"
                 label="Street"
-                name="street"
-                value={formData.street}
+                name="address.street"
+                value={formData.address.street}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.street}
-                helperText={errors.street}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="City"
-                name="city"
-                value={formData.city}
+                name="address.city"
+                value={formData.address.city}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.city}
-                helperText={errors.city}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="Province"
-                name="province"
-                value={formData.province}
+                name="address.province"
+                value={formData.address.province}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.province}
-                helperText={errors.province}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="Country"
-                name="country"
-                value={formData.country}
+                name="address.country"
+                value={formData.address.country}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.country}
-                helperText={errors.country}
               />
               <TextField
                 fullWidth
                 variant="outlined"
-                label="Postal"
-                name="postal"
-                value={formData.postal}
+                label="Postal Code"
+                name="address.postalCode"
+                value={formData.address.postalCode}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.postal}
-                helperText={errors.postal}
               />
             </div>
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
@@ -333,62 +306,52 @@ const CandidateProfilePage = () => {
                 fullWidth
                 variant="outlined"
                 label="Job Title"
-                name="jobTitle"
-                value={formData.jobTitle}
+                name="experience.jobTitle"
+                value={formData.experience.jobTitle}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.jobTitle}
-                helperText={errors.jobTitle}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="Job Description"
-                name="jobDescription"
-                value={formData.jobDescription}
+                name="experience.jobDescription"
+                value={formData.experience.jobDescription}
                 onChange={handleInputChange}
                 className="mb-3"
                 multiline
                 rows={4}
-                error={!!errors.jobDescription}
-                helperText={errors.jobDescription}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="Company"
-                name="company"
-                value={formData.company}
+                name="experience.company"
+                value={formData.experience.company}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.company}
-                helperText={errors.company}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="Start Date"
-                name="startDate"
+                name="experience.startDate"
                 type="date"
                 InputLabelProps={{ shrink: true }}
-                value={formData.startDate}
+                value={formData.experience.startDate}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.startDate}
-                helperText={errors.startDate}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="End Date"
-                name="jobEndDate"
+                name="experience.endDate"
                 type="date"
                 InputLabelProps={{ shrink: true }}
-                value={formData.jobEndDate}
+                value={formData.experience.endDate}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.jobEndDate}
-                helperText={errors.jobEndDate}
               />
             </div>
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
@@ -397,36 +360,30 @@ const CandidateProfilePage = () => {
                 fullWidth
                 variant="outlined"
                 label="Qualification"
-                name="qualification"
-                value={formData.qualification}
+                name="education.qualification"
+                value={formData.education.qualification}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.qualification}
-                helperText={errors.qualification}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="Institute"
-                name="institute"
-                value={formData.institute}
+                name="education.institute"
+                value={formData.education.institute}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.institute}
-                helperText={errors.institute}
               />
               <TextField
                 fullWidth
                 variant="outlined"
                 label="End Date"
-                name="educationEndDate"
+                name="education.endDate"
                 type="date"
                 InputLabelProps={{ shrink: true }}
-                value={formData.educationEndDate}
+                value={formData.education.endDate}
                 onChange={handleInputChange}
                 className="mb-3"
-                error={!!errors.educationEndDate}
-                helperText={errors.educationEndDate}
               />
             </div>
             <div className="text-center mb-5" style={{ marginTop: "25px" }}>
