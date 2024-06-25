@@ -2,11 +2,31 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import  candidateHeroImg from "../../assets/candidateHeroImg.png" 
-
+import  candidateHeroImg from "../../assets/candidateHeroImg.png";
+import axios from "axios";
+import Card from "react-bootstrap/Card";
+import { blue } from "@mui/material/colors";
+import { useState } from "react";
 
 
 const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
+
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.get(`http://localhost:5000/api/jobs/all?search=${searchTerm}`);
+      setResults(response.data);
+    } catch (error) {
+      console.error('Error fetching search results', error);
+    }
+  };
+
   return (
     <div className="container-fluid text-sm-center" style={{ background: primaryColor }}>
       <div className="row">
@@ -30,6 +50,8 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
                   placeholder="Search"
                   className="me-2 home-form-search"
                   aria-label="Search"
+                  value={searchTerm}
+                  onChange={handleInputChange}
                 />
                 <span
                   className="input-group-text"
@@ -37,14 +59,49 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
                     backgroundColor: primaryColor,
                     color: primaryFontColor,
                   }}
+                  onClick={handleSubmit}
                 >
                   <FontAwesomeIcon icon={faSearch} />
                 </span>
               </Form>
             </div>
           </div>
-
-          {/* Add search functionality here */}
+          <div className="d-flex flex-wrap justify-content-center">
+            {results.length > 0 ? (
+              results.map((result, idx) => (
+                <Card
+                  key={idx}
+                  style={{
+                    width: "18rem",
+                    height: "15rem",
+                    background: "blue",
+                    borderRadius: "20px",
+                    margin: "10px"
+                  }}
+                >
+                  <Card.Body className="text-center p-3">
+                    <FontAwesomeIcon
+                      icon={faSearch} // Use appropriate icon for the job category or result
+                      style={{ fontSize: "50px", color: primaryFontColor }}
+                    />
+                    <Card.Title
+                      className="mt-4"
+                      style={{ color: primaryFontColor }}
+                    >
+                      {result.title} {/* Adjust according to your API response */}
+                    </Card.Title>
+                    <Card.Text
+                      style={{ color: primaryFontColor }}
+                    >
+                      {result.description} {/* Adjust according to your API response */}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              ))
+            ) : (
+              <p>No results found</p>
+            )}
+          </div>
         </div>
 
         <div className="col-md-6 col-sm-12  mt-5 mt-md-0">
