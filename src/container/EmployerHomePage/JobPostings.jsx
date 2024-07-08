@@ -1,29 +1,39 @@
-import React, { useState } from "react";
-import { Button, Card, Pagination } from "@mui/material";
-import { LocationOn, Work, Schedule, Book } from "@mui/icons-material";
+import React, { useState, useEffect } from "react";
+import { Button, Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { LocationOn, Schedule, Book, Delete } from "@mui/icons-material";
 import CreateJobModal from "./CreateJobModal";
+import UpdateJobModal from "./UpdateJobModal"; 
+import axios from "axios";
 
 const JobPostings = ({ primaryFontColor, cardColor }) => {
-  // Sample job data
-  const jobs = [
-    { id: 1, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    { id: 2, title: "Mobile Application Developer", location: "Toronto, ON", type: "Contract", skills: "Kotlin, Java, Dagger, Compose" },
-    { id: 3, title: "UI/UX Developer", location: "Calgary, AB", type: "Full Time", skills: "Photoshop, Adobe XD, Figma" },
-    { id: 4, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    { id: 5, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    { id: 6, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    { id: 7, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    { id: 8, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    { id: 9, title: "Full Stack Developer", location: "Toronto, ON", type: "Full Time", skills: "React, NodeJs, MongoDB, GitHub" },
-    // Add more jobs as needed
-  ];
-
+  const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 6; // Updated to display 6 cards per page
+  const jobsPerPage = 6;
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); 
+  const [selectedJob, setSelectedJob] = useState(null); 
+  const [deleteJobId, setDeleteJobId] = useState(null); 
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Fetch jobs from the backend
+  const fetchJobs = async () => {
+    try {
+      const token = sessionStorage.getItem("user");
+      const response = await axios.get("http://localhost:5000/api/jobs/all", {
+        headers: {
+          "x-auth-token": token,
+        },
+      });
+      setJobs(response.data);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    }
+  };
 
-  // Pagination logic
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
   const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
@@ -33,11 +43,47 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
   };
 
   const handleCreateJobClick = () => {
-    setIsModalOpen(true);
+    setIsCreateModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseCreateModal = () => {
+    setIsCreateModalOpen(false);
+    fetchJobs(); 
+  };
+
+  const handleOpenUpdateModal = (job) => {
+    setSelectedJob(job);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+    setSelectedJob(null);
+    fetchJobs();
+  };
+
+  const handleDeleteJob = async (jobId) => {
+    try {
+      const token = sessionStorage.getItem("user");
+      await axios.delete(`http://localhost:5000/api/jobs/delete/${jobId}`, {
+        headers: {
+          "x-auth-token": token,
+        },
+      });
+      fetchJobs(); 
+      setConfirmDialogOpen(false); 
+    } catch (error) {
+      console.error("Error deleting job:", error);
+    }
+  };
+
+  const handleOpenConfirmDialog = (jobId) => {
+    setDeleteJobId(jobId);
+    setConfirmDialogOpen(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmDialogOpen(false);
   };
 
   return (
@@ -54,36 +100,74 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           Create Job
         </Button>
       </div>
-      <div className="row">
-        {currentJobs.map((job) => (
-          <div className="col-md-4 mb-4" key={job.id}>
-            <Card style={{ background: cardColor, padding: "1rem", borderRadius: "15px", textAlign: "center" }}>
-              <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>{job.title}</h5>
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
-                <LocationOn style={{ marginRight: "8px" }} />
-                <span>{job.location}</span>
+      {jobs.length === 0 ? (
+        <h3 className="text-center" style={{ color: primaryFontColor }}>No Job Created Yet</h3>
+      ) : (
+        <>
+          <div className="row">
+            {currentJobs.map((job) => (
+              <div className="col-md-4 mb-4" key={job._id}>
+                <Card
+                  style={{ background: cardColor, padding: "1rem", borderRadius: "15px", textAlign: "center", position: "relative", cursor: "pointer" }}
+                  onClick={() => handleOpenUpdateModal(job)}
+                >
+                  <IconButton
+                    aria-label="delete"
+                    style={{ position: "absolute", top: 8, right: 8, color: "red" }}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent the card click event from triggering delete
+                      handleOpenConfirmDialog(job._id);
+                    }}
+                  >
+                    <Delete />
+                  </IconButton>
+                  <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>{job.title}</h5>
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                    <LocationOn style={{ marginRight: "8px" }} />
+                    <span>{job.location}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                    <Schedule style={{ marginRight: "8px" }} />
+                    <span>{job.role}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Book style={{ marginRight: "8px" }} />
+                    <span>{job.skills.join(", ")}</span>
+                  </div>
+                </Card>
               </div>
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
-                <Schedule style={{ marginRight: "8px" }} />
-                <span>{job.type}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Book style={{ marginRight: "8px" }} />
-                <span>{job.skills}</span>
-              </div>
-            </Card>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="d-flex justify-content-center mt-4">
-        <Pagination
-          count={Math.ceil(jobs.length / jobsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </div>
-      <CreateJobModal isOpen={isModalOpen} onClose={handleCloseModal} />
+          <div className="d-flex justify-content-center mt-4">
+            <Pagination
+              count={Math.ceil(jobs.length / jobsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
+        </>
+      )}
+      <CreateJobModal isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} />
+      <UpdateJobModal isOpen={isUpdateModalOpen} onClose={handleCloseUpdateModal} jobData={selectedJob} />
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
+        <DialogTitle>Delete Job</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this job?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => handleDeleteJob(deleteJobId)} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

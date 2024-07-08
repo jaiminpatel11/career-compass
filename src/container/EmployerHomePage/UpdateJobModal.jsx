@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Modal, Box, TextField, Button, MenuItem } from "@mui/material";
 import axios from "axios";
 
-const CreateJobModal = ({ isOpen, onClose }) => {
+const UpdateJobModal = ({ isOpen, onClose, jobData }) => {
   const [formData, setFormData] = useState({
+    _id: "",
     title: "",
     description: "",
-    skills: [],
+    skills: "",
     role: "",
-    requirements: [],
+    requirements: "",
     salary: "",
     location: "",
-    expiry_date: "",  
+    expiry_date: "",
   });
 
   const [primaryColor, setPrimaryColor] = useState("");
@@ -28,6 +29,22 @@ const CreateJobModal = ({ isOpen, onClose }) => {
     setCardColor(rootStyles.getPropertyValue("--card-color").trim());
     setFooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
   }, []);
+
+  useEffect(() => {
+    if (jobData) {
+      setFormData({
+        _id: jobData._id,
+        title: jobData.title,
+        description: jobData.description,
+        skills: jobData.skills.join(", "),
+        role: jobData.role,
+        requirements: jobData.requirements.join(", "),
+        salary: jobData.salary,
+        location: jobData.location,
+        expiry_date: jobData.expiry_date.substring(0, 10), 
+      });
+    }
+  }, [jobData]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -46,19 +63,19 @@ const CreateJobModal = ({ isOpen, onClose }) => {
 
     try {
       const token = sessionStorage.getItem("user");
-      const response = await axios.post("http://localhost:5000/api/jobs/createjob", formattedData, {
+      const response = await axios.put(`http://localhost:5000/api/jobs/update/${formData._id}`, formattedData, {
         headers: {
           "Content-Type": "application/json",
           "x-auth-token": token,
         },
       });
-      if (response.status === 201) {
+      if (response.status === 200) {
         onClose(); 
       } else {
-        console.error("Failed to create job:", response.data);
+        console.error("Failed to update job:", response.data);
       }
     } catch (error) {
-      console.error("Error creating job:", error);
+      console.error("Error updating job:", error);
     }
   };
 
@@ -66,8 +83,8 @@ const CreateJobModal = ({ isOpen, onClose }) => {
     <Modal
       open={isOpen}
       onClose={onClose}
-      aria-labelledby="create-job-modal"
-      aria-describedby="create-job-form"
+      aria-labelledby="update-job-modal"
+      aria-describedby="update-job-form"
       style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
       <Box
@@ -81,8 +98,8 @@ const CreateJobModal = ({ isOpen, onClose }) => {
           overflowY: "auto",
         }}
       >
-        <h2 id="create-job-modal" style={{ color: "#5C6BC0", marginBottom: "1.5rem", textAlign: "center" }}>Create New Job</h2>
-        <form id="create-job-form" onSubmit={handleSubmit}>
+        <h2 id="update-job-modal" style={{ color: primaryColor, marginBottom: "1.5rem", textAlign: "center" }}>Update Job</h2>
+        <form id="update-job-form" onSubmit={handleSubmit}>
           <TextField
             fullWidth
             margin="normal"
@@ -200,7 +217,7 @@ const CreateJobModal = ({ isOpen, onClose }) => {
                 border: "1px solid",
               }}
             >
-              Create
+              Update
             </Button>
           </div>
         </form>
@@ -209,4 +226,4 @@ const CreateJobModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default CreateJobModal;
+export default UpdateJobModal;

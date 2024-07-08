@@ -12,7 +12,6 @@ const EmployerProfile = () => {
     { text: "Job Applications", url: "#" },
   ];
 
-  // State variables for CSS colors
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
@@ -20,13 +19,42 @@ const EmployerProfile = () => {
   const [footerLinkColor, setFooterLinkColor] = useState("");
 
   useEffect(() => {
-    // Fetch the CSS variables after component mounts
     const rootStyles = getComputedStyle(document.documentElement);
     setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
     setPrimaryFontColor(rootStyles.getPropertyValue("--primary-font-color").trim());
     setSecondaryFontColor(rootStyles.getPropertyValue("--secondary-font-color").trim());
     setCardColor(rootStyles.getPropertyValue("--card-color").trim());
     setFooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
+
+    // Fetch existing company profile data
+    const fetchProfileData = async () => {
+      try {
+        const token = sessionStorage.getItem("user");
+        const response = await axios.get("http://localhost:5000/api/profile/getcompanyprofile", {
+          headers: {
+            "x-auth-token": token,
+          },
+        });
+        if (response.data) {
+          const profile = response.data;
+          setFormData({
+            email: profile.userId.email || "",
+            companyName: profile.companyName || "",
+            industry: profile.industry || "",
+            description: profile.companyDescription || "",
+            street: profile.address.street || "",
+            city: profile.address.city || "",
+            country: profile.address.country || "",
+            postal: profile.address.postalCode || "",
+          });
+          setProfileImage(profile.companyLogo ? `http://localhost:5000/${profile.companyLogo}` : null);
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfileData();
   }, []);
 
   // State variables for form data
@@ -44,13 +72,13 @@ const EmployerProfile = () => {
   // State variable for profile image
   const [profileImage, setProfileImage] = useState(null);
 
-  // Handle input change
+  // Handle image change
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Handle image change
+  // Handle form submission
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -59,7 +87,6 @@ const EmployerProfile = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     try {
       const formDataWithImage = new FormData();
@@ -73,17 +100,16 @@ const EmployerProfile = () => {
       formDataWithImage.append("address[postalCode]", formData.postal);
 
       if (formData.companyLogo) {
-        formDataWithImage.append('companyLogo', formData.companyLogo);
+        formDataWithImage.append("companyLogo", formData.companyLogo);
       }
 
-      const token = sessionStorage.getItem("user"); // Adjust based on how you store the token
+      const token = sessionStorage.getItem("user");
       console.log(token);
-    
+
       const response = await axios.post("http://localhost:5000/api/profile/createcompanyprofile", formDataWithImage, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-auth-token": token,
-          // "x-auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY3MWM1ZWM5ZTJmYzFjNjJmNGRmMzIzIiwicm9sZSI6ImNvbXBhbnkifSwiaWF0IjoxNzE4NzMyNzY2LCJleHAiOjE3MTg3MzYzNjZ9.vuRiXIuhOd0lthKFmN9AeiQZ-P7VIcZvcSKdGCO9VOs",
         },
       });
 
@@ -93,6 +119,7 @@ const EmployerProfile = () => {
         alert("Failed to update profile. Please try again.");
       }
     } catch (error) {
+      console.error("An error occurred while updating the profile:", error);
       alert("An error occurred while updating the profile.");
     }
   };
@@ -130,7 +157,7 @@ const EmployerProfile = () => {
                     borderRadius: "50%",
                     width: "200px",
                     height: "200px",
-                    backgroundColor: "#e0e0e0", // Default background color
+                    backgroundColor: "#e0e0e0",
                     backgroundImage: profileImage ? `url(${profileImage})` : "none",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
