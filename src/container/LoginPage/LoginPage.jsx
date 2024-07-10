@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { TextField, InputAdornment, IconButton, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 
 import "../LoginPage/login.css";
 import axios from "axios";
@@ -89,9 +91,18 @@ const LoginPage = () => {
           config
         );
         if (response.status === 200) {
-          sessionStorage.setItem("user", response.data.token);
-          setAlert({ message: "Login Successfull", severity: "success" });
-          setTimeout(() => navigate("/home"), 3000);
+          const { token } = response.data;
+          const decodedToken = jwtDecode(token); 
+          const userRole = decodedToken.user.role;
+          sessionStorage.setItem("user", token);
+          sessionStorage.setItem("role", userRole); 
+          setAlert({ message: "Login Successful", severity: "success" });
+          // Navigate to different home pages based on the user role
+          if (userRole === "candidate") {
+            setTimeout(() => navigate("/candidate_home"), 3000);
+          } else if (userRole === "company") {
+            setTimeout(() => navigate("/home"), 3000);
+          }        
         } else {
           setAlert({ message: response.data.msg, severity: "error" });
         }

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Common/Navbar";
 import Footer from "../../components/Common/Footer";
 import { TextField, Button, IconButton } from "@mui/material";
-import axios from "axios";
 import { Edit } from "@mui/icons-material";
+import { createCompanyProfile, getCompanyProfile, updateCompanyProfile } from "../../Api/Profile";
 
 const EmployerProfile = () => {
-  // Define the links array for the Navbar component
   const links = [
     { text: "Home", url: "#" },
     { text: "Job Applications", url: "#" },
@@ -17,47 +16,7 @@ const EmployerProfile = () => {
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
   const [cardColor, setCardColor] = useState("");
   const [footerLinkColor, setFooterLinkColor] = useState("");
-
-  useEffect(() => {
-    const rootStyles = getComputedStyle(document.documentElement);
-    setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
-    setPrimaryFontColor(rootStyles.getPropertyValue("--primary-font-color").trim());
-    setSecondaryFontColor(rootStyles.getPropertyValue("--secondary-font-color").trim());
-    setCardColor(rootStyles.getPropertyValue("--card-color").trim());
-    setFooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
-
-    // Fetch existing company profile data
-    const fetchProfileData = async () => {
-      try {
-        const token = sessionStorage.getItem("user");
-        const response = await axios.get("http://localhost:5000/api/profile/getcompanyprofile", {
-          headers: {
-            "x-auth-token": token,
-          },
-        });
-        if (response.data) {
-          const profile = response.data;
-          setFormData({
-            email: profile.userId.email || "",
-            companyName: profile.companyName || "",
-            industry: profile.industry || "",
-            description: profile.companyDescription || "",
-            street: profile.address.street || "",
-            city: profile.address.city || "",
-            country: profile.address.country || "",
-            postal: profile.address.postalCode || "",
-          });
-          setProfileImage(profile.companyLogo ? `http://localhost:5000/${profile.companyLogo}` : null);
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    };
-
-    fetchProfileData();
-  }, []);
-
-  // State variables for form data
+  const [profileId, setProfileId] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
     companyName: "",
@@ -68,17 +27,43 @@ const EmployerProfile = () => {
     country: "",
     postal: "",
   });
-
-  // State variable for profile image
+  const [formErrors, setFormErrors] = useState({});
   const [profileImage, setProfileImage] = useState(null);
 
-  // Handle image change
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  useEffect(() => {
+    const rootStyles = getComputedStyle(document.documentElement);
+    setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
+    setPrimaryFontColor(rootStyles.getPropertyValue("--primary-font-color").trim());
+    setSecondaryFontColor(rootStyles.getPropertyValue("--secondary-font-color").trim());
+    setCardColor(rootStyles.getPropertyValue("--card-color").trim());
+    setFooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
 
-  // Handle form submission
+    const fetchProfileData = async () => {
+      try {
+        const token = sessionStorage.getItem("user");
+        const profile = await getCompanyProfile(token);
+        if (profile) {
+          setProfileId(profile._id);
+          setFormData({
+            email: profile.userId?.email || "",
+            companyName: profile.companyName || "",
+            industry: profile.industry || "",
+            description: profile.companyDescription || "",
+            street: profile.address.street || "",
+            city: profile.address.city || "",
+            country: profile.address.country || "",
+            postal: profile.address.postalCode || "",
+          });
+          setProfileImage(profile.companyLogo || null);
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -87,10 +72,30 @@ const EmployerProfile = () => {
     }
   };
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.companyName) errors.companyName = "Company Name is required";
+    if (!formData.industry) errors.industry = "Industry is required";
+    if (!formData.description) errors.description = "Description is required";
+    if (!formData.street) errors.street = "Street is required";
+    if (!formData.city) errors.city = "City is required";
+    if (!formData.country) errors.country = "Country is required";
+    if (!formData.postal) errors.postal = "Postal code is required";
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) return;
+
     try {
       const formDataWithImage = new FormData();
-      formDataWithImage.append("email", formData.email);
       formDataWithImage.append("companyName", formData.companyName);
       formDataWithImage.append("industry", formData.industry);
       formDataWithImage.append("companyDescription", formData.description);
@@ -104,17 +109,15 @@ const EmployerProfile = () => {
       }
 
       const token = sessionStorage.getItem("user");
-      console.log(token);
+      const response = profileId
+        ? await updateCompanyProfile(profileId, formDataWithImage, token)
+        : await createCompanyProfile(formDataWithImage, token);
 
-      const response = await axios.post("http://localhost:5000/api/profile/createcompanyprofile", formDataWithImage, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "x-auth-token": token,
-        },
-      });
-
-      if (response.status === 201) {
+      if (response) {
         alert("Profile updated successfully!");
+        if (!profileId) {
+          setProfileId(response._id); // Set profile ID after creation
+        }
       } else {
         alert("Failed to update profile. Please try again.");
       }
@@ -124,7 +127,6 @@ const EmployerProfile = () => {
     }
   };
 
-  // Handle form cancel
   const handleCancel = () => {
     setFormData({
       email: "",
@@ -137,6 +139,7 @@ const EmployerProfile = () => {
       postal: "",
     });
     setProfileImage(null);
+    setFormErrors({});
   };
 
   return (
@@ -166,7 +169,7 @@ const EmployerProfile = () => {
                     justifyContent: "center",
                   }}
                 >
-                  {!profileImage && <Edit style={{ fontSize: 50, color: "#fff" }} />} {/* Display icon if no image */}
+                  {!profileImage && <Edit style={{ fontSize: 50, color: "#fff" }} />}
                 </div>
                 <input
                   accept="image/*"
@@ -200,8 +203,10 @@ const EmployerProfile = () => {
                 label="Email"
                 name="email"
                 value={formData.email}
-                onChange={handleInputChange}
                 className="mb-3"
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </div>
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
@@ -214,6 +219,8 @@ const EmployerProfile = () => {
                 value={formData.companyName}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.companyName}
+                helperText={formErrors.companyName}
               />
               <TextField
                 fullWidth
@@ -223,6 +230,8 @@ const EmployerProfile = () => {
                 value={formData.industry}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.industry}
+                helperText={formErrors.industry}
               />
               <TextField
                 fullWidth
@@ -232,6 +241,8 @@ const EmployerProfile = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.description}
+                helperText={formErrors.description}
               />
             </div>
             <div className="form-group text-center" style={{ marginTop: "25px" }}>
@@ -244,6 +255,8 @@ const EmployerProfile = () => {
                 value={formData.street}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.street}
+                helperText={formErrors.street}
               />
               <TextField
                 fullWidth
@@ -253,6 +266,8 @@ const EmployerProfile = () => {
                 value={formData.city}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.city}
+                helperText={formErrors.city}
               />
               <TextField
                 fullWidth
@@ -262,6 +277,8 @@ const EmployerProfile = () => {
                 value={formData.country}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.country}
+                helperText={formErrors.country}
               />
               <TextField
                 fullWidth
@@ -271,6 +288,8 @@ const EmployerProfile = () => {
                 value={formData.postal}
                 onChange={handleInputChange}
                 className="mb-3"
+                error={!!formErrors.postal}
+                helperText={formErrors.postal}
               />
             </div>
             <div className="text-center mb-5" style={{ marginTop: "25px" }}>
@@ -301,7 +320,7 @@ const EmployerProfile = () => {
                 }}
                 onClick={handleSubmit}
               >
-                Submit
+                {profileId ? "Update" : "Submit"}
               </Button>
             </div>
           </div>

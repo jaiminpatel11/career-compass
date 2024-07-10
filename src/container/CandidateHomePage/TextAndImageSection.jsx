@@ -6,9 +6,9 @@ import  candidateHeroImg from "../../assets/candidateHeroImg.png"
 
 
 
-const TextAndImageSection = ({ primaryColor, primaryFontColor }) => {
+const TextAndImageSection = ({ primaryColor, primaryFontColor,opacity}) => {
   return (
-    <div className="container-fluid text-sm-center" style={{ background: primaryColor }}>
+    <div className="container-fluid text-sm-center" style={{ background: primaryColor, opacity:opacity,}}>
       <div className="row">
         <div className="col-md-6 col-sm-12 p-md-5 p-0">
           <div>
