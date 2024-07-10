@@ -14,6 +14,8 @@ const EmployerDashboard = ({ name }) => {
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
   const [cardColor, setCardColor] = useState("");
   const [footerLinkColor, setFooterLinkColor] = useState("");
+  const [scrollPosition, setScrollPosition] = useState(0);
+
 
   useEffect(() => {
     // Fetch the CSS variables after component mounts
@@ -29,8 +31,25 @@ const EmployerDashboard = ({ name }) => {
     setFooterLinkColor(
       rootStyles.getPropertyValue("--footer-link-color").trim()
     );
+      // Handle scroll position
+      const handleScroll = () => {
+        setScrollPosition(window.scrollY); // Update scroll position state
+      };
+  
+      window.addEventListener("scroll", handleScroll); // Add scroll event listener
+  
+      return () => {
+        window.removeEventListener("scroll", handleScroll); // Clean up the event listener on unmount
+      };
   }, []);
 
+    // Function to calculate opacity based on scroll position
+  const getOpacity = () => {
+    const maxOpacityScroll = 300; // Adjust this value to change the scroll range for full opacity
+    const minOpacity = 0.3; // Set the minimum opacity value
+    const opacity = Math.min(scrollPosition / maxOpacityScroll, 1);
+    return Math.max(1 - opacity, minOpacity); // Calculate opacity based on scroll position, with minimum opacity
+  };
   return (
     <div>
       <Navbar
@@ -42,6 +61,7 @@ const EmployerDashboard = ({ name }) => {
       <EmployerDashboardHeader
         primaryFontColor={primaryFontColor}
         primaryColor={primaryColor}
+        opacity={getOpacity()} // Pass calculated opacity to the component
       />
       <div className="container mt-5">
         <JobPostings primaryFontColor={primaryFontColor} cardColor={cardColor} />

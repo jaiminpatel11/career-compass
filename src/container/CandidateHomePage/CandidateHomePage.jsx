@@ -28,6 +28,8 @@ const CandidateHomePage = ({ name }) => {
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
   const [cardColor, setcardColor] = useState("");
   const [footerLinkColor, setfooterLinkColor] = useState("");
+  const [scrollPosition, setScrollPosition] = useState(0);
+
 
   useEffect(() => {
     // Fetch the CSS variables after component mounts
@@ -43,7 +45,27 @@ const CandidateHomePage = ({ name }) => {
     setfooterLinkColor(
       rootStyles.getPropertyValue("--footer-link-color").trim()
     );
+
+    // Handle scroll position
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY); // Update scroll position state
+    };
+
+    window.addEventListener("scroll", handleScroll); // Add scroll event listener
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll); // Clean up the event listener on unmount
+    };
+
   }, []);
+
+// Function to calculate opacity based on scroll position
+const getOpacity = () => {
+  const maxOpacityScroll = 300; // Adjust this value to change the scroll range for full opacity
+  const minOpacity = 0.3; // Set the minimum opacity value
+  const opacity = Math.min(scrollPosition / maxOpacityScroll, 1);
+  return Math.max(1 - opacity, minOpacity); // Calculate opacity based on scroll position, with minimum opacity
+};
 
   return (
     <div>
@@ -57,6 +79,7 @@ const CandidateHomePage = ({ name }) => {
       <TextAndImageSection
         primaryColor={primaryColor}
         primaryFontColor={primaryFontColor}
+        opacity={getOpacity()} // Pass calculated opacity to the component
       />
       <SearchByCategory
         SecondaryFontColor={secondaryFontColor}

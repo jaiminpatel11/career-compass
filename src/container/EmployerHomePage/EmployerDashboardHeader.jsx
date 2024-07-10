@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import  employerHeroImage from "../../assets/employerHeroImage.png" 
 
-const EmployerDashboardHeader = ({ primaryColor, primaryFontColor }) => {
+const EmployerDashboardHeader = ({ primaryColor, primaryFontColor,opacity }) => {
   return (
-    <div className="container-fluid text-sm-center" style={{ background: primaryColor }}>
+    <div className="container-fluid text-sm-center" style={{ background: primaryColor,opacity:opacity }}>
       <div className="row">
         <div className="col-md-6 col-sm-12 p-md-5 p-0">
           <div>

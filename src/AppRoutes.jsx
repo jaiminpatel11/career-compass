@@ -28,7 +28,6 @@ const AppRoutes = () => {
       />
 
       <Route path="/employer_profile" element={<EmployerProfile />} />
-      {/* Add more routes here */}
     </Routes>
   );
 };
