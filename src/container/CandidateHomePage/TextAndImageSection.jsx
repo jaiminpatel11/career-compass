@@ -3,12 +3,13 @@ import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import  candidateHeroImg from "../../assets/candidateHeroImg.png" 
-
+import { Search } from "@mui/icons-material";
+import Searchbar from "../../components/Common/Searchbar";
 
 
 const TextAndImageSection = ({ primaryColor, primaryFontColor,opacity}) => {
   return (
-    <div className="container-fluid text-sm-center" style={{ background: primaryColor, opacity:opacity,}}>
+    <div className="container-fluid text-sm-center" style={{ background: primaryColor, opacity:opacity, height: "65vh"}}>
       <div className="row">
         <div className="col-md-6 col-sm-12 p-md-5 p-0">
           <div>
@@ -24,23 +25,7 @@ const TextAndImageSection = ({ primaryColor, primaryFontColor,opacity}) => {
               </h6>
             </div>
             <div className="search-bar p-lg-5 p-0">
-              <Form className="d-flex justify-content-center justify-content-md-start">
-                <Form.Control
-                  type="search"
-                  placeholder="Search"
-                  className="me-2 home-form-search"
-                  aria-label="Search"
-                />
-                <span
-                  className="input-group-text"
-                  style={{
-                    backgroundColor: primaryColor,
-                    color: primaryFontColor,
-                  }}
-                >
-                  <FontAwesomeIcon icon={faSearch} />
-                </span>
-              </Form>
+              <Searchbar />
             </div>
           </div>
 
