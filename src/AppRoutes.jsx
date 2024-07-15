@@ -8,6 +8,10 @@ import CandidateProfileContainer from "./container/CandidateProfilePage/Candidat
 import ProtectedRoute from "./components/ProtectedRoute";
 import EmployerDashboard from "./container/EmployerHomePage/EmployerDashboard";
 import EmployerProfile from "./container/EmployerHomePage/EmployerProfile";
+import CandidateApplications from "./container/ViewApplicationEmployer/CandidateApplications"
+import ApplicantDetails from "./container/ViewApplicationEmployer/ApplicantDetails";
+import ScheduleInterview from "./container/ViewApplicationEmployer/ScheduleInterview"
+
 
 const AppRoutes = () => {
   return (
@@ -18,6 +22,10 @@ const AppRoutes = () => {
       <Route path="/register" element={<RegisterContainer />} />
       <Route path="/forgot_password" element={<ForgotPasswordContainer />} />
       <Route path="/candidate_profile" element={<CandidateProfileContainer />} />
+      <Route path="/candidate_applications" element={<CandidateApplications/>} />
+      <Route path="/applicant-details/:id" element={<ApplicantDetails />} />
+      <Route path="/schedule-interview/:id" element={<ScheduleInterview/>} />
+
       <Route
         path="/home"
         element={

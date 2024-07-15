@@ -51,6 +51,7 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
 
   const employerLinks = [
     { text: "Home", url: "/home" },
+    { text: "Job Applications", url:"/candidate_applications"},
     { text: "Logout", url: "/", onClick: () => sessionStorage.clear() }
   ];
 
