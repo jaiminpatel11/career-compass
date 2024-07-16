@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Common/Navbar";
+import AppliedJobs from "./AppliedJobs";
 import HeroSection from "./HeroSection";
-import JobApplicants from "./JobApplicants";
 import Footer from "../../components/Common/Footer";
 
-const CandidateApplications = ({}) => {
+const MyApplications = () => {
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
@@ -63,10 +63,10 @@ const CandidateApplications = ({}) => {
       />
 
       <div className="container mt-2">
-        <JobApplicants
+        <AppliedJobs
           primaryColor={primaryColor}
           cardColor={cardColor}
-        ></JobApplicants>
+        ></AppliedJobs>
       </div>
 
       <Footer
@@ -78,4 +78,4 @@ const CandidateApplications = ({}) => {
   );
 };
 
-export default CandidateApplications;
+export default MyApplications;
