@@ -37,6 +37,11 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
             <h2 className="" style={{ color: primaryColor }}>
               Job Applicants
             </h2>
+              {applicants.length === 0 ? (
+                <div>
+                  There are no applicants at this time
+                </div>
+              ): (
             <div className="row">
               {applicants.map((applicant) => (
                 <div className="col-md-4 mb-4" key={applicant._id}>
@@ -63,6 +68,7 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                 </div>
               ))}
             </div>
+              )}
             <div className="d-flex justify-content-center mt-4">
               <Pagination
                 count={Math.ceil(applicants.length / 10)}
