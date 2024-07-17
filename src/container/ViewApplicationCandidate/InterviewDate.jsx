@@ -84,6 +84,7 @@ const InterviewDate = () => {
       setSnackbarMessage("Interview Scheduled Successfully");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
+      setTimeout(() => navigate("/my_applications"), 2000);
     } catch (error) {
       setSnackbarMessage("Error scheduling interview");
       setSnackbarSeverity("error");
@@ -129,146 +130,155 @@ const InterviewDate = () => {
         opacity={getOpacity()} // Pass calculated opacity to the component
       />
 
-      <div className="container-fluid my-2" style={{ padding: "20px"  }}>
+      <div className="container-fluid my-2" style={{ padding: "20px" }}>
         <div className="row">
           <div className="col-md-1"></div>
-          <div className="col-md-10 col-sm-12" >
-            <Card className="p-5" style={{borderRadius: "80px"  }}>
-            <div className="text-center">
-              <h1 className="mt-3">{applicantDetails.job_id.title}</h1>
-              <h2 className="mt-3" style={{ color: primaryColor }}>
-                {applicantDetails.company_id.name}
-              </h2>
-              <h2 className="mt-4">{applicantDetails.job_id.location}</h2>
-            </div>
-
-            <div className="p-5 text-center" style={{ margin: "10px" }}>
-              <h3 className="" style={{ color: primaryColor }}>
-                Skills, Experience and Qualifications
-              </h3>
-              <ul>
-                <li style={{listStyleType: "none"}}>{applicantDetails.job_id.description}</li>
-                {combinedList.map((item, index) => (
-                  <li style={{listStyleType: "none"}} key={index}>{item.value}</li>
-                ))}
-              </ul>
-            </div>
-
-            {applicantDetails.status === "submitted" && (
+          <div className="col-md-10 col-sm-12">
+            <Card className="p-5" style={{ borderRadius: "80px" }}>
               <div className="text-center">
-                <h3 style={{}}>
-                  Application under review. We will get back to you when we make
-                  a decision.
-                </h3>
+                <h1 className="mt-3">{applicantDetails.job_id.title}</h1>
+                <h2 className="mt-3" style={{ color: primaryColor }}>
+                  {applicantDetails.company_id.name}
+                </h2>
+                <h2 className="mt-4">{applicantDetails.job_id.location}</h2>
               </div>
-            )}
 
-            {applicantDetails.status === "rejected" && (
-              <div className="text-center">
-                <h3 style={{ color: red }}>
-                  Application rejected. We have decided to move on with another
-                  candidate.
+              <div className="p-5 text-center" style={{ margin: "10px" }}>
+                <h3 className="" style={{ color: primaryColor }}>
+                  Skills, Experience and Qualifications
                 </h3>
+                <ul>
+                  <li style={{ listStyleType: "none" }}>
+                    {applicantDetails.job_id.description}
+                  </li>
+                  {combinedList.map((item, index) => (
+                    <li style={{ listStyleType: "none" }} key={index}>
+                      {item.value}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
 
-            {applicantDetails.status === "approved" && (
-              <div className="text-center">
-                <h3 style={{ color: green }}>
-                  Congratulations! We would like to offer you the position. We
-                  will get in touch with you for the onboarding process.
-                </h3>
-              </div>
-            )}
+              {applicantDetails.status === "submitted" && (
+                <div className="text-center">
+                  <h3 style={{}}>
+                    Application under review. We will get back to you when we
+                    make a decision.
+                  </h3>
+                </div>
+              )}
 
-            {applicantDetails.status === "interview_scheduled" && (
-              <div className="text-center">
-                <h3 style={{ color: primaryColor }}>
-                  Congratulations! You have been shortlisted for the interview.
-                </h3>
-                <h3 className="mt-4"> Interview details: </h3>
-                {applicantDetails.interview_details}
-                {applicantDetails.interview_dates &&
-                applicantDetails.interview_dates.length > 0 ? (
-                  <>
-                    {applicantDetails.interview_dates.length === 1 ? (
-                      <div className="mt-4">
-                        <h4>Interview Date</h4>
-                        <p>
-                          {new Date(
-                            applicantDetails.interview_dates[0].date
-                          ).toLocaleDateString()}{" "}
-                          at {applicantDetails.interview_dates[0].time}
-                        </p>
-                      </div>
-                    ) : (
-                      <>
-                        <h4 className="mt-4">Please select an interview date</h4>
+              {applicantDetails.status === "rejected" && (
+                <div className="text-center">
+                  <h3 style={{ color: red }}>
+                    Application rejected. We have decided to move on with
+                    another candidate.
+                  </h3>
+                </div>
+              )}
+
+              {applicantDetails.status === "approved" && (
+                <div className="text-center">
+                  <h3 style={{ color: green }}>
+                    Congratulations! We would like to offer you the position. We
+                    will get in touch with you for the onboarding process.
+                  </h3>
+                </div>
+              )}
+
+              {applicantDetails.status === "interview_scheduled" && (
+                <div className="text-center">
+                  <h3 style={{ color: primaryColor }}>
+                    Congratulations! You have been shortlisted for the
+                    interview.
+                  </h3>
+                  <h3 className="mt-4"> Interview details: </h3>
+                  {applicantDetails.interview_details}
+                  {applicantDetails.interview_dates &&
+                  applicantDetails.interview_dates.length > 0 ? (
+                    <>
+                      {applicantDetails.interview_dates.length === 1 ? (
                         <div className="mt-4">
-                          <select
-                            value={selectedInterviewDate}
-                            onChange={(e) =>
-                              setSelectedInterviewDate(e.target.value)
-                            }
-                          >
-                            <option value="">Select a date</option>
-                            {applicantDetails.interview_dates.map(
-                              (date, index) => (
-                                <option
-                                  key={index}
-                                  value={`${date.date} ${date.time}`}
-                                >
-                                  {new Date(date.date).toLocaleDateString()} at{" "}
-                                  {date.time}
-                                </option>
-                              )
-                            )}
-                          </select>
+                          <h4>Interview Date</h4>
+                          <p>
+                            {new Date(
+                              applicantDetails.interview_dates[0].date
+                            ).toLocaleDateString()}{" "}
+                            at {applicantDetails.interview_dates[0].time}
+                          </p>
                         </div>
-                        <div className="mt-5">
-                          <button
-                            variant="contained"
-                            style={{
-                              backgroundColor: primaryColor,
-                              color: primaryFontColor,
-                              padding: "12px",
-                              width: "250px",
-                              borderRadius: "10px",
-                              border: "1px solid",
-                            }}
-                            onClick={handleConfirmInterview}
-                          >
-                            Confirm Interview
-                          </button>
-                        </div>
-                        <div className="mt-5">
-                        <button
-                            variant="contained"
-                            style={{
-                              backgroundColor: primaryFontColor,
-                              color: primaryColor,
-                              width: "250px",
-                              padding: "12px",
-                              borderRadius: "10px",
-                              border: "1px solid",
-                            }}
-                            onClick={() => navigate(-1)}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <div>
-                    <h4>No Interview Dates Available</h4>
-                    <p>There are no interview dates scheduled at the moment.</p>
-                  </div>
-                )}
-              </div>
-            )}
-          </Card>
+                      ) : (
+                        <>
+                          <h4 className="mt-4">
+                            Please select an interview date
+                          </h4>
+                          <div className="mt-4">
+                            <select
+                              value={selectedInterviewDate}
+                              onChange={(e) =>
+                                setSelectedInterviewDate(e.target.value)
+                              }
+                            >
+                              <option value="">Select a date</option>
+                              {applicantDetails.interview_dates.map(
+                                (date, index) => (
+                                  <option
+                                    key={index}
+                                    value={`${date.date} ${date.time}`}
+                                  >
+                                    {new Date(date.date).toLocaleDateString()}{" "}
+                                    at {date.time}
+                                  </option>
+                                )
+                              )}
+                            </select>
+                          </div>
+                          <div className="mt-5">
+                            <button
+                              variant="contained"
+                              style={{
+                                backgroundColor: primaryColor,
+                                color: primaryFontColor,
+                                padding: "12px",
+                                width: "250px",
+                                borderRadius: "10px",
+                                border: "1px solid",
+                              }}
+                              onClick={handleConfirmInterview}
+                            >
+                              Confirm Interview
+                            </button>
+                          </div>
+                          <div className="mt-5">
+                            <button
+                              variant="contained"
+                              style={{
+                                backgroundColor: primaryFontColor,
+                                color: primaryColor,
+                                width: "250px",
+                                padding: "12px",
+                                borderRadius: "10px",
+                                border: "1px solid",
+                              }}
+                              onClick={() => navigate(-1)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div>
+                      <h4>No Interview Dates Available</h4>
+                      <p>
+                        There are no interview dates scheduled at the moment.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </Card>
           </div>
           <div className="col-md-1"></div>
         </div>
