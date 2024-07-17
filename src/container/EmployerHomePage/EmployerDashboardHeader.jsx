@@ -17,7 +17,7 @@ const EmployerDashboardHeader = ({ primaryColor, primaryFontColor,opacity }) => 
               <h1 className="" style={{ color: primaryFontColor }}>
                 Candidate For You
               </h1>
-              <h6 className="" style={{ color: primaryFontColor }}>
+              <h6 className="my-4" style={{ color: primaryFontColor }}>
                 Streamline your hiring process with our advanced <br /> matching tool
               </h6>
             </div>
