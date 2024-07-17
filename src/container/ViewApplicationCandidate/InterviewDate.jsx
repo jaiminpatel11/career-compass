@@ -142,14 +142,14 @@ const InterviewDate = () => {
               <h2 className="mt-4">{applicantDetails.job_id.location}</h2>
             </div>
 
-            <div className="p-5" style={{ margin: "10px" }}>
+            <div className="p-5 text-center" style={{ margin: "10px" }}>
               <h3 className="" style={{ color: primaryColor }}>
                 Skills, Experience and Qualifications
               </h3>
               <ul>
-                <li>{applicantDetails.job_id.description}</li>
+                <li style={{listStyleType: "none"}}>{applicantDetails.job_id.description}</li>
                 {combinedList.map((item, index) => (
-                  <li key={index}>{item.value}</li>
+                  <li style={{listStyleType: "none"}} key={index}>{item.value}</li>
                 ))}
               </ul>
             </div>
