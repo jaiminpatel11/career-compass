@@ -6,7 +6,7 @@ import Navbar from "../../components/Common/Navbar";
 import HeroSection from "./HeroSection";
 import Footer from "../../components/Common/Footer";
 import { green, red } from "@mui/material/colors";
-
+import Card from "react-bootstrap/Card";
 const InterviewDate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -129,25 +129,27 @@ const InterviewDate = () => {
         opacity={getOpacity()} // Pass calculated opacity to the component
       />
 
-      <div className="container-fluid my-2" style={{ padding: "20px" }}>
+      <div className="container-fluid my-2" style={{ padding: "20px"  }}>
         <div className="row">
-          <div className="col-md-12 col-sm-12">
+          <div className="col-md-1"></div>
+          <div className="col-md-10 col-sm-12" >
+            <Card className="p-5" style={{borderRadius: "80px"  }}>
             <div className="text-center">
-              <h1 className="">{applicantDetails.job_id.title}</h1>
-              <h2 className="" style={{ color: primaryColor }}>
+              <h1 className="mt-3">{applicantDetails.job_id.title}</h1>
+              <h2 className="mt-3" style={{ color: primaryColor }}>
                 {applicantDetails.company_id.name}
               </h2>
-              <h2 className="">{applicantDetails.job_id.location}</h2>
+              <h2 className="mt-4">{applicantDetails.job_id.location}</h2>
             </div>
 
-            <div className="" style={{ margin: "10px" }}>
+            <div className="p-5 text-center" style={{ margin: "10px" }}>
               <h3 className="" style={{ color: primaryColor }}>
                 Skills, Experience and Qualifications
               </h3>
               <ul>
-                <li>{applicantDetails.job_id.description}</li>
+                <li style={{listStyleType: "none"}}>{applicantDetails.job_id.description}</li>
                 {combinedList.map((item, index) => (
-                  <li key={index}>{item.value}</li>
+                  <li style={{listStyleType: "none"}} key={index}>{item.value}</li>
                 ))}
               </ul>
             </div>
@@ -184,13 +186,13 @@ const InterviewDate = () => {
                 <h3 style={{ color: primaryColor }}>
                   Congratulations! You have been shortlisted for the interview.
                 </h3>
-                <h3>Interview details: </h3>
+                <h3 className="mt-4"> Interview details: </h3>
                 {applicantDetails.interview_details}
                 {applicantDetails.interview_dates &&
                 applicantDetails.interview_dates.length > 0 ? (
                   <>
                     {applicantDetails.interview_dates.length === 1 ? (
-                      <div>
+                      <div className="mt-4">
                         <h4>Interview Date</h4>
                         <p>
                           {new Date(
@@ -201,8 +203,8 @@ const InterviewDate = () => {
                       </div>
                     ) : (
                       <>
-                        <h4>Please select an interview date</h4>
-                        <div>
+                        <h4 className="mt-4">Please select an interview date</h4>
+                        <div className="mt-4">
                           <select
                             value={selectedInterviewDate}
                             onChange={(e) =>
@@ -223,18 +225,37 @@ const InterviewDate = () => {
                             )}
                           </select>
                         </div>
-                        <div>
-                          <Button
+                        <div className="mt-5">
+                          <button
                             variant="contained"
                             style={{
-                              backgroundColor: "blue",
-                              color: "white",
-                              marginRight: "10px",
+                              backgroundColor: primaryColor,
+                              color: primaryFontColor,
+                              padding: "12px",
+                              width: "250px",
+                              borderRadius: "10px",
+                              border: "1px solid",
                             }}
                             onClick={handleConfirmInterview}
                           >
                             Confirm Interview
-                          </Button>
+                          </button>
+                        </div>
+                        <div className="mt-5">
+                        <button
+                            variant="contained"
+                            style={{
+                              backgroundColor: primaryFontColor,
+                              color: primaryColor,
+                              width: "250px",
+                              padding: "12px",
+                              borderRadius: "10px",
+                              border: "1px solid",
+                            }}
+                            onClick={() => navigate(-1)}
+                          >
+                            Cancel
+                          </button>
                         </div>
                       </>
                     )}
@@ -247,7 +268,9 @@ const InterviewDate = () => {
                 )}
               </div>
             )}
+          </Card>
           </div>
+          <div className="col-md-1"></div>
         </div>
         <Snackbar
           open={snackbarOpen}
