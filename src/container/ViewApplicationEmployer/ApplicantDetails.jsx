@@ -14,7 +14,7 @@ import "../ViewApplicationEmployer/ApplicantDetails.css";
 import Navbar from "../../components/Common/Navbar";
 import { textAlign } from "@mui/system";
 import Footer from "../../components/Common/Footer";
-
+import { red } from "@mui/material/colors";
 
 const ApplicantDetails = () => {
   const [primaryColor, setPrimaryColor] = useState("");
@@ -27,6 +27,8 @@ const ApplicantDetails = () => {
   const navigate = useNavigate();
   const [applicantDetails, setApplicantDetails] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("info");
 
   useEffect(() => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -80,9 +82,38 @@ const ApplicantDetails = () => {
           },
         }
       );
+      setSnackbarMessage("Application Rejected");
+      setSnackbarSeverity("error");
       setSnackbarOpen(true);
+      setTimeout(() => navigate("/candidate_applications"), 2000);
     } catch (error) {
       console.error("Error rejecting application", error);
+      setSnackbarMessage("Error rejecting application");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleApproveApplication = async () => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/jobapplications/approveapplication/${id}`,
+        {},
+        {
+          headers: {
+            "x-auth-token": sessionStorage.getItem("user"),
+          },
+        }
+      );
+      setSnackbarMessage("Application Approved");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      setTimeout(() => navigate("/candidate_applications"), 2000);
+    } catch (error) {
+      console.error("Error rejecting application", error);
+      setSnackbarMessage("Error approving application");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     }
   };
 
@@ -93,21 +124,27 @@ const ApplicantDetails = () => {
   return (
     <div className="">
       <div className="row">
-      <Navbar
-            logo="/logo.png"
-            primaryFontColor={primaryFontColor}
-            primaryColor={primaryColor}
-          />
+        <Navbar
+          logo="/logo.png"
+          primaryFontColor={primaryFontColor}
+          primaryColor={primaryColor}
+        />
         <div className="col-md-12 col-sm-12">
-          
-          <div className="applicant-heding" style={{color: primaryFontColor, backgroundColor: primaryColor}}>
+          <div
+            className="applicant-heding"
+            style={{ color: primaryFontColor, backgroundColor: primaryColor }}
+          >
             <h1>Candidate Application</h1>
             <p>Review and manage applications from potential candidates</p>
           </div>
           <div className="text-center applicant-details">
             <h2
               className=""
-              style={{ color: primaryColor, textAlign: "center" , margin:"50px" }}
+              style={{
+                color: primaryColor,
+                textAlign: "center",
+                margin: "50px",
+              }}
             >
               Job Role: {applicantDetails.job_id.title}
             </h2>
@@ -126,9 +163,8 @@ const ApplicantDetails = () => {
                 className="card-title"
                 style={{
                   fontWeight: "bold",
-                  margin:"15px",
+                  margin: "15px",
                   color: primaryColor,
-
                 }}
               >
                 {/* {applicantDetails.user_id.name} */}
@@ -225,37 +261,99 @@ const ApplicantDetails = () => {
                 </div>
               </div>
 
-              <button
-                variant="contained"
-                style={{
-                  backgroundColor: primaryColor,
-                  color: primaryFontColor,
-                  padding: "12px",
-                  borderRadius: "10px",
-                  border: "1px solid",
-                  margin: "30px",
-                }}
-                onClick={handleScheduleInterview}
-              >
-                Schedule Interview
-              </button>
-              <button
-                variant="contained"
-                style={{
-                  backgroundColor: primaryFontColor,
-                  color: primaryColor,
-                  padding: "12px",
-                  borderRadius: "10px",
-                  border: "1px solid",
-                }}
-                onClick={handleRejectApplication}
-              >
-                Reject Application
-              </button>
+              <div>
+                <strong>Application Status: </strong>
+                {applicantDetails.status}
+              </div>
+
+              {applicantDetails.status === "interview_confirmed" && (
+                <div className="text-center">
+                  <h3 className="mt-4"> Interview details: </h3>
+                  {applicantDetails.interview_details}
+                  {applicantDetails.interview_dates &&
+                  applicantDetails.interview_dates.length > 0 ? (
+                    <>
+                      {
+                        <div className="mt-4">
+                          <h4>Interview Date</h4>
+                          <p>
+                            {new Date(
+                              applicantDetails.interview_dates[0].date
+                            ).toLocaleDateString()}{" "}
+                            at {applicantDetails.interview_dates[0].time}
+                          </p>
+                        </div>
+                      }
+                    </>
+                  ) : (
+                    <div>
+                      <h4>No Interview Dates Available</h4>
+                      <p>
+                        There are no interview dates scheduled at the moment.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+              {(applicantDetails.status === "submitted" ||
+                applicantDetails.status === "interview_scheduled" ||
+                applicantDetails.status === "interview_confirmed") && (
+                <button
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#d50000",
+                    color: primaryFontColor,
+                    padding: "12px",
+                    borderRadius: "10px",
+                    border: "1px solid",
+                    margin: "10px",
+                  }}
+                  onClick={handleRejectApplication}
+                >
+                  Reject Candidate
+                </button>
+              )}
+
+              {applicantDetails.status === "submitted" && (
+                <button
+                  variant="contained"
+                  style={{
+                    backgroundColor: primaryFontColor,
+                    color: primaryColor,
+                    padding: "12px",
+                    borderRadius: "10px",
+                    border: "1px solid",
+                    margin: "10px",
+                  }}
+                  onClick={handleScheduleInterview}
+                >
+                  Schedule Interview
+                </button>
+              )}
+
+              {(applicantDetails.status === "submitted" ||
+                applicantDetails.status === "interview_scheduled" ||
+                applicantDetails.status === "interview_confirmed") && (
+                <button
+                  variant="contained"
+                  style={{
+                    backgroundColor: "#00c853",
+                    color: primaryFontColor,
+                    padding: "12px",
+                    borderRadius: "10px",
+                    border: "1px solid",
+                    margin: "10px",
+                  }}
+                  onClick={handleApproveApplication}
+                >
+                  Approve Candidate
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -263,17 +361,17 @@ const ApplicantDetails = () => {
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity="error"
+          severity={snackbarSeverity}
           sx={{ width: "100%" }}
         >
-          Application Rejected
+          {snackbarMessage}
         </Alert>
       </Snackbar>
       <Footer
-              PrimaryColor={primaryColor}
-              PrimaryFontColor={primaryFontColor}
-              FooterLinkColor={footerLinkColor}
-           />
+        PrimaryColor={primaryColor}
+        PrimaryFontColor={primaryFontColor}
+        FooterLinkColor={footerLinkColor}
+      />
     </div>
   );
 };
