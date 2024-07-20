@@ -51,12 +51,12 @@ const Searchbar = () => {
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      navigate("/find-jobs", { state: { jobs: filteredJobs } });
+      navigate("/search-jobs", { state: { jobs: filteredJobs } });
     }
   };
 
   const handleSuggestionClick = (job) => {
-    navigate("/find-jobs", { state: { jobs: [job] } });
+    navigate("/search-jobs", { state: { jobs: [job] } });
     setInput(""); // Clear input after suggestion click
     setSuggestions([]); // Clear suggestions after suggestion click
   };

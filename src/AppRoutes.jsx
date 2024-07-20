@@ -8,7 +8,9 @@ import CandidateProfileContainer from "./container/CandidateProfilePage/Candidat
 import ProtectedRoute from "./components/ProtectedRoute";
 import EmployerDashboard from "./container/EmployerHomePage/EmployerDashboard";
 import EmployerProfile from "./container/EmployerHomePage/EmployerProfile";
-import FindJobs from "./container/FindJobPage/FindJobs";
+import FindJobContainer from "./container/FindJobPage/FindJob";
+import SearchResults from "./components/Common/SearchResults";
+
 
 const AppRoutes = () => {
   return (
@@ -29,7 +31,8 @@ const AppRoutes = () => {
       />
 
       <Route path="/employer_profile" element={<EmployerProfile />} />
-      <Route path="/find-jobs" element={<FindJobs />} />
+      <Route path="/find-job" element={<FindJobContainer />} />
+      <Route path="/search-jobs" element={<SearchResults />} />
     </Routes>
   );
 };
