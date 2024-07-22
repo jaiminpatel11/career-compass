@@ -33,8 +33,8 @@ const AppRoutes = () => {
       <Route path="/employer_profile" element={<EmployerProfile />} />
       <Route path="/find-job" element={<FindJobContainer />} />
       <Route path="/search-jobs" element={<SearchResults />} />
-      <Route path="/job-details" element={<JobDetails />} />
       <Route path="/apply" element={<ApplyPage />} /> 
+      <Route path="/job-details" element={<JobDetails />} />
     </Routes>
   );
 };

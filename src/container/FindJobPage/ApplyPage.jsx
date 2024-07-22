@@ -4,7 +4,6 @@ import Footer from "../../components/Common/Footer";
 import { TextField, Button } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 
 const ApplyPage = () => {
   const navigate = useNavigate();
@@ -88,12 +87,7 @@ const ApplyPage = () => {
     formDataWithFiles.append("portfolio", formData.portfolio);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/job-applications", formDataWithFiles, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "x-auth-token": token,
-        },
-      });
+      const response = await createJobApplication(formDataWithFiles, token);
 
       if (response.status === 201) {
         navigate("/job-details", { state: { job } });
