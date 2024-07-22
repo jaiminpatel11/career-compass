@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Common/Navbar";
 import Footer from "../../components/Common/Footer";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Snackbar, Alert } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createJobApplication } from "../../Api/Profile";
@@ -17,7 +17,8 @@ const ApplyPage = () => {
     { text: "Applications", url: "#" },
     { text: "Blog", url: "#" },
   ];
-  const user_id = sessionStorage.getItem('user_id')
+
+  const user_id = sessionStorage.getItem('user_id');
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
@@ -33,6 +34,7 @@ const ApplyPage = () => {
     portfolio: null,
   });
   const [errors, setErrors] = useState({});
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -91,7 +93,10 @@ const ApplyPage = () => {
       const response = await createJobApplication(formDataWithFiles, token);
 
       if (response.status === 201) {
-        navigate("/job-details", { state: { job } });
+        setOpenSnackbar(true);
+        setTimeout(() => {
+          navigate("/find-job");
+        }, 2000); // Adjust the delay as needed
       }
     } catch (error) {
       console.error("Error submitting job application:", error);
@@ -284,6 +289,15 @@ const ApplyPage = () => {
             </Button>
           </div>
         </form>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={2000}
+          onClose={() => setOpenSnackbar(false)}
+        >
+          <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
+            Job Application Submitted Successfully!
+          </Alert>
+        </Snackbar>
       </div>
       <Footer
         PrimaryColor={primaryColor}

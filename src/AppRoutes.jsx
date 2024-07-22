@@ -16,7 +16,7 @@ import InterviewDate from "./container/ViewApplicationCandidate/InterviewDate";
 import FindJobContainer from "./container/FindJobPage/FindJob";
 import SearchResults from "./components/Common/SearchResults";
 import JobDetails from "./container/FindJobPage/JobDetails";
-import ApplyPage from "./container/FindJobPage/ApplyPage"; 
+import ApplyPage from "./container/FindJobPage/ApplyPage";
 
 const AppRoutes = () => {
   return (
@@ -50,7 +50,7 @@ const AppRoutes = () => {
       <Route path="/employer_profile" element={<EmployerProfile />} />
       <Route path="/find-job" element={<FindJobContainer />} />
       <Route path="/search-jobs" element={<SearchResults />} />
-      <Route path="/apply" element={<ApplyPage />} /> 
+      <Route path="/apply" element={<ApplyPage />} />
       <Route path="/job-details" element={<JobDetails />} />
     </Routes>
   );
