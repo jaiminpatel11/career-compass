@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Button, Pagination } from "@mui/material";
 import { LocationOn, Schedule, Book } from "@mui/icons-material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./FindJob.css";
 
 const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor }) => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
+  const navigate = useNavigate();
 
   const fetchJobs = async () => {
     try {
@@ -36,7 +38,7 @@ const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor
   };
 
   const handleApplyClick = (job) => {
-    console.log("Applying for job:", job);
+    navigate("/job-details", { state: { job } });
   };
 
   return (

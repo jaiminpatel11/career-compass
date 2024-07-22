@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Common/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import TextAndImageSection from "./TextAndImageSection";
-import AllJobs from "./AllJobs";
+import JobDeatilComponent from "./JobDeatilComponent";
 import Footer from "../../components/Common/Footer";
+import { Button } from "@mui/material"; // Import Button from MUI
 
-
-const FindJob = ({ name }) => {
+const JobDetails = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const job = location.state?.job;
+
   const handleLogout = () => {
     console.log("handleLogout");
     sessionStorage.removeItem("user");
@@ -29,46 +32,38 @@ const FindJob = ({ name }) => {
   const [footerLinkColor, setfooterLinkColor] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
 
-
   useEffect(() => {
-    // Fetch the CSS variables after component mounts
     const rootStyles = getComputedStyle(document.documentElement);
     setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
-    setPrimaryFontColor(
-      rootStyles.getPropertyValue("--primary-font-color").trim()
-    );
-    setSecondaryFontColor(
-      rootStyles.getPropertyValue("--secondary-font-color").trim()
-    );
+    setPrimaryFontColor(rootStyles.getPropertyValue("--primary-font-color").trim());
+    setSecondaryFontColor(rootStyles.getPropertyValue("--secondary-font-color").trim());
     setcardColor(rootStyles.getPropertyValue("--card-color").trim());
-    setfooterLinkColor(
-      rootStyles.getPropertyValue("--footer-link-color").trim()
-    );
+    setfooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
 
-    // Handle scroll position
     const handleScroll = () => {
-      setScrollPosition(window.scrollY); // Update scroll position state
+      setScrollPosition(window.scrollY);
     };
 
-    window.addEventListener("scroll", handleScroll); // Add scroll event listener
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll); // Clean up the event listener on unmount
+      window.removeEventListener("scroll", handleScroll);
     };
-
   }, []);
 
-// Function to calculate opacity based on scroll position
-const getOpacity = () => {
-  const maxOpacityScroll = 300; // Adjust this value to change the scroll range for full opacity
-  const minOpacity = 0.3; // Set the minimum opacity value
-  const opacity = Math.min(scrollPosition / maxOpacityScroll, 1);
-  return Math.max(1 - opacity, minOpacity); // Calculate opacity based on scroll position, with minimum opacity
-};
+  const getOpacity = () => {
+    const maxOpacityScroll = 300;
+    const minOpacity = 0.3;
+    const opacity = Math.min(scrollPosition / maxOpacityScroll, 1);
+    return Math.max(1 - opacity, minOpacity);
+  };
+
+  const handleApplyClick = () => {
+    navigate("/apply", { state: { job } });
+  };
 
   return (
     <div>
-     
       <Navbar
         logo="/logo.png"
         links={links}
@@ -78,15 +73,31 @@ const getOpacity = () => {
       <TextAndImageSection
         primaryColor={primaryColor}
         primaryFontColor={primaryFontColor}
-        opacity={getOpacity()} // Pass calculated opacity to the component
+        opacity={getOpacity()}
       />
-      <AllJobs
+      <JobDeatilComponent
         SecondaryFontColor={secondaryFontColor}
         primaryColor={primaryColor}
         primaryFontColor={primaryFontColor}
         CardColor={cardColor}
+        job={job}
       />
-      
+      <div className="d-flex justify-content-center mt-4">
+        <Button
+          variant="contained"
+          style={{
+            backgroundColor: primaryColor,
+            color: primaryFontColor,
+            width: "150px",
+            padding: "12px",
+            borderRadius: "10px",
+            border: "1px solid"
+          }}
+          onClick={handleApplyClick}
+        >
+          Apply
+        </Button>
+      </div>
       <Footer
         PrimaryColor={primaryColor}
         PrimaryFontColor={primaryFontColor}
@@ -96,4 +107,4 @@ const getOpacity = () => {
   );
 };
 
-export default FindJob;
+export default JobDetails;
