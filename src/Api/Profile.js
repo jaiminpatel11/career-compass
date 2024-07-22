@@ -96,7 +96,7 @@ export const updateCompanyProfile = async (id, formDataWithImage, token) => {
 // New function to create job application
 export const createJobApplication = async (formDataWithFiles, token) => {
   try {
-    const response = await axios.post(`${BASE_URL}/job-applications/createjobapplication`, formDataWithFiles, {
+    const response = await axios.post(`${BASE_URL}/jobapplications/createjobapplication`, formDataWithFiles, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'x-auth-token': token,

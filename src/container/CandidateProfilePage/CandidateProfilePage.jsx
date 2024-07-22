@@ -67,6 +67,7 @@ const CandidateProfilePage = () => {
           });
           setProfileImage(profile.profileImage);
           setProfileId(profile._id);
+          console.log("ProfileID", profile._id);
           setIsUpdating(true); // Set to updating mode if profile exists
         } catch (error) {
           console.error("Error fetching profile data", error);

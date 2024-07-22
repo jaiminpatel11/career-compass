@@ -4,6 +4,7 @@ import Footer from "../../components/Common/Footer";
 import { TextField, Button } from "@mui/material";
 import { UploadFile } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { createJobApplication } from "../../Api/Profile";
 
 const ApplyPage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const ApplyPage = () => {
     { text: "Applications", url: "#" },
     { text: "Blog", url: "#" },
   ];
-
+  const user_id = sessionStorage.getItem('user_id')
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
@@ -76,7 +77,7 @@ const ApplyPage = () => {
     const token = sessionStorage.getItem("user");
     const formDataWithFiles = new FormData();
     formDataWithFiles.append("job_id", job._id);
-    formDataWithFiles.append("user_id", token);
+    formDataWithFiles.append("user_id", user_id);
     formDataWithFiles.append("company_id", job.company_id);
     formDataWithFiles.append("firstName", formData.firstName);
     formDataWithFiles.append("lastName", formData.lastName);
