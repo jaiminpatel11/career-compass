@@ -18,7 +18,7 @@ const ApplyPage = () => {
     { text: "Blog", url: "#" },
   ];
 
-  const user_id = sessionStorage.getItem('user_id');
+  const user_id = sessionStorage.getItem("user_id");
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
@@ -34,7 +34,9 @@ const ApplyPage = () => {
     portfolio: null,
   });
   const [errors, setErrors] = useState({});
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("error");
 
   useEffect(() => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -70,9 +72,11 @@ const ApplyPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (!validate()) {
+      setSnackbarMessage("Please fill in all required fields.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
       return;
     }
 
@@ -93,19 +97,27 @@ const ApplyPage = () => {
       const response = await createJobApplication(formDataWithFiles, token);
 
       if (response.status === 201) {
-        setOpenSnackbar(true);
+        setSnackbarMessage("Job Application Submitted Successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
         setTimeout(() => {
           navigate("/find-job");
-        }, 2000); // Adjust the delay as needed
+        }, 2000);
       }
     } catch (error) {
       console.error("Error submitting job application:", error);
-      alert("Failed to submit job application. Please try again.");
+      setSnackbarMessage("Failed to submit job application. Please try again.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     }
   };
 
   const handleCancel = () => {
     navigate("/job-details", { state: { job } });
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -118,7 +130,7 @@ const ApplyPage = () => {
       />
       <div className="container mt-5">
         <h2 className="text-center mb-4">Apply for {job.title}</h2>
-        <form onSubmit={handleSubmit}>
+        <form>
           <h3 className="mb-3" style={{ color: secondaryFontColor }}>Personal Details</h3>
           <div className="mb-3 d-flex justify-content-between">
             <TextField
@@ -283,19 +295,19 @@ const ApplyPage = () => {
                 borderRadius: "10px",
                 border: "1px solid",
               }}
-              type="submit"
+              onClick={handleSubmit}
             >
               Apply
             </Button>
           </div>
         </form>
         <Snackbar
-          open={openSnackbar}
-          autoHideDuration={2000}
-          onClose={() => setOpenSnackbar(false)}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
         >
-          <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
-            Job Application Submitted Successfully!
+          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+            {snackbarMessage}
           </Alert>
         </Snackbar>
       </div>
