@@ -95,8 +95,7 @@ const ApplyPage = () => {
 
     try {
       const response = await createJobApplication(formDataWithFiles, token);
-
-      if (response.status === 201) {
+      if (response.status === 'submitted') {
         setSnackbarMessage("Job Application Submitted Successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
