@@ -73,7 +73,7 @@ const InterviewDate = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/jobapplications/scheduleinterview/${id}`,
+        `http://localhost:5000/api/jobapplications/confirminterview/${id}`,
         { interview_dates: [{ date, time }] },
         {
           headers: {
@@ -81,12 +81,12 @@ const InterviewDate = () => {
           },
         }
       );
-      setSnackbarMessage("Interview Scheduled Successfully");
+      setSnackbarMessage("Interview Confirmed Successfully");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       setTimeout(() => navigate("/my_applications"), 2000);
     } catch (error) {
-      setSnackbarMessage("Error scheduling interview");
+      setSnackbarMessage("Error confirming interview");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       console.error("Error scheduling interview", error);
@@ -197,17 +197,7 @@ const InterviewDate = () => {
                   {applicantDetails.interview_dates &&
                   applicantDetails.interview_dates.length > 0 ? (
                     <>
-                      {applicantDetails.interview_dates.length === 1 ? (
-                        <div className="mt-4">
-                          <h4>Interview Date</h4>
-                          <p>
-                            {new Date(
-                              applicantDetails.interview_dates[0].date
-                            ).toLocaleDateString()}{" "}
-                            at {applicantDetails.interview_dates[0].time}
-                          </p>
-                        </div>
-                      ) : (
+                      {
                         <>
                           <h4 className="mt-4">
                             Please select an interview date
@@ -266,7 +256,40 @@ const InterviewDate = () => {
                             </button>
                           </div>
                         </>
-                      )}
+                      }
+                    </>
+                  ) : (
+                    <div>
+                      <h4>No Interview Dates Available</h4>
+                      <p>
+                        There are no interview dates scheduled at the moment.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {applicantDetails.status === "interview_confirmed" && (
+                <div className="text-center">
+                  <h3 style={{ color: primaryColor }}>
+                    Congratulations! Your interview has been confirmed
+                  </h3>
+                  <h3 className="mt-4"> Interview details: </h3>
+                  {applicantDetails.interview_details}
+                  {applicantDetails.interview_dates &&
+                  applicantDetails.interview_dates.length > 0 ? (
+                    <>
+                      {
+                        <div className="mt-4">
+                          <h4>Interview Date</h4>
+                          <p>
+                            {new Date(
+                              applicantDetails.interview_dates[0].date
+                            ).toLocaleDateString()}{" "}
+                            at {applicantDetails.interview_dates[0].time}
+                          </p>
+                        </div>
+                      }
                     </>
                   ) : (
                     <div>
