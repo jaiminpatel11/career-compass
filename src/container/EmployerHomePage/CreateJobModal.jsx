@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Box, TextField, Button, MenuItem } from "@mui/material";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 const CreateJobModal = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    skills: [],
-    role: "",
-    requirements: [],
-    salary: "",
-    location: "",
-    expiry_date: "",  
-  });
+  const { register, handleSubmit, formState: { errors }, setError, reset } = useForm();
 
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
@@ -29,19 +21,69 @@ const CreateJobModal = ({ isOpen, onClose }) => {
     setFooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
   }, []);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+  useEffect(() => {
+    if (isOpen) {
+      // Reset form values when the modal is opened
+      reset();
+    }
+  }, [isOpen, reset]);
+
+  const validateData = (data) => {
+    let isValid = true;
+
+    // Clear previous errors
+    Object.keys(errors).forEach((field) => setError(field, { message: "" }));
+
+    // Validation logic
+    if (!data.title) {
+      setError("title", { message: "Title is required" });
+      isValid = false;
+    }
+    if (!data.description) {
+      setError("description", { message: "Description is required" });
+      isValid = false;
+    }
+    if (!data.skills) {
+      setError("skills", { message: "Skills are required" });
+      isValid = false;
+    }
+    if (!data.role) {
+      setError("role", { message: "Role is required" });
+      isValid = false;
+    }
+    if (!data.requirements) {
+      setError("requirements", { message: "Requirements are required" });
+      isValid = false;
+    }
+    if (!data.salary || isNaN(data.salary) || Number(data.salary) <= 0) {
+      setError("salary", { message: "A positive salary is required" });
+      isValid = false;
+    }
+    if (!data.location) {
+      setError("location", { message: "Location is required" });
+      isValid = false;
+    }
+    if (!data.expiry_date) {
+      setError("expiry_date", { message: "Expiry date is required" });
+      isValid = false;
+    } else if (new Date(data.expiry_date) <= new Date()) {
+      setError("expiry_date", { message: "Expiry date must be in the future" });
+      isValid = false;
+    }
+
+    return isValid;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async (data) => {
+    if (!validateData(data)) {
+      return;
+    }
 
-    // Split skills and requirements by comma to create an array
+    // Format skills and requirements as arrays
     const formattedData = {
-      ...formData,
-      skills: formData.skills.split(',').map(skill => skill.trim()),
-      requirements: formData.requirements.split(',').map(requirement => requirement.trim()),
+      ...data,
+      skills: data.skills.split(',').map(skill => skill.trim()),
+      requirements: data.requirements.split(',').map(requirement => requirement.trim()),
     };
 
     try {
@@ -82,38 +124,41 @@ const CreateJobModal = ({ isOpen, onClose }) => {
         }}
       >
         <h2 id="create-job-modal" style={{ color: "#5C6BC0", marginBottom: "1.5rem", textAlign: "center" }}>Create New Job</h2>
-        <form id="create-job-form" onSubmit={handleSubmit}>
+        <form id="create-job-form" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             margin="normal"
             id="title"
             name="title"
-            label="Title"
+            label={<span>Title <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            value={formData.title}
-            onChange={handleChange}
+            {...register("title", { required: "Title is required" })}
+            error={!!errors.title}
+            helperText={errors.title?.message}
           />
           <TextField
             fullWidth
             margin="normal"
             id="description"
             name="description"
-            label="Description"
+            label={<span>Description <span style={{ color: "red" }}>*</span></span>}
             multiline
             rows={4}
             variant="outlined"
-            value={formData.description}
-            onChange={handleChange}
+            {...register("description", { required: "Description is required" })}
+            error={!!errors.description}
+            helperText={errors.description?.message}
           />
           <TextField
             fullWidth
             margin="normal"
             id="skills"
             name="skills"
-            label="Skills (comma-separated)"
+            label={<span>Skills (comma-separated) <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            value={formData.skills}
-            onChange={handleChange}
+            {...register("skills", { required: "Skills are required" })}
+            error={!!errors.skills}
+            helperText={errors.skills?.message}
           />
           <TextField
             select
@@ -121,10 +166,11 @@ const CreateJobModal = ({ isOpen, onClose }) => {
             margin="normal"
             id="role"
             name="role"
-            label="Select Role"
+            label={<span>Select Role <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            value={formData.role}
-            onChange={handleChange}
+            {...register("role", { required: "Role is required" })}
+            error={!!errors.role}
+            helperText={errors.role?.message}
           >
             <MenuItem value="fulltime">Full Time</MenuItem>
             <MenuItem value="parttime">Part Time</MenuItem>
@@ -136,42 +182,52 @@ const CreateJobModal = ({ isOpen, onClose }) => {
             margin="normal"
             id="requirements"
             name="requirements"
-            label="Requirements (comma-separated)"
+            label={<span>Requirements (comma-separated) <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            value={formData.requirements}
-            onChange={handleChange}
+            {...register("requirements", { required: "Requirements are required" })}
+            error={!!errors.requirements}
+            helperText={errors.requirements?.message}
           />
           <TextField
             fullWidth
             margin="normal"
             id="salary"
             name="salary"
-            label="Salary"
+            label={<span>Salary <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            value={formData.salary}
-            onChange={handleChange}
+            {...register("salary", { 
+              required: "Salary is required", 
+              validate: value => !isNaN(value) && Number(value) > 0 || "A positive salary is required" 
+            })}
+            error={!!errors.salary}
+            helperText={errors.salary?.message}
           />
           <TextField
             fullWidth
             margin="normal"
             id="location"
             name="location"
-            label="Location"
+            label={<span>Location <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            value={formData.location}
-            onChange={handleChange}
+            {...register("location", { required: "Location is required" })}
+            error={!!errors.location}
+            helperText={errors.location?.message}
           />
           <TextField
             fullWidth
             margin="normal"
             id="expiry_date"
             name="expiry_date"
-            label="Expiry Date"
+            label={<span>Expiry Date <span style={{ color: "red" }}>*</span></span>}
             type="date"
             variant="outlined"
             InputLabelProps={{ shrink: true }}
-            value={formData.expiry_date}
-            onChange={handleChange}
+            {...register("expiry_date", { 
+              required: "Expiry date is required",
+              validate: value => new Date(value) > new Date() || "Expiry date must be in the future"
+            })}
+            error={!!errors.expiry_date}
+            helperText={errors.expiry_date?.message}
           />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button
