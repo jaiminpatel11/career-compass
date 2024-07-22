@@ -91,11 +91,12 @@ const LoginPage = () => {
           config
         );
         if (response.status === 200) {
-          const { token } = response.data;
+          const { token, user_id } = response.data;
           const decodedToken = jwtDecode(token); 
           const userRole = decodedToken.user.role;
           sessionStorage.setItem("user", token);
-          sessionStorage.setItem("role", userRole); 
+          sessionStorage.setItem("role", userRole);
+          sessionStorage.setItem('user_id', user_id);
           setAlert({ message: "Login Successful", severity: "success" });
           // Navigate to different home pages based on the user role
           if (userRole === "candidate") {
@@ -103,6 +104,7 @@ const LoginPage = () => {
           } else if (userRole === "company") {
             setTimeout(() => navigate("/home"), 3000);
           }        
+        console.log('Resp. data', response.data)
         } else {
           setAlert({ message: response.data.msg, severity: "error" });
         }
