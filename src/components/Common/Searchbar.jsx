@@ -73,7 +73,7 @@ const Searchbar = () => {
             value={input}
             onChange={(e) => handleInputChange(e.target.value)}
             style={{
-                position: "relative"
+              position: "relative"
             }}
           />
           <span
