@@ -17,6 +17,7 @@ import FindJobContainer from "./container/FindJobPage/FindJob";
 import SearchResults from "./components/Common/SearchResults";
 import JobDetails from "./container/FindJobPage/JobDetails";
 import ApplyPage from "./container/FindJobPage/ApplyPage";
+import AdminDashboard from "./container/AdminDashboard/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -52,6 +53,15 @@ const AppRoutes = () => {
       <Route path="/search-jobs" element={<SearchResults />} />
       <Route path="/apply" element={<ApplyPage />} />
       <Route path="/job-details" element={<JobDetails />} />
+
+      <Route
+        path="/admin_home"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };
