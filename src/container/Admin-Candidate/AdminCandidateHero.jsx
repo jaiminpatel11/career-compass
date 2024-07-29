@@ -1,13 +1,8 @@
 import React from "react";
-import Form from "react-bootstrap/Form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import  candidateHeroImg from "../../assets/candidateHeroImg.png" 
-import { Search } from "@mui/icons-material";
-import Searchbar from "../../components/Common/Searchbar";
+import SearchBar from "./SearchBar";
 
 
-const HeroSection = ({ primaryColor, primaryFontColor,opacity}) => {
+const HeroSection = ({ primaryColor, primaryFontColor,opacity, onSearch }) => {
   return (
     <div className="container-fluid text-sm-center" style={{ background: primaryColor, opacity:opacity,}}>
       <div className="row">
@@ -19,9 +14,9 @@ const HeroSection = ({ primaryColor, primaryFontColor,opacity}) => {
               <h6 className="mt-4" style={{ color: primaryFontColor }}>
                 Manage and Oversee All Candidates              </h6>
             </div>
-            {/* <div className="search-bar p-lg-5 p-0">
-              <Searchbar />
-            </div> */}
+            <div className="search-bar p-lg-5 p-0">
+            <SearchBar onSearch={onSearch} />
+          </div>
         </div>
       </div>
     </div>
