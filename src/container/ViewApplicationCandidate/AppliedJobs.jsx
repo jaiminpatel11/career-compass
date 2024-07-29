@@ -70,13 +70,13 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                     }}
                     onClick={() => handleCardClick(applicant._id)}
                   >
-                    <h5
+                    <div
                       className="card-title"
-                      style={{ fontWeight: "bold", marginBottom: "16px" }}
+                      style={{  marginBottom: "16px" }}
                     >
                       {`${applicant.firstName} ${applicant.lastName}`}
-                    </h5>
-                    <div
+                    </div>
+                    <h5
                       style={{
                         display: "flex",
                         justifyContent: "center",
@@ -86,7 +86,7 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                     >
                       <Work style={{ marginRight: "8px" }} />
                       {applicant.job_id.title}
-                    </div>
+                    </h5>
                     <div
                       style={{
                         display: "flex",
