@@ -11,27 +11,44 @@ const AdminDashboard = ({}) => {
     navigate("/");
   };
 
-  const links = [
-    { text: "Home", url: "#" },
-    { text: "Find Job", url: "#" },
-    { text: "Company", url: "#" },
-    { text: "Blog", url: "#" },
-    { text: "Logout", url: "#", onClick: handleLogout },
-  ];
-
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
-  const [cardColor, setcardColor] = useState("");
-  const [footerLinkColor, setfooterLinkColor] = useState("");
+  const [cardColor, setCardColor] = useState("");
+  const [footerLinkColor, setFooterLinkColor] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
+
+
+  useEffect(() => {
+    // Fetch the CSS variables after component mounts
+    const rootStyles = getComputedStyle(document.documentElement);
+    setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
+    setPrimaryFontColor(
+      rootStyles.getPropertyValue("--primary-font-color").trim()
+    );
+    setSecondaryFontColor(
+      rootStyles.getPropertyValue("--secondary-font-color").trim()
+    );
+    setCardColor(rootStyles.getPropertyValue("--card-color").trim());
+    setFooterLinkColor(
+      rootStyles.getPropertyValue("--footer-link-color").trim()
+    );
+      // Handle scroll position
+      const handleScroll = () => {
+        setScrollPosition(window.scrollY); // Update scroll position state
+      };
+  
+      window.addEventListener("scroll", handleScroll); // Add scroll event listener
+  
+      return () => {
+        window.removeEventListener("scroll", handleScroll); // Clean up the event listener on unmount
+      };
+  }, []);
 
   return (
     <div>
-      {/* Include the Navbar component */}
       <Navbar
         logo="/logo.png"
-        links={links}
         primaryFontColor={primaryFontColor}
         primaryColor={primaryColor}
       />

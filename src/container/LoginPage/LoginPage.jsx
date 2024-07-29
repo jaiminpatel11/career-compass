@@ -103,7 +103,7 @@ const LoginPage = () => {
           } else if (userRole === "company") {
             setTimeout(() => navigate("/home"), 3000);
           } else if (userRole === "admin") {
-            setTimeout(() => navigate("/admin_home"), 3000);
+            setTimeout(() => navigate("/admin_dashboard"), 3000);
           }
           console.log("Resp. data", response.data);
         } else {

@@ -18,6 +18,8 @@ import SearchResults from "./components/Common/SearchResults";
 import JobDetails from "./container/FindJobPage/JobDetails";
 import ApplyPage from "./container/FindJobPage/ApplyPage";
 import AdminDashboard from "./container/AdminDashboard/AdminDashboard";
+import AdminCandidatePage from "./container/Admin-Candidate/AdminCandidatePage";
+import CandidateProfile from "./container/Admin-Candidate/CandidateProfile";
 
 const AppRoutes = () => {
   return (
@@ -55,14 +57,32 @@ const AppRoutes = () => {
       <Route path="/job-details" element={<JobDetails />} />
 
       <Route
-        path="/admin_home"
+        path="/admin_dashboard"
         element={
           <ProtectedRoute>
             <AdminDashboard />
           </ProtectedRoute>
         }
       />
+       <Route
+        path="/admin_candidates"
+        element={
+          <ProtectedRoute>
+            <AdminCandidatePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/candidate-details/:userId"
+        element={
+          <ProtectedRoute>
+            <CandidateProfile />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
+    
+    
   );
 };
 
