@@ -59,8 +59,8 @@ const CreateJobModal = ({ isOpen, onClose, showSnackbar }) => {
       setError("salary", { message: "A positive salary is required" });
       isValid = false;
     }
-    if (!data.location) {
-      setError("location", { message: "Location is required" });
+    if (!data.street || !data.city || !data.province || !data.country || !data.postalCode) {
+      setError("location", { message: "All location fields are required" });
       isValid = false;
     }
     if (!data.expiry_date) {
@@ -84,6 +84,13 @@ const CreateJobModal = ({ isOpen, onClose, showSnackbar }) => {
       ...data,
       skills: data.skills.split(',').map(skill => skill.trim()),
       requirements: data.requirements.split(',').map(requirement => requirement.trim()),
+      location: {
+        street: data.street,
+        city: data.city,
+        province: data.province,
+        country: data.country,
+        postalCode: data.postalCode
+      }
     };
 
     try {
@@ -208,13 +215,57 @@ const CreateJobModal = ({ isOpen, onClose, showSnackbar }) => {
           <TextField
             fullWidth
             margin="normal"
-            id="location"
-            name="location"
-            label={<span>Location <span style={{ color: "red" }}>*</span></span>}
+            id="street"
+            name="street"
+            label={<span>Street <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            {...register("location", { required: "Location is required" })}
-            error={!!errors.location}
-            helperText={errors.location?.message}
+            {...register("street", { required: "Street is required" })}
+            error={!!errors.street}
+            helperText={errors.street?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="city"
+            name="city"
+            label={<span>City <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("city", { required: "City is required" })}
+            error={!!errors.city}
+            helperText={errors.city?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="province"
+            name="province"
+            label={<span>Province <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("province", { required: "Province is required" })}
+            error={!!errors.province}
+            helperText={errors.province?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="country"
+            name="country"
+            label={<span>Country <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("country", { required: "Country is required" })}
+            error={!!errors.country}
+            helperText={errors.country?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="postalCode"
+            name="postalCode"
+            label={<span>Postal Code <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("postalCode", { required: "Postal Code is required" })}
+            error={!!errors.postalCode}
+            helperText={errors.postalCode?.message}
           />
           <TextField
             fullWidth

@@ -136,7 +136,7 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
                   <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>{job.title}</h5>
                   <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
                     <LocationOn style={{ marginRight: "8px" }} />
-                    <span>{job.location}</span>
+                    <span>{job.location.city}</span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
                     <Schedule style={{ marginRight: "8px" }} />
