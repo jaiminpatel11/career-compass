@@ -4,7 +4,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-
 import "../LoginPage/login.css";
 import axios from "axios";
 
@@ -92,19 +91,21 @@ const LoginPage = () => {
         );
         if (response.status === 200) {
           const { token, user_id } = response.data;
-          const decodedToken = jwtDecode(token); 
+          const decodedToken = jwtDecode(token);
           const userRole = decodedToken.user.role;
           sessionStorage.setItem("user", token);
           sessionStorage.setItem("role", userRole);
-          sessionStorage.setItem('user_id', user_id);
+          sessionStorage.setItem("user_id", user_id);
           setAlert({ message: "Login Successful", severity: "success" });
           // Navigate to different home pages based on the user role
           if (userRole === "candidate") {
             setTimeout(() => navigate("/candidate_home"), 3000);
           } else if (userRole === "company") {
             setTimeout(() => navigate("/home"), 3000);
-          }        
-        console.log('Resp. data', response.data)
+          } else if (userRole === "admin") {
+            setTimeout(() => navigate("/admin_dashboard"), 3000);
+          }
+          console.log("Resp. data", response.data);
         } else {
           setAlert({ message: response.data.msg, severity: "error" });
         }
