@@ -55,7 +55,24 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
     { text: "Logout", url: "/", onClick: () => sessionStorage.clear() },
   ];
 
-  const links = role === "candidate" ? candidateLinks : employerLinks;
+  const adminLinks = [
+    { text: "Dashboard", url: "/admin_dashboard" },
+    { text: "Candidates", url: "/admin_candidates" },
+    { text: "Jobs", url: "/admin_jobs" },
+    { text: "Employers", url: "/admin_employers" },
+    { text: "Logout", url: "/", onClick: () => sessionStorage.clear() },
+  ];
+
+
+ const links =
+    role === "candidate"
+      ? candidateLinks
+      : role === "company"
+      ? employerLinks
+      : role === "admin"
+      ? adminLinks
+      : [];
+
 
   return (
     <BootstrapNavbar

@@ -3,7 +3,7 @@ import { Modal, Box, TextField, Button, MenuItem } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-const CreateJobModal = ({ isOpen, onClose }) => {
+const CreateJobModal = ({ isOpen, onClose, showSnackbar }) => {
   const { register, handleSubmit, formState: { errors }, setError, reset } = useForm();
 
   const [primaryColor, setPrimaryColor] = useState("");
@@ -95,11 +95,14 @@ const CreateJobModal = ({ isOpen, onClose }) => {
         },
       });
       if (response.status === 201) {
+        showSnackbar("Job created successfully!", "success");
         onClose(); 
       } else {
+        showSnackbar("Failed to create job", "error");
         console.error("Failed to create job:", response.data);
       }
     } catch (error) {
+      showSnackbar("Error creating job", "error");
       console.error("Error creating job:", error);
     }
   };

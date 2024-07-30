@@ -3,8 +3,8 @@ import { Modal, Box, TextField, Button, MenuItem } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
-const UpdateJobModal = ({ isOpen, onClose, jobData }) => {
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
+const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
+  const { register, handleSubmit, formState: { errors }, setValue, reset, setError } = useForm();
 
   const [primaryColor, setPrimaryColor] = React.useState("");
   const [primaryFontColor, setPrimaryFontColor] = React.useState("");
@@ -79,11 +79,14 @@ const UpdateJobModal = ({ isOpen, onClose, jobData }) => {
         },
       });
       if (response.status === 200) {
+        showSnackbar("Job updated successfully!", "success");
         onClose(); 
       } else {
+        showSnackbar("Failed to update job", "error");
         console.error("Failed to update job:", response.data);
       }
     } catch (error) {
+      showSnackbar("Error updating job", "error");
       console.error("Error updating job:", error);
     }
   };

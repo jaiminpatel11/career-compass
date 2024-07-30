@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from "@mui/material";
 import { LocationOn, Schedule, Book, Delete } from "@mui/icons-material";
 import CreateJobModal from "./CreateJobModal";
-import UpdateJobModal from "./UpdateJobModal"; 
+import UpdateJobModal from "./UpdateJobModal";
 import axios from "axios";
 
 const JobPostings = ({ primaryFontColor, cardColor }) => {
@@ -10,12 +10,22 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); 
-  const [selectedJob, setSelectedJob] = useState(null); 
-  const [deleteJobId, setDeleteJobId] = useState(null); 
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [deleteJobId, setDeleteJobId] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  // Fetch jobs from the backend
+  const handleSnackbarClose = () => setSnackbarOpen(false);
+
+  const showSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
   const fetchJobs = async () => {
     try {
       const token = sessionStorage.getItem("user");
@@ -48,7 +58,7 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
 
   const handleCloseCreateModal = () => {
     setIsCreateModalOpen(false);
-    fetchJobs(); 
+    fetchJobs();
   };
 
   const handleOpenUpdateModal = (job) => {
@@ -70,9 +80,11 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           "x-auth-token": token,
         },
       });
-      fetchJobs(); 
-      setConfirmDialogOpen(false); 
+      fetchJobs();
+      setConfirmDialogOpen(false);
+      showSnackbar("Job deleted successfully!", "success");
     } catch (error) {
+      showSnackbar("Error deleting job", "error");
       console.error("Error deleting job:", error);
     }
   };
@@ -148,10 +160,9 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           </div>
         </>
       )}
-      <CreateJobModal isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} />
-      <UpdateJobModal isOpen={isUpdateModalOpen} onClose={handleCloseUpdateModal} jobData={selectedJob} />
+      <CreateJobModal isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} showSnackbar={showSnackbar} />
+      <UpdateJobModal isOpen={isUpdateModalOpen} onClose={handleCloseUpdateModal} jobData={selectedJob} showSnackbar={showSnackbar} />
 
-      {/* Confirmation Dialog */}
       <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
         <DialogTitle>Delete Job</DialogTitle>
         <DialogContent>
@@ -168,6 +179,16 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
