@@ -109,3 +109,17 @@ export const createJobApplication = async (formDataWithFiles, token) => {
     throw error;
   }
 };
+
+// function to fetch AdminDashboard
+export const getAdminDashboard = async (token) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/admin/getAdminDashboard`, {
+      headers: { "x-auth-token": token }
+    });
+    console.log('getAdminDashboard Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching AdminDashboard:', error);
+    throw error;
+  }
+};
