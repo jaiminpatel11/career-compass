@@ -66,7 +66,7 @@ const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor
                     </h5>
                     <p className="card-text">
                       <LocationOn style={{ marginRight: "8px" }} />
-                      {job.location}
+                      {job.location.city}
                     </p>
                     <p className="card-text">
                       <Schedule style={{ marginRight: "8px" }} />

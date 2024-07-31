@@ -182,10 +182,10 @@ const CreateJobModal = ({ isOpen, onClose, showSnackbar }) => {
             error={!!errors.role}
             helperText={errors.role?.message}
           >
-            <MenuItem value="fulltime">Full Time</MenuItem>
-            <MenuItem value="parttime">Part Time</MenuItem>
-            <MenuItem value="seasonal">Seasonal</MenuItem>
-            <MenuItem value="contract">Contract</MenuItem>
+            <MenuItem value="Full-Time">Full Time</MenuItem>
+            <MenuItem value="Part-Time">Part Time</MenuItem>
+            <MenuItem value="Seasonal">Seasonal</MenuItem>
+            <MenuItem value="Contract">Contract</MenuItem>
           </TextField>
           <TextField
             fullWidth
