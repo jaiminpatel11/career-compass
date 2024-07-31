@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Common/Navbar";
 import Footer from "../../components/Common/Footer";
-import HeroSection from "../../container/Admin-Candidate/AdminCandidateHero";
-import CandidatesListing from "./EmployerListing";
+import EmployerHeroSection from "../Admin-Employer/AdminEmployerHero"
+import EmployersListing from "../Admin-Employer/EmployerListing"
 
 const AdminEmployerPage = () => {
   const links = [
