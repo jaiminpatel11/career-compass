@@ -20,7 +20,7 @@
 //             "x-auth-token": sessionStorage.getItem("user")
 //           }
 //         });
-//         console.log('API Response:', response.data); 
+//         console.log('API Response:', response.data);
 //         setEmployers(response.data);
 //         setFilteredEmployers(response.data);
 //       } catch (error) {
@@ -48,7 +48,6 @@
 //     navigate(`/employer-profile/${empID}`);
 //   }
 
-  
 //   const handlePageChange = (event, value) => {
 //     setPage(value);
 //   };
@@ -110,7 +109,6 @@
 // }
 
 // export default EmployersListing;
-
 
 // import React, { useEffect, useState } from "react";
 // import { Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
@@ -282,7 +280,6 @@
 // }
 
 // export default EmployersListing;
-
 
 // import React, { useEffect, useState } from "react";
 // import { Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
@@ -459,12 +456,21 @@
 
 // export default EmployersListing;
 
-
 import React, { useEffect, useState } from "react";
-import { Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
+import {
+  Card,
+  Pagination,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 import { LocationOn, Work, Delete } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./AdminEmployerPage.css";
 
 const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
@@ -479,15 +485,18 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
   useEffect(() => {
     const fetchEmployers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/profile/getAllEmployers', {
-          headers: {
-            "x-auth-token": sessionStorage.getItem("user")
+        const response = await axios.get(
+          "http://localhost:5000/api/profile/getAllEmployers",
+          {
+            headers: {
+              "x-auth-token": sessionStorage.getItem("user"),
+            },
           }
-        });
+        );
         setEmployers(response.data);
         setFilteredEmployers(response.data);
       } catch (error) {
-        console.error('Error fetching employers:', error);
+        console.error("Error fetching employers:", error);
       }
     };
 
@@ -496,10 +505,15 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   useEffect(() => {
     if (searchTerm) {
-      const filtered = employers.filter(employer =>
-        employer.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employer.companyDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employer.address.city.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = employers.filter(
+        (employer) =>
+          employer.companyName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          employer.companyDescription
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          employer.address.city.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredEmployers(filtered);
     } else {
@@ -509,7 +523,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   const handleCardClick = (empID) => {
     navigate(`/employer-profile/${empID}`);
-  }
+  };
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -532,44 +546,39 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/profile/deleteEmployerProfile/${selectedEmployerId}`, {
-        headers: {
-          "x-auth-token": sessionStorage.getItem("user")
+      await axios.get(
+        `http://localhost:5000/api/profile/deleteEmployerProfile/${selectedEmployerId}`,
+        {
+          headers: {
+            "x-auth-token": sessionStorage.getItem("user"),
+          },
         }
-      });
+      );
       console.log(selectedEmployerId);
-      const updatedEmployers = employers.filter(employer => employer.userId._id !== selectedEmployerId);
+      const updatedEmployers = employers.filter(
+        (employer) => employer.userId._id !== selectedEmployerId
+      );
       setEmployers(updatedEmployers);
       setFilteredEmployers(updatedEmployers);
       console.log(updatedEmployers);
-      console.log('Employer deleted successfully');
+      console.log("Employer deleted successfully");
       handleClose();
     } catch (error) {
-      console.error('Error deleting employer:', error);
+      console.error("Error deleting employer:", error);
       handleClose();
     }
   };
-
-
-
-
-  
-  
 
   return (
     <div className="container-fluid my-2 p-5">
       <div className="row">
         <div className="col-md-12 col-sm-12">
           <div className="text-center">
-            <h2 style={{ color: primaryColor }}>
-              Employers Listing
-            </h2>
+            <h2 style={{ color: primaryColor }}>Employers Listing</h2>
           </div>
           <div className="row">
             {paginatedEmployers.length === 0 ? (
-              <div>
-                There are no Employers at this time
-              </div>
+              <div>There are no Employers at this time</div>
             ) : (
               paginatedEmployers.map((employer) => (
                 <div className="col-md-4 mb-4" key={employer.userId._id}>
@@ -587,9 +596,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
                     >
                       <Delete />
                     </IconButton>
-                    <h5 className="card-title">
-                      {employer.companyName}
-                    </h5>
+                    <h5 className="card-title">{employer.companyName}</h5>
                     <div className="icon-text">
                       <Work className="mx-2" />
                       {employer.companyDescription}
@@ -615,10 +622,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
       </div>
 
       {/* Confirmation Dialog */}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -635,8 +639,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
 export default EmployersListing;
-
