@@ -20,6 +20,8 @@ import ApplyPage from "./container/FindJobPage/ApplyPage";
 import AdminDashboard from "./container/AdminDashboard/AdminDashboard";
 import AdminCandidatePage from "./container/Admin-Candidate/AdminCandidatePage";
 import CandidateProfile from "./container/Admin-Candidate/CandidateProfile";
+import AdminJobsPage from "./container/Admin-Jobs/AdminJobsPage";
+import AdminJobDetails from "./container/Admin-Jobs/AdminJobDetails";
 
 const AppRoutes = () => {
   return (
@@ -80,6 +82,8 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="/admin_jobs" element={<AdminJobsPage />} />
+      <Route path="/admin_job_details" element={<AdminJobDetails />} />
     </Routes>
     
     
