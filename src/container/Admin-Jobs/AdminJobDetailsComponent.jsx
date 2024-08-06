@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationArrow, faClock, faBook } from "@fortawesome/free-solid-svg-icons";
+import { faLocationArrow, faClock, faBook,faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 const AdminJobDeatilComponent = ({ job, SecondaryFontColor, primaryColor, primaryFontColor, CardColor }) => {
   return (
@@ -26,9 +26,13 @@ const AdminJobDeatilComponent = ({ job, SecondaryFontColor, primaryColor, primar
               <FontAwesomeIcon icon={faClock} style={{ marginRight: "8px" }} />
               <span>{job.role}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
               <FontAwesomeIcon icon={faBook} style={{ marginRight: "8px" }} />
               <span>{job.skills.join(", ")}</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <FontAwesomeIcon icon={faCalendarAlt} style={{ marginRight: "8px" }} />
+              <span>{new Date(job.expiry_date).toLocaleDateString()}</span>
             </div>
           </Card>
         </div>

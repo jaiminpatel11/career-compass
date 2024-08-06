@@ -117,7 +117,7 @@ const AdminJobDetails = () => {
         CardColor={cardColor}
         job={job}
       />
-      <div className="d-flex justify-content-center mt-4">
+      <div className="d-flex justify-content-center mt-4" style={{ marginBottom: "20px", marginTop: "40px" }}>
         <Button
           variant="contained"
           style={{
