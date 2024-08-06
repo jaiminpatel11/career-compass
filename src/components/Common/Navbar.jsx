@@ -8,7 +8,6 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
   const role = sessionStorage.getItem("role");
   const location = useLocation();
   const navigate = useNavigate();
-  console.log("Role:", role);
   if (!role) {
     navigate("/");
   }
@@ -18,19 +17,19 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
   useEffect(() => {
     const fetchProfileImage = async () => {
       const token = sessionStorage.getItem("user");
-      console.log("Token:", token);
+      // console.log("Token:", token);
 
       if (token) {
         try {
           if (role === "candidate") {
             const userProfile = await getUserProfile(token);
-            console.log("User Profile:", userProfile);
+            // console.log("User Profile:", userProfile);
             if (userProfile.profileImage) {
               setProfileImage(userProfile.profileImage);
             }
           } else if (role === "company") {
             const companyProfile = await getCompanyProfile(token);
-            console.log("Company Profile:", companyProfile);
+            // console.log("Company Profile:", companyProfile);
             if (companyProfile.companyLogo) {
               setProfileImage(companyProfile.companyLogo);
             }

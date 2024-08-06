@@ -55,8 +55,15 @@ const ScheduleInterview = () => {
   };
 
   const handleSchedule = async () => {
-    if (!interviewDates.some((slot) => slot.date && slot.time)) {
-      setSnackbarMessage("Please provide at least one valid date and time.");
+    if (interviewDates.some((slot) => !slot.date || !slot.time)) {
+      setSnackbarMessage("Please provide valid date and time for all slots.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    if (!interviewDetails) {
+      setSnackbarMessage("Please provide interview details.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;

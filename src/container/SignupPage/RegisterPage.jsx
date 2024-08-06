@@ -77,7 +77,15 @@ const RegisterPage = () => {
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
-    if (!formData.password) newErrors.password = "Password is required";
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else {
+      if (formData.password.length < 6) {
+        newErrors.password =
+          "Password should be at least 6 characters in length";
+      }
+    }
+
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Confirm Password is required";
     } else if (formData.password !== formData.confirmPassword) {

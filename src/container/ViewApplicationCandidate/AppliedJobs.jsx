@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Pagination,
-} from "@mui/material";
+import { Card, Pagination } from "@mui/material";
 import {
   Work,
   AccessAlarmOutlined,
@@ -30,7 +27,8 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
             },
           }
         );
-        setApplicants(response.data);
+        const reversedData = response.data.reverse();
+        setApplicants(reversedData);
       } catch (error) {
         console.error("Error fetching applicants", error);
       }
@@ -50,7 +48,10 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
   };
 
   const getBorderColor = (applicant) => {
-    if (applicant.status === "Interview Confirmed" || applicant.status === "Approved") {
+    if (
+      applicant.status === "Interview Confirmed" ||
+      applicant.status === "Approved"
+    ) {
       return "1px solid green";
     } else if (applicant.status === "Rejected") {
       return "1px solid red";
@@ -73,7 +74,7 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
     }
   };
 
-  const applicantsPerPage = 10;
+  const applicantsPerPage = 9;
   const displayedApplicants = applicants.slice(
     (page - 1) * applicantsPerPage,
     page * applicantsPerPage
@@ -99,9 +100,14 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                       border: getBorderColor(applicant),
                       minHeight: "200px",
                     }}
-                    onClick={() => handleCardClick(applicant._id, applicant.job_id)}
+                    onClick={() =>
+                      handleCardClick(applicant._id, applicant.job_id)
+                    }
                   >
-                    <div className="card-title" style={{ marginBottom: "16px" }}>
+                    <div
+                      className="card-title"
+                      style={{ marginBottom: "16px" }}
+                    >
                       {`${applicant.firstName} ${applicant.lastName}`}
                     </div>
                     <h5
@@ -119,9 +125,7 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                         </>
                       ) : (
                         <div className="mt-2">
-                          <div>
-                            This Job Is No Longer Available
-                          </div>
+                          <div>This Job Is No Longer Available</div>
                         </div>
                       )}
                     </h5>
@@ -140,7 +144,9 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                         </>
                       ) : (
                         <div style={{ color: "red" }}>
-                          <AccessAlarmOutlined style={{ marginRight: "8px", visibility: "hidden" }} />
+                          <AccessAlarmOutlined
+                            style={{ marginRight: "8px", visibility: "hidden" }}
+                          />
                         </div>
                       )}
                     </div>

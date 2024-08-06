@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from "@mui/material";
+import {
+  Card,
+  Pagination,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 import { Email, LocationOn, Work, Delete } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./AdminCandidatePage.css";
 
 const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
@@ -15,15 +25,20 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/userprofile/admin/user-profiles', {
-          headers: {
-            "x-auth-token": sessionStorage.getItem("user")
+        const response = await axios.get(
+          "http://localhost:5000/api/userprofile/admin/user-profiles",
+          {
+            headers: {
+              "x-auth-token": sessionStorage.getItem("user"),
+            },
           }
-        });
-        setCandidates(response.data);
-        setFilteredCandidates(response.data);
+        );
+
+        const reversedData = response.data.reverse();
+        setCandidates(reversedData);
+        setFilteredCandidates(reversedData);
       } catch (error) {
-        console.error('Error fetching candidates', error);
+        console.error("Error fetching candidates", error);
       }
     };
 
@@ -32,11 +47,16 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   useEffect(() => {
     if (searchTerm) {
-      const filtered = candidates.filter(candidate =>
-        candidate.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        candidate.userId.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        candidate.skills.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = candidates.filter(
+        (candidate) =>
+          candidate.firstName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          candidate.userId.email
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          candidate.skills.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredCandidates(filtered);
     } else {
@@ -46,7 +66,7 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   const handleCardClick = (userId) => {
     navigate(`/candidate-details/${userId}`);
-  }
+  };
 
   const handleDeleteClick = (userId) => {
     setSelectedUserId(userId);
@@ -60,20 +80,25 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/userprofile/admin/deleteUserProfile/${selectedUserId}`, {
-        headers: {
-          "x-auth-token": sessionStorage.getItem("user")
+      await axios.delete(
+        `http://localhost:5000/api/userprofile/admin/deleteUserProfile/${selectedUserId}`,
+        {
+          headers: {
+            "x-auth-token": sessionStorage.getItem("user"),
+          },
         }
-      });
+      );
       // Remove the deleted candidate from the state
-      const updatedCandidates = candidates.filter(candidate => candidate.userId._id !== selectedUserId);
+      const updatedCandidates = candidates.filter(
+        (candidate) => candidate.userId._id !== selectedUserId
+      );
       setCandidates(updatedCandidates);
       setFilteredCandidates(updatedCandidates);
-      console.log('Candidate deleted successfully');
+      console.log("Candidate deleted successfully");
       handleClose();
-      navigate('/some-back-page'); // Change this to the route you want to navigate to after deletion
+      navigate("/some-back-page"); // Change this to the route you want to navigate to after deletion
     } catch (error) {
-      console.error('Error deleting candidate', error);
+      console.error("Error deleting candidate", error);
       handleClose();
     }
   };
@@ -83,15 +108,11 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
       <div className="row">
         <div className="col-md-12 col-sm-12">
           <div className="text-center">
-            <h2 style={{ color: primaryColor }}>
-              Candidates Listing
-            </h2>
+            <h2 style={{ color: primaryColor }}>Candidates Listing</h2>
           </div>
           <div className="row">
             {filteredCandidates.length === 0 ? (
-              <div>
-                There are no candidates at this time
-              </div>
+              <div>There are no candidates at this time</div>
             ) : (
               filteredCandidates.map((candidate) => (
                 <div className="col-md-4 mb-4" key={candidate.userId._id}>
@@ -131,9 +152,9 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
           </div>
           <div className="d-flex justify-content-center mt-4">
             <Pagination
-              count={Math.ceil(filteredCandidates.length / 10)}
+              count={Math.ceil(filteredCandidates.length / 9)}
               page={1}
-              onChange={() => { }}
+              onChange={() => {}}
               color="primary"
             />
           </div>
@@ -141,10 +162,7 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
       </div>
 
       {/* Confirmation Dialog */}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -161,7 +179,7 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
 export default CandidatesListing;

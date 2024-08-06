@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Card, Pagination } from "@mui/material";
-import { Work, AccessAlarmOutlined, Task, CheckCircle, Cancel, HourglassEmpty } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import {
+  Work,
+  AccessAlarmOutlined,
+  Task,
+  CheckCircle,
+  Cancel,
+  HourglassEmpty,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const JobApplicants = ({ primaryColor, cardColor }) => {
   const [applicants, setApplicants] = useState([]);
@@ -12,14 +19,18 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/jobapplications/getemployerjobapplications', {
-          headers: {
-            "x-auth-token": sessionStorage.getItem("user")
+        const response = await axios.get(
+          "http://localhost:5000/api/jobapplications/getemployerjobapplications",
+          {
+            headers: {
+              "x-auth-token": sessionStorage.getItem("user"),
+            },
           }
-        });
-        setApplicants(response.data);
+        );
+        const reversedData = response.data.reverse();
+        setApplicants(reversedData);
       } catch (error) {
-        console.error('Error fetching applicants', error);
+        console.error("Error fetching applicants", error);
       }
     };
 
@@ -37,7 +48,10 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
   };
 
   const getBorderColor = (applicant) => {
-    if (applicant.status === "Interview Confirmed" || applicant.status === "Approved") {
+    if (
+      applicant.status === "Interview Confirmed" ||
+      applicant.status === "Approved"
+    ) {
       return "1px solid green";
     } else if (applicant.status === "Rejected" || !applicant.job_id) {
       return "1px solid red";
@@ -73,9 +87,7 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
               Job Applicants
             </h2>
             {applicants.length === 0 ? (
-              <div>
-                There are no applicants at this time
-              </div>
+              <div>There are no applicants at this time</div>
             ) : (
               <div className="row">
                 {displayedApplicants.map((applicant) => (
@@ -91,20 +103,49 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                         marginTop: "10px",
                         border: getBorderColor(applicant),
                       }}
-                      onClick={() => handleCardClick(applicant._id, applicant.job_id)}
+                      onClick={() =>
+                        handleCardClick(applicant._id, applicant.job_id)
+                      }
                     >
-                      <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>
+                      <h5
+                        className="card-title"
+                        style={{ fontWeight: "bold", marginBottom: "16px" }}
+                      >
                         {`${applicant.firstName} ${applicant.lastName}`}
                       </h5>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "16px",
+                        }}
+                      >
                         <Work style={{ marginRight: "8px" }} />
-                        {applicant.job_id ? applicant.job_id.title : "No Job Title"}
+                        {applicant.job_id
+                          ? applicant.job_id.title
+                          : "No Job Title"}
                       </div>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "16px",
+                        }}
+                      >
                         <AccessAlarmOutlined style={{ marginRight: "8px" }} />
-                        {applicant.job_id ? applicant.job_id.role : "No Job Role"}
+                        {applicant.job_id
+                          ? applicant.job_id.role
+                          : "No Job Role"}
                       </div>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
                         {getStatusIcon(applicant.status)}
                         {applicant.status}
                       </div>
@@ -115,7 +156,7 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
             )}
             <div className="d-flex justify-content-center mt-4">
               <Pagination
-                count={Math.ceil(applicants.length / 10)}
+                count={Math.ceil(applicants.length / 9)}
                 page={page}
                 onChange={handleChangePage}
                 color="primary"
@@ -126,6 +167,6 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
       </div>
     </div>
   );
-}
+};
 
 export default JobApplicants;
