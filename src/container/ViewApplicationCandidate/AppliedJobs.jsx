@@ -20,7 +20,8 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
             },
           }
         );
-        setApplicants(response.data);
+        const reversedData = response.data.reverse();
+        setApplicants(reversedData);
       } catch (error) {
         console.error("Error fetching applicants", error);
       }
@@ -40,7 +41,10 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
   };
 
   const getBorderColor = (applicant) => {
-    if (applicant.status === "Interview Confirmed" || applicant.status === "Approved") {
+    if (
+      applicant.status === "Interview Confirmed" ||
+      applicant.status === "Approved"
+    ) {
       return "1px solid green";
     } else if (applicant.status === "Rejected") {
       return "1px solid red";
@@ -63,7 +67,7 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
     }
   };
 
-  const applicantsPerPage = 10;
+  const applicantsPerPage = 9;
   const displayedApplicants = applicants.slice(
     (page - 1) * applicantsPerPage,
     page * applicantsPerPage
@@ -89,32 +93,26 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                       border: getBorderColor(applicant),
                       minHeight: "200px",
                     }}
-                    onClick={() => handleCardClick(applicant._id, applicant.job_id)}
+                    onClick={() =>
+                      handleCardClick(applicant._id, applicant.job_id)
+                    }
                   >
-                    <div className="card-title" style={{ marginBottom: "16px" }}>
-                      {`${applicant.firstName} ${applicant.lastName}`}
-                    </div>
-                    <h5
+                    <div
                       style={{
                         display: "flex",
-                        justifyContent: "center",
+                        flexDirection: "column",
                         alignItems: "center",
                         marginBottom: "16px",
                       }}
                     >
-                      {applicant.job_id ? (
-                        <>
-                          <Work style={{ marginRight: "8px" }} />
-                          <span>{applicant.job_id.title}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Work style={{ marginRight: "8px" }} />
-                          <span>
-                          "{applicant.job_title}" This Job Is No Longer Available</span>
-                        </>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Work style={{ marginRight: "8px", fontWeight: "bold" }} />
+                        <span style={{ fontSize: "18px", fontWeight: "bold"}}>{applicant.job_id ? applicant.job_id.title : applicant.job_title}</span>
+                      </div>
+                      {!applicant.job_id && (
+                        <span style={{ marginTop: "8px", color: "red" }}>This Job Is No Longer Available</span>
                       )}
-                    </h5>
+                    </div>
                     <div
                       style={{
                         display: "flex",
@@ -123,16 +121,8 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                         marginBottom: "16px",
                       }}
                     >
-                      {applicant.job_id ? (
-                        <>
-                          <AccessAlarmOutlined style={{ marginRight: "8px" }} />
-                          <span>{applicant.job_id.role}</span>
-                        </>
-                      ) : (
-                        <div style={{ color: "red" }}>
-                          <AccessAlarmOutlined style={{ marginRight: "8px", visibility: "hidden" }} />
-                        </div>
-                      )}
+                      <AccessAlarmOutlined style={{ marginRight: "8px" }} />
+                      <span>{applicant.job_id ? applicant.job_id.role : 'N/A'}</span>
                     </div>
                     <div
                       style={{

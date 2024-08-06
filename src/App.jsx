@@ -4,7 +4,6 @@ import AppRoutes from "./AppRoutes"; // Correct import for your routes
 import useAuth from "./useAuth";
 
 const AuthWrapper = ({ children }) => {
-  console.log("AuthWrapper");
   useAuth();
   return children;
 };
