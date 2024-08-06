@@ -3,6 +3,7 @@ import { Navbar as BootstrapNavbar, Nav } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getUserProfile, getCompanyProfile } from "../../Api/Profile";
 import defaultProfileImage from "../../assets/default.jpeg";
+import "./Navbar.css"; 
 
 const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
   const role = sessionStorage.getItem("role");
@@ -82,6 +83,7 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
   return (
     <BootstrapNavbar
       expand="lg"
+      className="navbar-custom"
       style={{
         backgroundColor: primaryColor,
         position: "sticky",
@@ -91,21 +93,18 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
       }}
     >
       <BootstrapNavbar.Brand href="#home">
-        <img src={logo} alt="Logo" style={{ height: "80px", width: "200px" }} />
+        <img src={logo} alt="Logo" className="navbar-logo" />
       </BootstrapNavbar.Brand>
       <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
-      <BootstrapNavbar.Collapse
-        id="basic-navbar-nav"
-        style={{ justifyContent: "right" }}
-      >
-        <Nav style={{ fontSize: 18, fontWeight: "bold" }}>
+      <BootstrapNavbar.Collapse id="basic-navbar-nav">
+        <Nav className="m-auto navbar-nav-custom">
           {links.map((link, index) => (
             <Nav.Link
               key={index}
               href={link.url}
+              className="navbar-link-custom"
               style={{
                 color: primaryFontColor,
-                marginRight: "40px",
                 fontWeight: location.pathname === link.url ? "bold" : "normal",
               }}
               onClick={link.onClick}
@@ -114,22 +113,14 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
             </Nav.Link>
           ))}
         </Nav>
-
         <Link
           to={role === "candidate" ? "/candidate_profile" : "/employer_profile"}
-          style={{
-            color: primaryFontColor,
-            marginRight: "10px",
-            height: "60px",
-            width: "60px",
-            display: "flex",
-            alignItems: "center",
-          }}
+          className="navbar-profile-link"
         >
           <img
             src={profileImage || defaultProfileImage}
             alt="Profile"
-            style={{ height: "60px", width: "60px", borderRadius: "50%" }}
+            className="navbar-profile-image"
           />
         </Link>
       </BootstrapNavbar.Collapse>

@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Pagination,
-} from "@mui/material";
-import {
-  Work,
-  AccessAlarmOutlined,
-  Task,
-  CheckCircle,
-  Cancel,
-  HourglassEmpty,
-} from "@mui/icons-material";
+import { Card, Pagination } from "@mui/material";
+import { Work, AccessAlarmOutlined, CheckCircle, Cancel, HourglassEmpty } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -118,11 +108,11 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                           <span>{applicant.job_id.title}</span>
                         </>
                       ) : (
-                        <div className="mt-2">
-                          <div>
-                            This Job Is No Longer Available
-                          </div>
-                        </div>
+                        <>
+                          <Work style={{ marginRight: "8px" }} />
+                          <span>
+                          "{applicant.job_title}" This Job Is No Longer Available</span>
+                        </>
                       )}
                     </h5>
                     <div

@@ -10,6 +10,7 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
   const [filteredCandidates, setFilteredCandidates] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [page, setPage] = useState(1); // Added state for pagination
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,12 +72,21 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
       setFilteredCandidates(updatedCandidates);
       console.log('Candidate deleted successfully');
       handleClose();
-      navigate('/some-back-page'); // Change this to the route you want to navigate to after deletion
     } catch (error) {
       console.error('Error deleting candidate', error);
       handleClose();
     }
   };
+
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
+  const candidatesPerPage = 10;
+  const displayedCandidates = filteredCandidates.slice(
+    (page - 1) * candidatesPerPage,
+    page * candidatesPerPage
+  );
 
   return (
     <div className="container-fluid my-2 p-5">
@@ -88,12 +98,12 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
             </h2>
           </div>
           <div className="row">
-            {filteredCandidates.length === 0 ? (
+            {displayedCandidates.length === 0 ? (
               <div>
                 There are no candidates at this time
               </div>
             ) : (
-              filteredCandidates.map((candidate) => (
+              displayedCandidates.map((candidate) => (
                 <div className="col-md-4 mb-4" key={candidate.userId._id}>
                   <Card
                     className="card-container"
@@ -131,9 +141,9 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
           </div>
           <div className="d-flex justify-content-center mt-4">
             <Pagination
-              count={Math.ceil(filteredCandidates.length / 10)}
-              page={1}
-              onChange={() => { }}
+              count={Math.ceil(filteredCandidates.length / candidatesPerPage)}
+              page={page}
+              onChange={handleChangePage}
               color="primary"
             />
           </div>
@@ -161,7 +171,7 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
         </DialogActions>
       </Dialog>
     </div>
-  )
+  );
 }
 
 export default CandidatesListing;
