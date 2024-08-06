@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Navbar as BootstrapNavbar, Nav } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getUserProfile, getCompanyProfile } from "../../Api/Profile";
 import defaultProfileImage from "../../assets/default.jpeg";
 
 const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
   const role = sessionStorage.getItem("role");
   const location = useLocation();
+  const navigate = useNavigate();
   console.log("Role:", role);
+  if (!role) {
+    navigate("/");
+  }
 
   const [profileImage, setProfileImage] = useState(defaultProfileImage);
 
@@ -36,6 +40,9 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
         }
       } else {
         console.log("No token found");
+        if (!role) {
+          navigate("/");
+        }
       }
     };
 
@@ -63,8 +70,7 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
     { text: "Logout", url: "/", onClick: () => sessionStorage.clear() },
   ];
 
-
- const links =
+  const links =
     role === "candidate"
       ? candidateLinks
       : role === "company"
@@ -72,7 +78,6 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
       : role === "admin"
       ? adminLinks
       : [];
-
 
   return (
     <BootstrapNavbar
