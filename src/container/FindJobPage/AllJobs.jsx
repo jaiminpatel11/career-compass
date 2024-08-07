@@ -19,11 +19,15 @@ const AllJobs = ({
   const fetchJobs = async () => {
     try {
       const token = sessionStorage.getItem("user");
-      const response = await axios.get("http://localhost:5000/api/jobs/all", {
-        headers: {
-          "x-auth-token": token,
-        },
-      });
+      const userid = sessionStorage.getItem("user_id");
+      const response = await axios.get(
+        `http://localhost:5000/api/jobs/availablejobs/${userid}`,
+        {
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      );
       const reversedData = response.data.reverse();
       setJobs(reversedData);
     } catch (error) {
