@@ -22,12 +22,12 @@ const Searchbar = () => {
       });
 
       // Filter jobs by title if value matches a title, otherwise by location
-      const titleSearchResult = response.data.filter((job) =>
-        job.title.toLowerCase().includes(value.toLowerCase())
+      const titleSearchResult = response.data.filter(
+        (job) => job.title && job.title.toLowerCase().includes(value.toLowerCase())
       );
 
-      const locationSearchResult = response.data.filter((job) =>
-        job.location.toLowerCase().includes(value.toLowerCase())
+      const locationSearchResult = response.data.filter(
+        (job) => job.location && job.location.city && job.location.city.toLowerCase().includes(value.toLowerCase())
       );
 
       // Concatenate unique jobs from title and location search results
@@ -103,7 +103,7 @@ const Searchbar = () => {
                 <div>
                   <strong>{job.title}</strong>
                 </div>
-                <div>{job.location}</div>
+                <div>{job.location.city}</div>
                 <div>{job.role}</div>
                 <div>{job.skills.join(", ")}</div>
               </ListGroup.Item>
@@ -116,6 +116,3 @@ const Searchbar = () => {
 };
 
 export default Searchbar;
-
-
-
