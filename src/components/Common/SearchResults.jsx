@@ -10,7 +10,6 @@ const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const jobs = location.state?.jobs || [];
-  const userRole = sessionStorage.getItem("role");
 
   const links = [
     { text: "Home", url: "/" },
@@ -81,29 +80,16 @@ const SearchResults = () => {
                       <Book style={{ marginRight: "8px" }} />
                       {job.skills.join(", ")}
                     </Card.Text>
-                    {userRole === "candidate" ? (
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: primaryColor,
-                          color: primaryFontColor,
-                        }}
-                        onClick={() => navigate("/apply", { state: { job } })}
-                      >
-                        Apply
-                      </Button>
-                    ) : userRole === "admin" ? (
-                      <Button
-                        variant="contained"
-                        style={{
-                          backgroundColor: primaryColor,
-                          color: primaryFontColor,
-                        }}
-                        onClick={() => navigate("/admin_job_details", { state: { job } })}
-                      >
-                        Details
-                      </Button>
-                    ) : null}
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: primaryColor,
+                        color: primaryFontColor,
+                      }}
+                      onClick={() => navigate("/apply", { state: { job } })}
+                    >
+                      Apply
+                    </Button>
                   </Card.Body>
                 </Card>
               </div>
