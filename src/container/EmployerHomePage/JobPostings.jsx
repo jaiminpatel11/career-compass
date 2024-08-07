@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Pagination, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Alert } from "@mui/material";
+import {
+  Button,
+  Card,
+  Pagination,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { LocationOn, Schedule, Book, Delete } from "@mui/icons-material";
 import CreateJobModal from "./CreateJobModal";
 import UpdateJobModal from "./UpdateJobModal";
@@ -34,7 +46,11 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           "x-auth-token": token,
         },
       });
-      setJobs(response.data);
+
+      const reversedData = response.data.reverse();
+      setJobs(reversedData);
+
+      // setJobs(response.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
@@ -102,7 +118,9 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
     <div className="mb-5" style={{ padding: "20px" }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="flex-grow-1 d-flex justify-content-center">
-          <h2 className="text-center" style={{ color: "#5C6BC0" }}>Jobs</h2>
+          <h2 className="text-center" style={{ color: "#5C6BC0" }}>
+            Jobs
+          </h2>
         </div>
         <Button
           variant="contained"
@@ -113,19 +131,33 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
         </Button>
       </div>
       {jobs.length === 0 ? (
-        <h3 className="text-center" style={{ color: primaryFontColor }}>No Job Created Yet</h3>
+        <h3 className="text-center" style={{ color: primaryFontColor }}>
+          No Job Created Yet
+        </h3>
       ) : (
         <>
           <div className="row">
             {currentJobs.map((job) => (
               <div className="col-md-4 mb-4" key={job._id}>
                 <Card
-                  style={{ background: cardColor, padding: "1rem", borderRadius: "15px", textAlign: "center", position: "relative", cursor: "pointer" }}
+                  style={{
+                    background: cardColor,
+                    padding: "1rem",
+                    borderRadius: "15px",
+                    textAlign: "center",
+                    position: "relative",
+                    cursor: "pointer",
+                  }}
                   onClick={() => handleOpenUpdateModal(job)}
                 >
                   <IconButton
                     aria-label="delete"
-                    style={{ position: "absolute", top: 8, right: 8, color: "red" }}
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      color: "red",
+                    }}
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent the card click event from triggering delete
                       handleOpenConfirmDialog(job._id);
@@ -133,16 +165,41 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
                   >
                     <Delete />
                   </IconButton>
-                  <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>{job.title}</h5>
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                  <h5
+                    className="card-title"
+                    style={{ fontWeight: "bold", marginBottom: "16px" }}
+                  >
+                    {job.title}
+                  </h5>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "16px",
+                    }}
+                  >
                     <LocationOn style={{ marginRight: "8px" }} />
-                    <span>{job.location}</span>
+                    <span>{job.location.city}</span>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "16px",
+                    }}
+                  >
                     <Schedule style={{ marginRight: "8px" }} />
                     <span>{job.role}</span>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     <Book style={{ marginRight: "8px" }} />
                     <span>{job.skills.join(", ")}</span>
                   </div>
@@ -160,8 +217,17 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           </div>
         </>
       )}
-      <CreateJobModal isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} showSnackbar={showSnackbar} />
-      <UpdateJobModal isOpen={isUpdateModalOpen} onClose={handleCloseUpdateModal} jobData={selectedJob} showSnackbar={showSnackbar} />
+      <CreateJobModal
+        isOpen={isCreateModalOpen}
+        onClose={handleCloseCreateModal}
+        showSnackbar={showSnackbar}
+      />
+      <UpdateJobModal
+        isOpen={isUpdateModalOpen}
+        onClose={handleCloseUpdateModal}
+        jobData={selectedJob}
+        showSnackbar={showSnackbar}
+      />
 
       <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
         <DialogTitle>Delete Job</DialogTitle>
@@ -174,7 +240,10 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
           <Button onClick={handleCloseConfirmDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleDeleteJob(deleteJobId)} color="secondary">
+          <Button
+            onClick={() => handleDeleteJob(deleteJobId)}
+            color="secondary"
+          >
             Delete
           </Button>
         </DialogActions>
@@ -185,7 +254,11 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>

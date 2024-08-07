@@ -1,29 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Card,
-  Pagination,
-  IconButton,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import {
-  LocationOn,
-  Schedule,
-  Book,
-  Delete,
-  Work,
-  AccessAlarmOutlined,
-  Task,
-} from "@mui/icons-material";
+import { Card, Pagination } from "@mui/material";
+import { Work, AccessAlarmOutlined, CheckCircle, Cancel, HourglassEmpty } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AppliedJobs = ({ primaryColor, cardColor }) => {
   const [applicants, setApplicants] = useState([]);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +20,8 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
             },
           }
         );
-        setApplicants(response.data);
+        const reversedData = response.data.reverse();
+        setApplicants(reversedData);
       } catch (error) {
         console.error("Error fetching applicants", error);
       }
@@ -46,17 +30,56 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
     fetchApplicants();
   }, []);
 
-  const handleCardClick = (id) => {
-    navigate(`/interview_date/${id}`);
+  const handleCardClick = (id, jobId) => {
+    if (jobId) {
+      navigate(`/interview_date/${id}`);
+    }
   };
+
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
+  const getBorderColor = (applicant) => {
+    if (
+      applicant.status === "Interview Confirmed" ||
+      applicant.status === "Approved"
+    ) {
+      return "1px solid green";
+    } else if (applicant.status === "Rejected") {
+      return "1px solid red";
+    } else if (!applicant.job_id) {
+      return "1px solid red";
+    } else {
+      return "none";
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "Interview Confirmed":
+      case "Approved":
+        return <CheckCircle style={{ color: "green", marginRight: "8px" }} />;
+      case "Rejected":
+        return <Cancel style={{ color: "red", marginRight: "8px" }} />;
+      default:
+        return <HourglassEmpty style={{ color: "gray", marginRight: "8px" }} />;
+    }
+  };
+
+  const applicantsPerPage = 9;
+  const displayedApplicants = applicants.slice(
+    (page - 1) * applicantsPerPage,
+    page * applicantsPerPage
+  );
 
   return (
     <div className="container-fluid my-2" style={{ padding: "20px" }}>
       <div className="row">
-        <div className="col-md-12 col-sm-12 ">
+        <div className="col-md-12 col-sm-12">
           <div className="text-center">
             <div className="row">
-              {applicants.map((applicant) => (
+              {displayedApplicants.map((applicant) => (
                 <div className="col-md-4 mb-4" key={applicant._id}>
                   <Card
                     style={{
@@ -65,27 +88,30 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                       borderRadius: "15px",
                       textAlign: "center",
                       position: "relative",
-                      cursor: "pointer",
+                      cursor: applicant.job_id ? "pointer" : "default",
                       marginTop: "10px",
+                      border: getBorderColor(applicant),
+                      minHeight: "200px",
                     }}
-                    onClick={() => handleCardClick(applicant._id)}
+                    onClick={() =>
+                      handleCardClick(applicant._id, applicant.job_id)
+                    }
                   >
-                    <h5
-                      className="card-title"
-                      style={{ fontWeight: "bold", marginBottom: "16px" }}
-                    >
-                      {`${applicant.firstName} ${applicant.lastName}`}
-                    </h5>
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "center",
+                        flexDirection: "column",
                         alignItems: "center",
                         marginBottom: "16px",
                       }}
                     >
-                      <Work style={{ marginRight: "8px" }} />
-                      {applicant.job_id.title}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Work style={{ marginRight: "8px", fontWeight: "bold" }} />
+                        <span style={{ fontSize: "18px", fontWeight: "bold"}}>{applicant.job_id ? applicant.job_id.title : applicant.job_title}</span>
+                      </div>
+                      {!applicant.job_id && (
+                        <span style={{ marginTop: "8px", color: "red" }}>This Job Is No Longer Available</span>
+                      )}
                     </div>
                     <div
                       style={{
@@ -96,7 +122,7 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                       }}
                     >
                       <AccessAlarmOutlined style={{ marginRight: "8px" }} />
-                      {applicant.job_id.role}
+                      <span>{applicant.job_id ? applicant.job_id.role : 'N/A'}</span>
                     </div>
                     <div
                       style={{
@@ -105,7 +131,7 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                         alignItems: "center",
                       }}
                     >
-                      <Task style={{ marginRight: "8px" }} />
+                      {getStatusIcon(applicant.status)}
                       {applicant.status}
                     </div>
                   </Card>
@@ -114,9 +140,9 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
             </div>
             <div className="d-flex justify-content-center mt-4">
               <Pagination
-                count={Math.ceil(applicants.length / 10)}
-                page={1}
-                onChange={() => {}}
+                count={Math.ceil(applicants.length / applicantsPerPage)}
+                page={page}
+                onChange={handleChangePage}
                 color="primary"
               />
             </div>

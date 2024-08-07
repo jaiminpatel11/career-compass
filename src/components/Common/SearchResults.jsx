@@ -27,10 +27,16 @@ const SearchResults = () => {
   React.useEffect(() => {
     const rootStyles = getComputedStyle(document.documentElement);
     setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
-    setPrimaryFontColor(rootStyles.getPropertyValue("--primary-font-color").trim());
-    setSecondaryFontColor(rootStyles.getPropertyValue("--secondary-font-color").trim());
+    setPrimaryFontColor(
+      rootStyles.getPropertyValue("--primary-font-color").trim()
+    );
+    setSecondaryFontColor(
+      rootStyles.getPropertyValue("--secondary-font-color").trim()
+    );
     setCardColor(rootStyles.getPropertyValue("--card-color").trim());
-    setFooterLinkColor(rootStyles.getPropertyValue("--footer-link-color").trim());
+    setFooterLinkColor(
+      rootStyles.getPropertyValue("--footer-link-color").trim()
+    );
   }, []);
 
   return (
@@ -64,7 +70,7 @@ const SearchResults = () => {
                     <Card.Title>{job.title}</Card.Title>
                     <Card.Text>
                       <LocationOn style={{ marginRight: "8px" }} />
-                      {job.location}
+                      {job.location.city}
                     </Card.Text>
                     <Card.Text>
                       <Schedule style={{ marginRight: "8px" }} />

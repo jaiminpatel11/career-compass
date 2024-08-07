@@ -140,7 +140,7 @@ const InterviewDate = () => {
                 <h2 className="mt-3" style={{ color: primaryColor }}>
                   {applicantDetails.company_id.name}
                 </h2>
-                <h2 className="mt-4">{applicantDetails.job_id.location}</h2>
+                <h2 className="mt-4">{applicantDetails.job_id.location.street}, {applicantDetails.job_id.location.city}, {applicantDetails.job_id.location.province}, {applicantDetails.job_id.location.country}, {applicantDetails.job_id.location.postalCode}</h2>
               </div>
 
               <div className="p-5 text-center" style={{ margin: "10px" }}>
@@ -159,7 +159,7 @@ const InterviewDate = () => {
                 </ul>
               </div>
 
-              {applicantDetails.status === "submitted" && (
+              {applicantDetails.status === "Submitted" && (
                 <div className="text-center">
                   <h3 style={{}}>
                     Application under review. We will get back to you when we
@@ -168,7 +168,7 @@ const InterviewDate = () => {
                 </div>
               )}
 
-              {applicantDetails.status === "rejected" && (
+              {applicantDetails.status === "Rejected" && (
                 <div className="text-center">
                   <h3 style={{ color: red }}>
                     Application rejected. We have decided to move on with
@@ -177,7 +177,7 @@ const InterviewDate = () => {
                 </div>
               )}
 
-              {applicantDetails.status === "approved" && (
+              {applicantDetails.status === "Approved" && (
                 <div className="text-center">
                   <h3 style={{ color: green }}>
                     Congratulations! We would like to offer you the position. We
@@ -186,7 +186,7 @@ const InterviewDate = () => {
                 </div>
               )}
 
-              {applicantDetails.status === "interview_scheduled" && (
+              {applicantDetails.status === "Interview Scheduled" && (
                 <div className="text-center">
                   <h3 style={{ color: primaryColor }}>
                     Congratulations! You have been shortlisted for the
@@ -269,7 +269,7 @@ const InterviewDate = () => {
                 </div>
               )}
 
-              {applicantDetails.status === "interview_confirmed" && (
+              {applicantDetails.status === "Interview Confirmed" && (
                 <div className="text-center">
                   <h3 style={{ color: primaryColor }}>
                     Congratulations! Your interview has been confirmed

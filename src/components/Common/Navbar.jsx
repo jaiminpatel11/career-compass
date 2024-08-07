@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Navbar as BootstrapNavbar, Nav } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getUserProfile, getCompanyProfile } from "../../Api/Profile";
 import defaultProfileImage from "../../assets/default.jpeg";
+import "./Navbar.css"; 
 
 const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
   const role = sessionStorage.getItem("role");
   const location = useLocation();
-  console.log("Role:", role);
+  const navigate = useNavigate();
+  if (!role) {
+    navigate("/");
+  }
 
   const [profileImage, setProfileImage] = useState(defaultProfileImage);
 
   useEffect(() => {
     const fetchProfileImage = async () => {
       const token = sessionStorage.getItem("user");
-      console.log("Token:", token);
+      // console.log("Token:", token);
 
       if (token) {
         try {
           if (role === "candidate") {
             const userProfile = await getUserProfile(token);
-            console.log("User Profile:", userProfile);
+            // console.log("User Profile:", userProfile);
             if (userProfile.profileImage) {
               setProfileImage(userProfile.profileImage);
             }
           } else if (role === "company") {
             const companyProfile = await getCompanyProfile(token);
-            console.log("Company Profile:", companyProfile);
+            // console.log("Company Profile:", companyProfile);
             if (companyProfile.companyLogo) {
               setProfileImage(companyProfile.companyLogo);
             }
@@ -36,6 +40,9 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
         }
       } else {
         console.log("No token found");
+        if (!role) {
+          navigate("/");
+        }
       }
     };
 
@@ -63,8 +70,7 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
     { text: "Logout", url: "/", onClick: () => sessionStorage.clear() },
   ];
 
-
- const links =
+  const links =
     role === "candidate"
       ? candidateLinks
       : role === "company"
@@ -73,10 +79,10 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
       ? adminLinks
       : [];
 
-
   return (
     <BootstrapNavbar
       expand="lg"
+      className="navbar-custom"
       style={{
         backgroundColor: primaryColor,
         position: "sticky",
@@ -86,21 +92,18 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
       }}
     >
       <BootstrapNavbar.Brand href="#home">
-        <img src={logo} alt="Logo" style={{ height: "80px", width: "200px" }} />
+        <img src={logo} alt="Logo" className="navbar-logo" />
       </BootstrapNavbar.Brand>
       <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
-      <BootstrapNavbar.Collapse
-        id="basic-navbar-nav"
-        style={{ justifyContent: "right" }}
-      >
-        <Nav style={{ fontSize: 18, fontWeight: "bold" }}>
+      <BootstrapNavbar.Collapse id="basic-navbar-nav">
+        <Nav className="m-auto navbar-nav-custom">
           {links.map((link, index) => (
             <Nav.Link
               key={index}
               href={link.url}
+              className="navbar-link-custom"
               style={{
                 color: primaryFontColor,
-                marginRight: "40px",
                 fontWeight: location.pathname === link.url ? "bold" : "normal",
               }}
               onClick={link.onClick}
@@ -109,22 +112,14 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
             </Nav.Link>
           ))}
         </Nav>
-
         <Link
           to={role === "candidate" ? "/candidate_profile" : "/employer_profile"}
-          style={{
-            color: primaryFontColor,
-            marginRight: "10px",
-            height: "60px",
-            width: "60px",
-            display: "flex",
-            alignItems: "center",
-          }}
+          className="navbar-profile-link"
         >
           <img
             src={profileImage || defaultProfileImage}
             alt="Profile"
-            style={{ height: "60px", width: "60px", borderRadius: "50%" }}
+            className="navbar-profile-image"
           />
         </Link>
       </BootstrapNavbar.Collapse>

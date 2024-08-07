@@ -1,9 +1,20 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationArrow, faClock, faBook,faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLocationArrow,
+  faClock,
+  faBook,
+  faCalendarAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
-const AdminJobDeatilComponent = ({ job, SecondaryFontColor, primaryColor, primaryFontColor, CardColor }) => {
+const AdminJobDeatilComponent = ({
+  job,
+  SecondaryFontColor,
+  primaryColor,
+  primaryFontColor,
+  CardColor,
+}) => {
   return (
     <div className="container mt-4">
       <div className="row">
@@ -17,21 +28,63 @@ const AdminJobDeatilComponent = ({ job, SecondaryFontColor, primaryColor, primar
               position: "relative",
             }}
           >
-            <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>{job.title}</h5>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
-              <FontAwesomeIcon icon={faLocationArrow} style={{ marginRight: "8px" }} />
-              <span>{job.location}</span>
+            <h5
+              className="card-title"
+              style={{ fontWeight: "bold", marginBottom: "16px" }}
+            >
+              {job.title}
+            </h5>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "16px",
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faLocationArrow}
+                style={{ marginRight: "8px" }}
+              />
+              <span>
+                {job.location.street}, {job.location.city},{" "}
+                {job.location.province}, {job.location.country},{" "}
+                {job.location.postalCode}
+              </span>
             </div>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "16px",
+              }}
+            >
               <FontAwesomeIcon icon={faClock} style={{ marginRight: "8px" }} />
               <span>{job.role}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "16px",
+              }}
+            >
               <FontAwesomeIcon icon={faBook} style={{ marginRight: "8px" }} />
               <span>{job.skills.join(", ")}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <FontAwesomeIcon icon={faCalendarAlt} style={{ marginRight: "8px" }} />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faCalendarAlt}
+                style={{ marginRight: "8px" }}
+              />
               <span>{new Date(job.expiry_date).toLocaleDateString()}</span>
             </div>
           </Card>

@@ -22,6 +22,8 @@ import AdminCandidatePage from "./container/Admin-Candidate/AdminCandidatePage";
 import CandidateProfile from "./container/Admin-Candidate/CandidateProfile";
 import AdminJobsPage from "./container/Admin-Jobs/AdminJobsPage";
 import AdminJobDetails from "./container/Admin-Jobs/AdminJobDetails";
+import AdminEmployerPage from "./container/Admin-Employer/AdminEmployerPage";
+import AdminEmployerProfile from "./container/Admin-Employer/AdminEmployerProfile";
 
 const AppRoutes = () => {
   return (
@@ -66,7 +68,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-       <Route
+      <Route
         path="/admin_candidates"
         element={
           <ProtectedRoute>
@@ -84,9 +86,20 @@ const AppRoutes = () => {
       />
       <Route path="/admin_jobs" element={<AdminJobsPage />} />
       <Route path="/admin_job_details" element={<AdminJobDetails />} />
+
+      <Route
+        path="/admin_employers"
+        element={
+          <ProtectedRoute>
+            <AdminEmployerPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/employer-profile/:empID"
+        element={<AdminEmployerProfile />}
+      />
     </Routes>
-    
-    
   );
 };
 

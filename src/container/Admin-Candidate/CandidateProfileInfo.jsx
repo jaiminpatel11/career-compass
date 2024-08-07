@@ -63,7 +63,7 @@ const CandidateProfileInfo = () => {
               </div>
               <div className="info-item">
                 <label>Skills:</label>
-                <input  className="text-color" type="text" value={skills} disabled />
+                <input className="text-color" type="text" value={skills} disabled />
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ const CandidateProfileInfo = () => {
               </div>
               <div className="info-item">
                 <label>Country:</label>
-                <input className="text-color"  type="text" value={address.country} disabled />
+                <input className="text-color" type="text" value={address.country} disabled />
               </div>
             </div>
             <div className="col-md-6">
@@ -87,7 +87,7 @@ const CandidateProfileInfo = () => {
               </div>
               <div className="info-item">
                 <label>Postal:</label>
-                <input className="text-color"  type="text" value={address.postalCode} disabled />
+                <input className="text-color" type="text" value={address.postalCode} disabled />
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@ const CandidateProfileInfo = () => {
             <div className="col-md-6">
               <div className="info-item">
                 <label>Job Title:</label>
-                <input className="text-color"  type="text" value={experience.jobTitle} disabled />
+                <input className="text-color" type="text" value={experience.jobTitle} disabled />
               </div>
               <div className="info-item">
                 <label>Company:</label>
@@ -141,41 +141,45 @@ const CandidateProfileInfo = () => {
           </div>
 
           <h2 className="section-title">Jobs Applied</h2>
-          {jobApplications.map((application, index) => (
-            <div key={application._id} className="job-application">
-              <h3 className="job-title">Job {index + 1}</h3>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="info-item">
-                    <label>Company:</label>
-                    <input className="text-color" type="text" value={application.job_id.company_id.name} disabled />
+          {jobApplications.length > 0 ? (
+            jobApplications.map((application, index) => (
+              <div key={application._id} className="job-application">
+                <h3 className="job-title">Job {index + 1}</h3>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="info-item">
+                      <label>Company:</label>
+                      <input className="text-color" type="text" value={application.job_id.company_id.name} disabled />
+                    </div>
+                    <div className="info-item">
+                      <label>Role:</label>
+                      <input className="text-color" type="text" value={application.job_id.role} disabled />
+                    </div>
+                    <div className="info-item">
+                      <label>Salary:</label>
+                      <input className="text-color" type="text" value={application.job_id.salary} disabled />
+                    </div>
                   </div>
-                  <div className="info-item">
-                    <label>Role:</label>
-                    <input  className="text-color" type="text" value={application.job_id.role} disabled />
-                  </div>
-                  <div className="info-item">
-                    <label>Salary:</label>
-                    <input className="text-color" type="text" value={application.job_id.salary} disabled />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="info-item">
-                    <label>Title:</label>
-                    <input className="text-color"  type="text" value={application.job_id.title} disabled />
-                  </div>
-                  <div className="info-item">
-                    <label>Skills:</label>
-                    <input className="text-color"  type="text" value={application.job_id.skills.join(', ')} disabled />
-                  </div>
-                  <div className="info-item">
-                    <label>Location:</label>
-                    <input className="text-color" type="text" value={application.job_id.location} disabled />
+                  <div className="col-md-6">
+                    <div className="info-item">
+                      <label>Title:</label>
+                      <input className="text-color" type="text" value={application.job_id.title} disabled />
+                    </div>
+                    <div className="info-item">
+                      <label>Skills:</label>
+                      <input className="text-color" type="text" value={application.job_id.skills.join(', ')} disabled />
+                    </div>
+                    <div className="info-item">
+                      <label>Location:</label>
+                      <input className="text-color" type="text" value={application.job_id.location} disabled />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div>No job applications found for this user.</div>
+          )}
         </div>
       </div>
     </div>
