@@ -5,7 +5,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../FindJobPage/FindJob.css";
 
-const AdminAllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor }) => {
+const AdminAllJobs = ({
+  SecondaryFontColor,
+  primaryColor,
+  primaryFontColor,
+  cardColor,
+}) => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
@@ -43,30 +48,50 @@ const AdminAllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, card
 
   const currentDate = new Date();
 
-  const jobList = currentJobs.filter(job => new Date(job.expiry_date) >= currentDate);
-  const expiredJobs = currentJobs.filter(job => new Date(job.expiry_date) < currentDate);
+  const jobList = currentJobs.filter(
+    (job) => new Date(job.expiry_date) >= currentDate
+  );
+  const expiredJobs = currentJobs.filter(
+    (job) => new Date(job.expiry_date) < currentDate
+  );
 
   return (
     <div className="container mt-5 mt-md-0">
       <div className="row">
         {/* Job Lists Section */}
         <div className="col-md-12">
-          <h2 className="text-center" style={{ color: SecondaryFontColor, marginBottom: "20px", marginTop: "40px" }}>Job Lists</h2>
+          <h2
+            className="text-center"
+            style={{
+              color: SecondaryFontColor,
+              marginBottom: "20px",
+              marginTop: "40px",
+            }}
+          >
+            Job Lists
+          </h2>
           <div className="row my-2 justify-content-center">
             {jobList.map((job, index) => (
               <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
                 <div
                   className="card position-relative"
-                  style={{ background: cardColor, borderRadius: "40px", height: "300px" }}
+                  style={{
+                    background: cardColor,
+                    borderRadius: "40px",
+                    height: "300px",
+                  }}
                 >
                   <div className="card-body text-center d-flex flex-column justify-content-between">
                     <div>
-                      <h5 className="card-text mt-4" style={{ fontWeight: "bold" }}>
+                      <h5
+                        className="card-text mt-4"
+                        style={{ fontWeight: "bold" }}
+                      >
                         {job.title}
                       </h5>
                       <p className="card-text">
                         <LocationOn style={{ marginRight: "8px" }} />
-                        {job.location}
+                        {job.location.city}
                       </p>
                       <p className="card-text">
                         <Schedule style={{ marginRight: "8px" }} />
@@ -86,7 +111,7 @@ const AdminAllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, card
                           width: "150px",
                           padding: "12px",
                           borderRadius: "10px",
-                          border: "1px solid"
+                          border: "1px solid",
                         }}
                         onClick={() => handleJobDetails(job)}
                       >
@@ -102,22 +127,34 @@ const AdminAllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, card
 
         {/* Expired Jobs Section */}
         <div className="col-md-12">
-          <h2 className="text-center" style={{ color: SecondaryFontColor, marginBottom: "20px" }}>Expired Jobs</h2>
+          <h2
+            className="text-center"
+            style={{ color: SecondaryFontColor, marginBottom: "20px" }}
+          >
+            Expired Jobs
+          </h2>
           <div className="row my-2 justify-content-center">
             {expiredJobs.map((job, index) => (
               <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
                 <div
                   className="card position-relative"
-                  style={{ background: cardColor, borderRadius: "40px", height: "300px" }}
+                  style={{
+                    background: cardColor,
+                    borderRadius: "40px",
+                    height: "300px",
+                  }}
                 >
                   <div className="card-body text-center d-flex flex-column justify-content-between">
                     <div>
-                      <h5 className="card-text mt-4" style={{ fontWeight: "bold" }}>
+                      <h5
+                        className="card-text mt-4"
+                        style={{ fontWeight: "bold" }}
+                      >
                         {job.title}
                       </h5>
                       <p className="card-text">
                         <LocationOn style={{ marginRight: "8px" }} />
-                        {job.location}
+                        {job.location.city}
                       </p>
                       <p className="card-text">
                         <Schedule style={{ marginRight: "8px" }} />
@@ -137,7 +174,7 @@ const AdminAllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, card
                           width: "150px",
                           padding: "12px",
                           borderRadius: "10px",
-                          border: "1px solid"
+                          border: "1px solid",
                         }}
                         onClick={() => handleJobDetails(job)}
                       >
