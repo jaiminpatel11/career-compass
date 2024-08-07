@@ -146,7 +146,7 @@ const ApplicantDetails = () => {
                 margin: "50px",
               }}
             >
-              Job Role: {applicantDetails.job_id.title}
+              Job Role: {applicantDetails.job_id ? applicantDetails.job_id.title : " "}
             </h2>
             <div
               style={{
@@ -266,7 +266,7 @@ const ApplicantDetails = () => {
                 {applicantDetails.status}
               </div>
 
-              {applicantDetails.status === "interview_confirmed" && (
+              {applicantDetails.status === "Interview Confirmed" && (
                 <div className="text-center">
                   <h3 className="mt-4"> Interview details: </h3>
                   {applicantDetails.interview_details}
@@ -295,9 +295,9 @@ const ApplicantDetails = () => {
                   )}
                 </div>
               )}
-              {(applicantDetails.status === "submitted" ||
-                applicantDetails.status === "interview_scheduled" ||
-                applicantDetails.status === "interview_confirmed") && (
+              {(applicantDetails.status === "Submitted" ||
+                applicantDetails.status === "Interview Scheduled" ||
+                applicantDetails.status === "Interview Confirmed") && (
                 <button
                   variant="contained"
                   style={{
@@ -314,7 +314,7 @@ const ApplicantDetails = () => {
                 </button>
               )}
 
-              {applicantDetails.status === "submitted" && (
+              {applicantDetails.status === "Submitted" && (
                 <button
                   variant="contained"
                   style={{
@@ -331,9 +331,9 @@ const ApplicantDetails = () => {
                 </button>
               )}
 
-              {(applicantDetails.status === "submitted" ||
-                applicantDetails.status === "interview_scheduled" ||
-                applicantDetails.status === "interview_confirmed") && (
+              {(applicantDetails.status === "Submitted" ||
+                applicantDetails.status === "Interview Scheduled" ||
+                applicantDetails.status === "Interview Confirmed") && (
                 <button
                   variant="contained"
                   style={{

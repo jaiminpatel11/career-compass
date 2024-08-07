@@ -5,13 +5,13 @@ import { faLocationArrow, faClock, faBook } from "@fortawesome/free-solid-svg-ic
 
 const JobDeatilComponent = ({ job, SecondaryFontColor, primaryColor, primaryFontColor, CardColor }) => {
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 d-flex justify-content-center align-items-center">
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-12">
           <Card
             style={{
-              background: CardColor,
               padding: "1rem",
+              background: CardColor,
               borderRadius: "15px",
               textAlign: "center",
               position: "relative",
@@ -20,8 +20,8 @@ const JobDeatilComponent = ({ job, SecondaryFontColor, primaryColor, primaryFont
             <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>{job.title}</h5>
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
               <FontAwesomeIcon icon={faLocationArrow} style={{ marginRight: "8px" }} />
-              <span>{job.location}</span>
-            </div>
+              <span>{job.location.street}, {job.location.city}, {job.location.province}, {job.location.country}, {job.location.postalCode}</span>
+              </div>
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
               <FontAwesomeIcon icon={faClock} style={{ marginRight: "8px" }} />
               <span>{job.role}</span>

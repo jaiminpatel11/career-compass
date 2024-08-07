@@ -5,7 +5,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./FindJob.css";
 
-const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor }) => {
+const AllJobs = ({
+  SecondaryFontColor,
+  primaryColor,
+  primaryFontColor,
+  cardColor,
+}) => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
@@ -14,12 +19,17 @@ const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor
   const fetchJobs = async () => {
     try {
       const token = sessionStorage.getItem("user");
-      const response = await axios.get("http://localhost:5000/api/jobs/all", {
-        headers: {
-          "x-auth-token": token,
-        },
-      });
-      setJobs(response.data);
+      const userid = sessionStorage.getItem("user_id");
+      const response = await axios.get(
+        `http://localhost:5000/api/jobs/availablejobs/${userid}`,
+        {
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      );
+      const reversedData = response.data.reverse();
+      setJobs(reversedData);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
@@ -45,8 +55,13 @@ const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor
     <div className="container mt-5 mt-md-0">
       <div className="row">
         <div className="col-md-12">
-          <div className="heading-content text-center" style={{ marginBottom: "40px", marginTop: "40px" }}>
-            <h1 style={{ color: SecondaryFontColor, marginBottom: "10px" }}>All Jobs</h1>
+          <div
+            className="heading-content text-center"
+            style={{ marginBottom: "40px", marginTop: "40px" }}
+          >
+            <h1 style={{ color: SecondaryFontColor, marginBottom: "10px" }}>
+              All Jobs
+            </h1>
             <h6 style={{ color: SecondaryFontColor, marginBottom: "20px" }}>
               Browse through all available job positions.
             </h6>
@@ -57,16 +72,23 @@ const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor
             <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
               <div
                 className="card position-relative"
-                style={{ background: cardColor, borderRadius: "40px", height: "300px" }}
+                style={{
+                  background: cardColor,
+                  borderRadius: "40px",
+                  height: "300px",
+                }}
               >
                 <div className="card-body text-center d-flex flex-column justify-content-between">
                   <div>
-                    <h5 className="card-text mt-4" style={{ fontWeight: "bold" }}>
+                    <h5
+                      className="card-text mt-4"
+                      style={{ fontWeight: "bold" }}
+                    >
                       {job.title}
                     </h5>
                     <p className="card-text">
                       <LocationOn style={{ marginRight: "8px" }} />
-                      {job.location}
+                      {job.location.city}
                     </p>
                     <p className="card-text">
                       <Schedule style={{ marginRight: "8px" }} />
@@ -86,7 +108,7 @@ const AllJobs = ({ SecondaryFontColor, primaryColor, primaryFontColor, cardColor
                         width: "150px",
                         padding: "12px",
                         borderRadius: "10px",
-                        border: "1px solid"
+                        border: "1px solid",
                       }}
                       onClick={() => handleApplyClick(job)}
                     >

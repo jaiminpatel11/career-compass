@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Box, TextField, Button, MenuItem } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -6,11 +6,11 @@ import { useForm } from "react-hook-form";
 const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
   const { register, handleSubmit, formState: { errors }, setValue, reset, setError } = useForm();
 
-  const [primaryColor, setPrimaryColor] = React.useState("");
-  const [primaryFontColor, setPrimaryFontColor] = React.useState("");
-  const [secondaryFontColor, setSecondaryFontColor] = React.useState("");
-  const [cardColor, setCardColor] = React.useState("");
-  const [footerLinkColor, setFooterLinkColor] = React.useState("");
+  const [primaryColor, setPrimaryColor] = useState("");
+  const [primaryFontColor, setPrimaryFontColor] = useState("");
+  const [secondaryFontColor, setSecondaryFontColor] = useState("");
+  const [cardColor, setCardColor] = useState("");
+  const [footerLinkColor, setFooterLinkColor] = useState("");
 
   useEffect(() => {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -31,7 +31,11 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
         role: jobData.role,
         requirements: jobData.requirements.join(", "),
         salary: jobData.salary,
-        location: jobData.location,
+        street: jobData.location.street,
+        city: jobData.location.city,
+        province: jobData.location.province,
+        country: jobData.location.country,
+        postalCode: jobData.location.postalCode,
         expiry_date: jobData.expiry_date.substring(0, 10),
       });
     }
@@ -46,7 +50,9 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
     if (!data.role) errors.role = "Role is required";
     if (!data.requirements) errors.requirements = "Requirements are required";
     if (!data.salary || isNaN(data.salary) || Number(data.salary) <= 0) errors.salary = "A positive salary is required";
-    if (!data.location) errors.location = "Location is required";
+    if (!data.street || !data.city || !data.province || !data.country || !data.postalCode) {
+      errors.location = "All location fields are required";
+    }
     if (!data.expiry_date) errors.expiry_date = "Expiry date is required";
     else if (new Date(data.expiry_date) <= new Date()) errors.expiry_date = "Expiry date must be in the future";
 
@@ -68,6 +74,13 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
       ...data,
       skills: data.skills.split(',').map(skill => skill.trim()),
       requirements: data.requirements.split(',').map(requirement => requirement.trim()),
+      location: {
+        street: data.street,
+        city: data.city,
+        province: data.province,
+        country: data.country,
+        postalCode: data.postalCode
+      }
     };
 
     try {
@@ -159,10 +172,10 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
             error={!!errors.role}
             helperText={errors.role?.message}
           >
-            <MenuItem value="fulltime">Full Time</MenuItem>
-            <MenuItem value="parttime">Part Time</MenuItem>
-            <MenuItem value="seasonal">Seasonal</MenuItem>
-            <MenuItem value="contract">Contract</MenuItem>
+            <MenuItem value="Full-Time">Full Time</MenuItem>
+            <MenuItem value="Part-Time">Part Time</MenuItem>
+            <MenuItem value="Seasonal">Seasonal</MenuItem>
+            <MenuItem value="Contract">Contract</MenuItem>
           </TextField>
           <TextField
             fullWidth
@@ -192,13 +205,57 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
           <TextField
             fullWidth
             margin="normal"
-            id="location"
-            name="location"
-            label={<span>Location <span style={{ color: "red" }}>*</span></span>}
+            id="street"
+            name="street"
+            label={<span>Street <span style={{ color: "red" }}>*</span></span>}
             variant="outlined"
-            {...register("location", { required: "Location is required" })}
-            error={!!errors.location}
-            helperText={errors.location?.message}
+            {...register("street", { required: "Street is required" })}
+            error={!!errors.street}
+            helperText={errors.street?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="city"
+            name="city"
+            label={<span>City <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("city", { required: "City is required" })}
+            error={!!errors.city}
+            helperText={errors.city?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="province"
+            name="province"
+            label={<span>Province <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("province", { required: "Province is required" })}
+            error={!!errors.province}
+            helperText={errors.province?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="country"
+            name="country"
+            label={<span>Country <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("country", { required: "Country is required" })}
+            error={!!errors.country}
+            helperText={errors.country?.message}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="postalCode"
+            name="postalCode"
+            label={<span>Postal Code <span style={{ color: "red" }}>*</span></span>}
+            variant="outlined"
+            {...register("postalCode", { required: "Postal Code is required" })}
+            error={!!errors.postalCode}
+            helperText={errors.postalCode?.message}
           />
           <TextField
             fullWidth

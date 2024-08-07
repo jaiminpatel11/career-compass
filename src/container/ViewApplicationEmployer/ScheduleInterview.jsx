@@ -47,6 +47,7 @@ const ScheduleInterview = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [errors, setErrors] = useState({});
 
   const handleSlotChange = (index, field, value) => {
     const newInterviewDates = interviewDates.slice();
@@ -54,9 +55,28 @@ const ScheduleInterview = () => {
     setInterviewDates(newInterviewDates);
   };
 
+  const validateFields = () => {
+    const newErrors = {};
+    interviewDates.forEach((slot, index) => {
+      if (!slot.date) {
+        newErrors[`date${index}`] = "Date is required";
+      }
+      if (!slot.time) {
+        newErrors[`time${index}`] = "Time is required";
+      }
+    });
+
+    if (!interviewDetails) {
+      newErrors["interviewDetails"] = "Interview details are required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSchedule = async () => {
-    if (!interviewDates.some((slot) => slot.date && slot.time)) {
-      setSnackbarMessage("Please provide at least one valid date and time.");
+    if (!validateFields()) {
+      setSnackbarMessage("Please fill in all required fields.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
       return;
@@ -108,7 +128,6 @@ const ScheduleInterview = () => {
             <p>Review and manage applications from potential candidates</p>
           </div>
           <div className="text-center">
-            {/* <Typography variant="h4" style={{ color: primaryColor }}>Schedule Interview</Typography> */}
             <h2
               className=""
               style={{
@@ -117,7 +136,6 @@ const ScheduleInterview = () => {
                 margin: "40px",
               }}
             >
-              {/* Job Role: {applicantDetails.job_id.title} */}
               Schedule Interview
             </h2>
             <div
@@ -139,6 +157,8 @@ const ScheduleInterview = () => {
                     }
                     style={{ marginRight: "8px", width: "20%" }}
                     InputLabelProps={{ shrink: true }}
+                    error={!!errors[`date${index}`]}
+                    helperText={errors[`date${index}`]}
                   />
                   <TextField
                     label="Time"
@@ -149,6 +169,8 @@ const ScheduleInterview = () => {
                     }
                     style={{ width: "20%" }}
                     InputLabelProps={{ shrink: true }}
+                    error={!!errors[`time${index}`]}
+                    helperText={errors[`time${index}`]}
                   />
                 </div>
               ))}
@@ -160,6 +182,8 @@ const ScheduleInterview = () => {
                   onChange={(e) => setInterviewDetails(e.target.value)}
                   style={{ width: "41%" }}
                   InputLabelProps={{ shrink: true }}
+                  error={!!errors.interviewDetails}
+                  helperText={errors.interviewDetails}
                 />
               </div>
               <div
