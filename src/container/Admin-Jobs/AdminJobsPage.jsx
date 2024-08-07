@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Common/Navbar";
 import { useNavigate } from "react-router-dom";
+import AdminJobsHeader from "./AdminJobsHeader";
+import AdminAllJobs from "./AdminAllJobs";
 import Footer from "../../components/Common/Footer";
-import AdminNewlyLoggedIn from "./AdminNewlyLoggedIn";
-import AdminLatestJobPosting from "./AdminLatestJobPosting";
-import TextAndImageSection from "./TextAndImageSection";
-import AdminDashboardOverview from "./AdminDashboardOverview";
-import './styles.css'; 
 
 
-const AdminDashboard = () => {
+const AdminJobsPage = ({ name }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     console.log("handleLogout");
@@ -17,14 +14,24 @@ const AdminDashboard = () => {
     navigate("/");
   };
 
+  const links = [
+    { text: "Home", url: "#" },
+    { text: "Find Job", url: "#" },
+    { text: "Company", url: "#" },
+    { text: "Blog", url: "#" },
+    { text: "Logout", url: "#", onClick: handleLogout },
+  ];
+
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryFontColor, setPrimaryFontColor] = useState("");
   const [secondaryFontColor, setSecondaryFontColor] = useState("");
-  const [cardColor, setCardColor] = useState("");
-  const [footerLinkColor, setFooterLinkColor] = useState("");
+  const [cardColor, setcardColor] = useState("");
+  const [footerLinkColor, setfooterLinkColor] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0);
 
+
   useEffect(() => {
+    // Fetch the CSS variables after component mounts
     const rootStyles = getComputedStyle(document.documentElement);
     setPrimaryColor(rootStyles.getPropertyValue("--primary-color").trim());
     setPrimaryFontColor(
@@ -33,53 +40,53 @@ const AdminDashboard = () => {
     setSecondaryFontColor(
       rootStyles.getPropertyValue("--secondary-font-color").trim()
     );
-    setCardColor(rootStyles.getPropertyValue("--card-color").trim());
-    setFooterLinkColor(
+    setcardColor(rootStyles.getPropertyValue("--card-color").trim());
+    setfooterLinkColor(
       rootStyles.getPropertyValue("--footer-link-color").trim()
     );
+
+    // Handle scroll position
     const handleScroll = () => {
-      setScrollPosition(window.scrollY);
+      setScrollPosition(window.scrollY); 
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll); 
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll); 
     };
+
   }, []);
 
-  const getOpacity = () => {
-    const maxOpacityScroll = 300;
-    const minOpacity = 0.3;
-    const opacity = Math.min(scrollPosition / maxOpacityScroll, 1);
-    return Math.max(1 - opacity, minOpacity);
-  };
+// Function to calculate opacity based on scroll position
+const getOpacity = () => {
+  const maxOpacityScroll = 300; 
+  const minOpacity = 0.3; 
+  const opacity = Math.min(scrollPosition / maxOpacityScroll, 1);
+  return Math.max(1 - opacity, minOpacity); 
+};
 
   return (
     <div>
+     
       <Navbar
         logo="/logo.png"
+        links={links}
         primaryFontColor={primaryFontColor}
         primaryColor={primaryColor}
       />
-      <TextAndImageSection
+      <AdminJobsHeader
         primaryColor={primaryColor}
         primaryFontColor={primaryFontColor}
-        opacity={getOpacity()}
+        opacity={getOpacity()} 
       />
-      <AdminDashboardOverview
-        primaryFontColor={primaryFontColor}
+      <AdminAllJobs
+        SecondaryFontColor={secondaryFontColor}
         primaryColor={primaryColor}
-        secondaryFontColor={secondaryFontColor}
-      />
-      <AdminLatestJobPosting
         primaryFontColor={primaryFontColor}
-        primaryColor={primaryColor}
-        secondaryFontColor={secondaryFontColor}
+        CardColor={cardColor}
       />
-      <AdminNewlyLoggedIn
-        primaryFontColor={primaryFontColor}
-        primaryColor={primaryColor}
-        secondaryFontColor={secondaryFontColor}
-      />
+      
       <Footer
         PrimaryColor={primaryColor}
         PrimaryFontColor={primaryFontColor}
@@ -89,4 +96,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default AdminJobsPage;
