@@ -1,6 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Card, Pagination, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { Work, AccessAlarmOutlined, CheckCircle, Cancel, HourglassEmpty } from "@mui/icons-material";
+import {
+  Card,
+  Pagination,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  LinearProgress,
+  Box,
+  Typography,
+} from "@mui/material";
+import {
+  Work,
+  AccessAlarmOutlined,
+  CheckCircle,
+  Cancel,
+  HourglassEmpty,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -9,7 +26,7 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
   const [page, setPage] = useState(1);
   const [openDialog, setOpenDialog] = useState(false);
   const [skillMatch, setSkillMatch] = useState(null);
-  const [fitCategory, setFitCategory] = useState('');
+  const [fitCategory, setFitCategory] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,30 +56,38 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
     }
   };
 
-  const handleSkillMatchClick = async (event, candidateId, jobId) => {
+  const handleSkillMatchClick = async (event, applicant) => {
     event.stopPropagation();
-  
+
+    console.log(applicant);
+    console.log(applicant.user_id._id);
+    console.log(applicant.job_id._id);
+
     // Extract the _id from candidateId and jobId
-    const extractedCandidateId = candidateId._id;
-    const extractedJobId = jobId._id;
-  
-    console.log('Extracted candidateId:', extractedCandidateId);
-    console.log('Extracted jobId:', extractedJobId);
-  
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/jobapplications/calculateskillmatch/${extractedCandidateId}/${extractedJobId}`,
-        {
-          headers: {
-            "x-auth-token": sessionStorage.getItem("user"),
-          },
-        }
-      );
-      setSkillMatch(response.data.matchPercentage);
-      setFitCategory(response.data.fitCategory);
-      setOpenDialog(true);
-    } catch (error) {
-      console.error("Error fetching skill match data", error);
+    const extractedCandidateId = applicant.user_id._id;
+    const extractedJobId = applicant.job_id._id;
+
+    console.log("Extracted candidateId:", extractedCandidateId);
+    console.log("Extracted jobId:", extractedJobId);
+
+    if (!extractedCandidateId || !extractedJobId) {
+      console.log("Either extractedCandidateId or extractedJobId is null");
+    } else {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/jobapplications/calculateskillmatch/${extractedCandidateId}/${extractedJobId}`,
+          {
+            headers: {
+              "x-auth-token": sessionStorage.getItem("user"),
+            },
+          }
+        );
+        setSkillMatch(response.data.matchPercentage);
+        setFitCategory(response.data.fitCategory);
+        setOpenDialog(true);
+      } catch (error) {
+        console.error("Error fetching skill match data", error);
+      }
     }
   };
 
@@ -75,7 +100,10 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
   };
 
   const getBorderColor = (applicant) => {
-    if (applicant.status === "Interview Confirmed" || applicant.status === "Approved") {
+    if (
+      applicant.status === "Interview Confirmed" ||
+      applicant.status === "Approved"
+    ) {
       return "1px solid green";
     } else if (applicant.status === "Rejected" || !applicant.job_id) {
       return "1px solid red";
@@ -96,8 +124,17 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
     }
   };
 
-  const applicantsPerPage = 10;
-  const displayedApplicants = applicants.slice((page - 1) * applicantsPerPage, page * applicantsPerPage);
+  const getColor = (percentage) => {
+    if (percentage < 25) return "red";
+    if (percentage < 75) return "yellow";
+    return "green";
+  };
+
+  const applicantsPerPage = 9;
+  const displayedApplicants = applicants.slice(
+    (page - 1) * applicantsPerPage,
+    page * applicantsPerPage
+  );
 
   return (
     <div className="container-fluid my-2" style={{ padding: "20px" }}>
@@ -124,31 +161,101 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                         marginTop: "10px",
                         border: getBorderColor(applicant),
                       }}
-                      onClick={() => handleCardClick(applicant._id, applicant.job_id)}
+                      onClick={() =>
+                        handleCardClick(applicant._id, applicant.job_id)
+                      }
                     >
-                      <h5 className="card-title" style={{ fontWeight: "bold", marginBottom: "16px" }}>
+                      <h5
+                        className="card-title"
+                        style={{ fontWeight: "bold", marginBottom: "16px" }}
+                      >
                         {`${applicant.firstName} ${applicant.lastName}`}
                       </h5>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "16px",
+                        }}
+                      >
                         <Work style={{ marginRight: "8px" }} />
-                        {applicant.job_id ? applicant.job_id.title : "No Job Title"}
+                        {applicant.job_id
+                          ? applicant.job_id.title
+                          : "No Job Title"}
                       </div>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "16px",
+                        }}
+                      >
                         <AccessAlarmOutlined style={{ marginRight: "8px" }} />
-                        {applicant.job_id ? applicant.job_id.role : "No Job Role"}
+                        {applicant.job_id
+                          ? applicant.job_id.role
+                          : "No Job Role"}
                       </div>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
                         {getStatusIcon(applicant.status)}
                         {applicant.status}
                       </div>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={(event) => handleSkillMatchClick(event, applicant, applicant.job_id)}
-                        style={{ marginTop: "10px" }}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "16px",
+                        }}
                       >
-                        Check Skill Match
-                      </Button>
+                        {applicant.job_id && !applicant.skillMatch?.error && (
+                          <Box
+                            sx={{
+                              width: "75%",
+                              marginTop: "20px",
+                              textAlign: "center",
+                              position: "relative",
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                position: "absolute",
+                                top: "50%", // Center vertically
+                                left: "50%",
+                                transform: "translate(-50%, -50%)", // Center horizontally and vertically
+                                zIndex: 1, // Ensure text is above the progress bar
+                                fontWeight: "bold", // Make text bold
+                              }}
+                            >
+                              {`${applicant.skillMatch.matchPercentage.toFixed(
+                                2
+                              )}% Match`}
+                            </Typography>
+                            <LinearProgress
+                              variant="determinate"
+                              value={applicant.skillMatch.matchPercentage}
+                              sx={{
+                                height: 10,
+                                borderRadius: 5,
+                                backgroundColor: "#ddd",
+                                "& .MuiLinearProgress-bar": {
+                                  backgroundColor: getColor(
+                                    applicant.skillMatch.matchPercentage
+                                  ),
+                                },
+                              }}
+                            />
+                          </Box>
+                        )}
+                      </div>
                     </Card>
                   </div>
                 ))}

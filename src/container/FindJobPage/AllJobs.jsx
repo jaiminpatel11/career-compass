@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Pagination } from "@mui/material";
+import {
+  Button,
+  Pagination,
+  LinearProgress,
+  Box,
+  Typography,
+} from "@mui/material";
 import { LocationOn, Schedule, Book } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +57,12 @@ const AllJobs = ({
     navigate("/job-details", { state: { job } });
   };
 
+  const getColor = (percentage) => {
+    if (percentage < 25) return "red";
+    if (percentage < 75) return "yellow";
+    return "green";
+  };
+
   return (
     <div className="container mt-5 mt-md-0">
       <div className="row">
@@ -98,6 +110,57 @@ const AllJobs = ({
                       <Book style={{ marginRight: "8px" }} />
                       {job.skills.join(", ")}
                     </p>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    {job.skillMatch && (
+                      <div style={{ width: "75%", margin: "20px auto" }}>
+                        <Box
+                          sx={{
+                            width: "75%",
+                            marginTop: "20px",
+                            textAlign: "center",
+                            position: "relative",
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              position: "absolute",
+                              top: "50%", // Center vertically
+                              left: "50%",
+                              transform: "translate(-50%, -50%)", // Center horizontally and vertically
+                              zIndex: 1, // Ensure text is above the progress bar
+                              fontWeight: "bold", // Make text bold
+                            }}
+                          >
+                            {`${job.skillMatch.matchPercentage.toFixed(
+                              2
+                            )}% Match`}
+                          </Typography>
+                          <LinearProgress
+                            variant="determinate"
+                            value={job.skillMatch.matchPercentage}
+                            sx={{
+                              height: 10,
+                              borderRadius: 5,
+                              backgroundColor: "#ddd",
+                              "& .MuiLinearProgress-bar": {
+                                backgroundColor: getColor(
+                                  job.skillMatch.matchPercentage
+                                ),
+                              },
+                            }}
+                          />
+                        </Box>
+                      </div>
+                    )}
                   </div>
                   <div className="d-flex justify-content-center">
                     <Button
