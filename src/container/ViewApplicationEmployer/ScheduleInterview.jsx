@@ -119,7 +119,7 @@ const ScheduleInterview = () => {
           primaryFontColor={primaryFontColor}
           primaryColor={primaryColor}
         />
-        <div className="col-md-12 col-sm-12" style={{ padding: "0px" }}>
+        <div className="col-md-12">
           <div
             className="applicant-heding"
             style={{ color: primaryFontColor, backgroundColor: primaryColor }}
@@ -127,7 +127,7 @@ const ScheduleInterview = () => {
             <h1>Candidate Application</h1>
             <p>Review and manage applications from potential candidates</p>
           </div>
-          <div className="text-center">
+          <div className="text-center my-5">
             <h2
               className=""
               style={{
@@ -197,6 +197,21 @@ const ScheduleInterview = () => {
                 <button
                   variant="contained"
                   style={{
+                    backgroundColor: primaryFontColor,
+                    color: primaryColor,
+                    padding: "12px",
+                    borderRadius: "10px",
+                    border: "1px solid",
+                    margin: "30px",
+                    width: "250px",
+                  }}
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </button>
+                <button
+                  variant="contained"
+                  style={{
                     backgroundColor: primaryColor,
                     color: primaryFontColor,
                     padding: "12px",
@@ -209,20 +224,7 @@ const ScheduleInterview = () => {
                 >
                   Confirm
                 </button>
-                <button
-                  variant="contained"
-                  style={{
-                    backgroundColor: primaryFontColor,
-                    color: primaryColor,
-                    padding: "12px",
-                    borderRadius: "10px",
-                    border: "1px solid",
-                    width: "250px",
-                  }}
-                  onClick={() => navigate(-1)}
-                >
-                  Cancel
-                </button>
+                
               </div>
             </div>
           </div>

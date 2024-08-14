@@ -59,7 +59,7 @@ const AllJobs = ({
 
   const getColor = (percentage) => {
     if (percentage < 25) return "red";
-    if (percentage < 75) return "yellow";
+    if (percentage < 75) return "#eeee0f";
     return "green";
   };
 
@@ -79,23 +79,34 @@ const AllJobs = ({
             </h6>
           </div>
         </div>
-        <div className="row my-2 justify-content-center">
+        </div>
+        <div className="row my-2 ">
           {currentJobs.map((job, index) => (
-            <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div key={index} className=" col-md-4 col-sm-12 mb-4">
               <div
                 className="card position-relative"
                 style={{
-                  background: cardColor,
-                  borderRadius: "40px",
-                  height: "300px",
+                   background: cardColor,
+                  // borderRadius: "40px",
+                  // height: "300px",
+                  // padding: "5px",
+                  // display: "flex",
+                  // flexDirection: "column",
+                  // justifyContent: "space-between", // Evenly distribute elements
+                  // alignItems: "center",
+                  borderRadius: "40px", // Match the border-radius
+                  height: "300px", // Fixed height to match the second card
+                  padding: "5px", // Padding similar to the second card
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between", // Evenly distribute elements
+                  alignItems: "center", // Align items to the center
+                  position: "relative",
                 }}
               >
-                <div className="card-body text-center d-flex flex-column justify-content-between">
+                <div className="card-body text-center">
                   <div>
-                    <h5
-                      className="card-text mt-4"
-                      style={{ fontWeight: "bold" }}
-                    >
+                    <h5 className="card-text" style={{ fontWeight: "bold" }}>
                       {job.title}
                     </h5>
                     <p className="card-text">
@@ -116,14 +127,15 @@ const AllJobs = ({
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginBottom: "16px",
+                      marginBottom: "0",
                     }}
                   >
                     {job.skillMatch && (
-                      <div style={{ width: "75%", margin: "20px auto" }}>
+                      <div style={{ width: "100%", margin:"20px auto" }}>
                         <Box
                           sx={{
-                            width: "75%",
+                            width: "100%",
+                            minWidth:"250px",
                             marginTop: "20px",
                             textAlign: "center",
                             position: "relative",
@@ -132,12 +144,14 @@ const AllJobs = ({
                           <Typography
                             variant="body2"
                             sx={{
+                              width:"100%",
                               position: "absolute",
                               top: "50%", // Center vertically
                               left: "50%",
                               transform: "translate(-50%, -50%)", // Center horizontally and vertically
                               zIndex: 1, // Ensure text is above the progress bar
-                              fontWeight: "bold", // Make text bold
+                              fontWeight: "bold",
+                              color:"white !important",  // Make text bold
                             }}
                           >
                             {`${job.skillMatch.matchPercentage.toFixed(
@@ -148,9 +162,10 @@ const AllJobs = ({
                             variant="determinate"
                             value={job.skillMatch.matchPercentage}
                             sx={{
-                              height: 10,
+                              width:"100%",
+                              height: 15,
                               borderRadius: 5,
-                              backgroundColor: "#ddd",
+                              backgroundColor: "#b4b4b4",
                               "& .MuiLinearProgress-bar": {
                                 backgroundColor: getColor(
                                   job.skillMatch.matchPercentage
@@ -193,7 +208,7 @@ const AllJobs = ({
             />
           </div>
         )}
-      </div>
+      
     </div>
   );
 };

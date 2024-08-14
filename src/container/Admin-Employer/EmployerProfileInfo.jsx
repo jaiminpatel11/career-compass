@@ -1,102 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useParams } from 'react-router-dom';
-// import axios from 'axios';
-// import { CircularProgress } from '@mui/material';
-// import "./AdminEmployerPage.css";
-
-// const EmployerProfileInfo = () => {
-//   const { empID } = useParams(); // Get empID from URL
-//   const [employer, setEmployer] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchEmployerDetails = async () => {
-//       try {
-//         // Fetch the employer profile using the empID
-//         const response = await axios.get(`http://localhost:5000/api/profile/getEmployerAdmin/${empID}`, {
-//           headers: {
-//             'x-auth-token': sessionStorage.getItem('user')
-//           }
-//         });
-//         setEmployer(response.data);
-//         setLoading(false);
-//       } catch (error) {
-//         console.error('Error fetching employer details', error);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchEmployerDetails();
-//   }, [empID]);
-
-//   if (loading) {
-//     return <div className="loading"><CircularProgress /></div>;
-//   }
-
-//   if (!employer) {
-//     return <div className="error">Error loading employer details</div>;
-//   }
-
-//   // Destructure profile and userId from employer
-//   const { profile } = employer;
-//   const { address, companyLogo, companyName, companyDescription, industry, userId } = profile;
-//   const email = userId ? userId.email : "Email not available";
-
-//   return (
-//     <div className="container-fluid my-2 p-sm-5">
-//       <div className="row">
-//         <div className="col-12 text-center p-5">
-//           <h2 className="section-title">Employer Profile</h2>
-//           <img src={`http://localhost:5000/uploads/${companyLogo.split('\\').pop()}`} alt="Profile" className="profile-image"/>
-
-//           <div className="info-item">
-//             <label>Email:</label>
-//             <input className="text-color" type="text" value={email} disabled />
-//           </div>
-//           <div className="info-item">
-//             <label>Company Name:</label>
-//             <input className="text-color" type="text" value={companyName} disabled />
-//           </div>
-//           <div className="info-item">
-//             <label>Description:</label>
-//             <input className="text-color" type="text" value={companyDescription} disabled />
-//           </div>
-//           <div className="info-item">
-//             <label>Industry:</label>
-//             <input className="text-color" type="text" value={industry} disabled />
-//           </div>
-
-//           <h2 className="section-title">Address</h2>
-//           <div className="row">
-//             <div className="col-md-6">
-//               <div className="info-item">
-//                 <label>Street:</label>
-//                 <input className="text-color" type="text" value={address.street} disabled />
-//               </div>
-//               <div className="info-item">
-//                 <label>City:</label>
-//                 <input className="text-color" type="text" value={address.city} disabled />
-//               </div>
-//             </div>
-//             <div className="col-md-6">
-//               <div className="info-item">
-//                 <label>Country:</label>
-//                 <input className="text-color" type="text" value={address.country} disabled />
-//               </div>
-//               <div className="info-item">
-//                 <label>Postal Code:</label>
-//                 <input className="text-color" type="text" value={address.postalCode} disabled />
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default EmployerProfileInfo;
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -263,7 +164,7 @@ const EmployerProfileInfo = () => {
                   style={{ background: "#f5f5f5" }} // Replace with your cardColor or other styling
                 >
                   <div className="card-content">
-                    <h5 className="card-title">{job.title}</h5>
+                    <h4 className="card-title">{job.title}</h4>
                     <p>
                       <strong>Description:</strong> {job.description}
                     </p>

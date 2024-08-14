@@ -509,7 +509,7 @@ const CandidateProfilePage = () => {
                   padding: "12px",
                   borderRadius: "10px",
                   border: "1px solid",
-                  marginRight: "50px",
+                  margin:"10px"
         
                 }}
                 onClick={handleCancel}
@@ -525,6 +525,7 @@ const CandidateProfilePage = () => {
                   padding: "12px",
                   borderRadius: "10px",
                   border: "1px solid",
+                  margin:"10px"
                 }}
                 onClick={handleSubmit}
               >

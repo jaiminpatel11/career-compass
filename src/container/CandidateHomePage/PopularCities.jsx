@@ -74,7 +74,7 @@ const PopularCities = ({ SecondaryFontColor, cardColor }) => {
         </div>
         <div className="row my-2 my-md-5 justify-content-center justify-content-md-start">
           {categories.map((cat, index) => (
-            <div key={index} className="col-lg-3 col-md-6 col-sm-6 col-xs-12 mb-4 mt-5 pt-5">
+            <div key={index} className="col-lg-3 col-md-3 col-sm-6 col-xs-12 mb-4 mt-5 pt-5">
               <div
                 className="card position-relative"
                 style={{ background: cardColor, borderRadius: "40px" }}
