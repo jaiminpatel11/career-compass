@@ -146,7 +146,8 @@ const ApplicantDetails = () => {
                 margin: "50px",
               }}
             >
-              Job Role: {applicantDetails.job_id ? applicantDetails.job_id.title : " "}
+              Job Role:{" "}
+              {applicantDetails.job_id ? applicantDetails.job_id.title : " "}
             </h2>
             <div
               style={{
@@ -225,6 +226,8 @@ const ApplicantDetails = () => {
                     href={`http://localhost:5000/uploads/${applicantDetails.resume
                       .split("\\")
                       .pop()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     download
                   >
                     <IconButton color="primary">
@@ -238,6 +241,8 @@ const ApplicantDetails = () => {
                     href={`http://localhost:5000/uploads/${applicantDetails.cover_letter
                       .split("\\")
                       .pop()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     download
                   >
                     <IconButton color="primary">
@@ -251,6 +256,8 @@ const ApplicantDetails = () => {
                     href={`http://localhost:5000/uploads/${applicantDetails.portfolio
                       .split("\\")
                       .pop()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     download
                   >
                     <IconButton color="primary">
