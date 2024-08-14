@@ -81,23 +81,9 @@ const JobDetails = () => {
         primaryFontColor={primaryFontColor}
         CardColor={cardColor}
         job={job}
+        handleApplyClick={handleApplyClick}
       />
-      <div className="d-flex justify-content-center mt-4">
-        <Button
-          variant="contained"
-          style={{
-            backgroundColor: primaryColor,
-            color: primaryFontColor,
-            width: "150px",
-            padding: "12px",
-            borderRadius: "10px",
-            border: "1px solid"
-          }}
-          onClick={handleApplyClick}
-        >
-          Apply
-        </Button>
-      </div>
+      
       <Footer
         PrimaryColor={primaryColor}
         PrimaryFontColor={primaryFontColor}

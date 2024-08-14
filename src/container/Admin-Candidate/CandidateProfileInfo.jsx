@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Card, CircularProgress } from "@mui/material";
 import "./AdminCandidatePage.css";
+// import { Card } from "react-bootstrap";
 
 const CandidateProfileInfo = () => {
   const { userId } = useParams();
@@ -242,90 +243,58 @@ const CandidateProfileInfo = () => {
             </div>
           </div>
 
-          <h2 className="section-title">Jobs Applied</h2>
-          {jobApplications.length > 0 ? (
-            jobApplications.map((application, index) => (
-              <div key={application._id} className="job-application">
-                <h3 className="job-title">Job {index + 1}</h3>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="info-item">
-                      <label>Company:</label>
-                      <input
-                        className="text-color"
-                        type="text"
-                        value={
-                          application.job_id?.company_id?.name ||
-                          "Company not available"
-                        }
-                        disabled
-                      />
+          <div className="row">
+            <div className="col-12">
+              <h2 className="section-title text-center mb-4">
+                Jobs Applied ({jobApplications ? jobApplications.length : 0})
+              </h2>
+            </div>
+
+            {jobApplications && jobApplications.length > 0 ? (
+              jobApplications.map((application) => (
+                <div key={application._id} className="col-lg-4 col-md-6 mb-4">
+                  <Card
+                    className="card-container shadow-sm"
+                    style={{ background: "#f5f5f5" }}
+                  >
+                    <div className="card-container">
+                      <h4 className="card-title">
+                        {application.job_id?.title || "Title not available"}
+                      </h4>
+                      <p className="">
+                        <strong>Company:</strong>{" "}
+                        {application.job_id?.company_id?.name ||
+                          "Company not available"}
+                      </p>
+                      <p className="">
+                        <strong>Role:</strong>{" "}
+                        {application.job_id?.role || "Role not available"}
+                      </p>
+                      <p className="">
+                        <strong>Salary:</strong>{" "}
+                        {application.job_id?.salary || "Salary not available"}
+                      </p>
+                      <p className="">
+                        <strong>Skills:</strong>{" "}
+                        {application.job_id?.skills?.join(", ") ||
+                          "Skills not available"}
+                      </p>
+                      <p className="">
+                        <strong>Location:</strong>{" "}
+                        {application.job_id?.location
+                          ? `${application.job_id.location.street}, ${application.job_id.location.city}, ${application.job_id.location.province}, ${application.job_id.location.country}, ${application.job_id.location.postalCode}`
+                          : "Location not available"}
+                      </p>
                     </div>
-                    <div className="info-item">
-                      <label>Role:</label>
-                      <input
-                        className="text-color"
-                        type="text"
-                        value={application.job_id?.role || "Role not available"}
-                        disabled
-                      />
-                    </div>
-                    <div className="info-item">
-                      <label>Salary:</label>
-                      <input
-                        className="text-color"
-                        type="text"
-                        value={
-                          application.job_id?.salary || "Salary not available"
-                        }
-                        disabled
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="info-item">
-                      <label>Title:</label>
-                      <input
-                        className="text-color"
-                        type="text"
-                        value={
-                          application.job_id?.title || "Title not available"
-                        }
-                        disabled
-                      />
-                    </div>
-                    <div className="info-item">
-                      <label>Skills:</label>
-                      <input
-                        className="text-color"
-                        type="text"
-                        value={
-                          application.job_id?.skills?.join(", ") ||
-                          "Skills not available"
-                        }
-                        disabled
-                      />
-                    </div>
-                    <div className="info-item">
-                      <label>Location:</label>
-                      <input
-                        className="text-color"
-                        type="text"
-                        value={
-                          application.job_id?.location
-                            ? `${application.job_id.location.street}, ${application.job_id.location.city}, ${application.job_id.location.province}, ${application.job_id.location.country}, ${application.job_id.location.postalCode}`
-                            : "Location not available"
-                        }
-                        disabled
-                      />
-                    </div>
-                  </div>
+                  </Card>
                 </div>
+              ))
+            ) : (
+              <div className="col-12 text-center">
+                <p>No job applications found.</p>
               </div>
-            ))
-          ) : (
-            <p>No job applications found.</p>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

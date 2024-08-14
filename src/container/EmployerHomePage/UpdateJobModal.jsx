@@ -121,6 +121,7 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
           width: "55%",
           maxHeight: "90vh",
           overflowY: "auto",
+          padding:"50px"
         }}
       >
         <h2 id="update-job-modal" style={{ color: primaryColor, marginBottom: "1.5rem", textAlign: "center" }}>Update Job</h2>
@@ -273,7 +274,7 @@ const UpdateJobModal = ({ isOpen, onClose, jobData, showSnackbar }) => {
             error={!!errors.expiry_date}
             helperText={errors.expiry_date?.message}
           />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="mt-5" style={{ display: "flex", justifyContent: "space-evenly" }}>
             <Button
               variant="contained"
               style={{

@@ -116,23 +116,8 @@ const AdminJobDetails = () => {
         primaryFontColor={primaryFontColor}
         CardColor={cardColor}
         job={job}
+        handleDeleteClick={handleDeleteClick}
       />
-      <div className="d-flex justify-content-center mt-4" style={{ marginBottom: "20px", marginTop: "40px" }}>
-        <Button
-          variant="contained"
-          style={{
-            backgroundColor: primaryColor,
-            color: primaryFontColor,
-            width: "150px",
-            padding: "12px",
-            borderRadius: "10px",
-            border: "1px solid"
-          }}
-          onClick={handleDeleteClick}
-        >
-          Delete
-        </Button>
-      </div>
       <Footer
         PrimaryColor={primaryColor}
         PrimaryFontColor={primaryFontColor}

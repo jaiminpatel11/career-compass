@@ -129,12 +129,12 @@ const ApplicantDetails = () => {
           primaryFontColor={primaryFontColor}
           primaryColor={primaryColor}
         />
-        <div className="col-md-12 col-sm-12">
+        <div className="col-md-12">
           <div
             className="applicant-heding"
             style={{ color: primaryFontColor, backgroundColor: primaryColor }}
           >
-            <h1>Candidate Application</h1>
+            <h1>Review Candidate Application</h1>
             <p>Review and manage applications from potential candidates</p>
           </div>
           <div className="text-center applicant-details">
@@ -146,7 +146,7 @@ const ApplicantDetails = () => {
                 margin: "50px",
               }}
             >
-              Job Role:{" "}
+              Job Role:&nbsp; {" "}
               {applicantDetails.job_id ? applicantDetails.job_id.title : " "}
             </h2>
             <div
@@ -171,7 +171,7 @@ const ApplicantDetails = () => {
                 {/* {applicantDetails.user_id.name} */}
                 Personal Details
               </h3>
-              <div className="personal-details " style={{}}>
+              <div className="personal-details mt-5 " style={{}}>
                 <TextField
                   type="text"
                   id="outlined-basic"
@@ -268,14 +268,14 @@ const ApplicantDetails = () => {
                 </div>
               </div>
 
-              <div>
-                <strong>Application Status: </strong>
-                {applicantDetails.status}
+              <div className="my-5">
+                <h4>Application Status: {applicantDetails.status} </h4>
+                
               </div>
 
               {applicantDetails.status === "Interview Confirmed" && (
                 <div className="text-center">
-                  <h3 className="mt-4"> Interview details: </h3>
+                  <h3 className="mt-5"> Interview details: </h3>
                   {applicantDetails.interview_details}
                   {applicantDetails.interview_dates &&
                   applicantDetails.interview_dates.length > 0 ? (

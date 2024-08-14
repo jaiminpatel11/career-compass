@@ -104,9 +104,9 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
       applicant.status === "Interview Confirmed" ||
       applicant.status === "Approved"
     ) {
-      return "1px solid green";
+      return "2px solid green";
     } else if (applicant.status === "Rejected" || !applicant.job_id) {
-      return "1px solid red";
+      return "2px solid red";
     } else {
       return "none";
     }
@@ -126,7 +126,7 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
 
   const getColor = (percentage) => {
     if (percentage < 25) return "red";
-    if (percentage < 75) return "yellow";
+    if (percentage < 75) return "#eeee0f";
     return "green";
   };
 
@@ -159,18 +159,23 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                         position: "relative",
                         cursor: applicant.job_id ? "pointer" : "default",
                         marginTop: "10px",
+                        height: "225px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-around", // Evenly distributes elements
+                        alignItems: "normal", // Center-aligns content horizontally
                         border: getBorderColor(applicant),
                       }}
                       onClick={() =>
                         handleCardClick(applicant._id, applicant.job_id)
                       }
                     >
-                      <h5
+                      <h4
                         className="card-title"
                         style={{ fontWeight: "bold", marginBottom: "16px" }}
                       >
                         {`${applicant.firstName} ${applicant.lastName}`}
-                      </h5>
+                      </h4>
                       <div
                         style={{
                           display: "flex",
@@ -212,13 +217,13 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          marginBottom: "16px",
+                          marginBottom: "0",
                         }}
                       >
                         {applicant.job_id && !applicant.skillMatch?.error && (
                           <Box
                             sx={{
-                              width: "75%",
+                              width: "70%",
                               marginTop: "20px",
                               textAlign: "center",
                               position: "relative",
@@ -232,7 +237,8 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                                 left: "50%",
                                 transform: "translate(-50%, -50%)", // Center horizontally and vertically
                                 zIndex: 1, // Ensure text is above the progress bar
-                                fontWeight: "bold", // Make text bold
+                                fontWeight: "bold",
+                                color:"white" // Make text bold
                               }}
                             >
                               {`${applicant.skillMatch.matchPercentage.toFixed(
@@ -243,9 +249,9 @@ const JobApplicants = ({ primaryColor, cardColor }) => {
                               variant="determinate"
                               value={applicant.skillMatch.matchPercentage}
                               sx={{
-                                height: 10,
+                                height: 20,
                                 borderRadius: 5,
-                                backgroundColor: "#ddd",
+                                backgroundColor: "#b4b4b4",
                                 "& .MuiLinearProgress-bar": {
                                   backgroundColor: getColor(
                                     applicant.skillMatch.matchPercentage

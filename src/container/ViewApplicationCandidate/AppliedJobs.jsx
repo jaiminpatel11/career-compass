@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, Pagination } from "@mui/material";
-import { Work, AccessAlarmOutlined, CheckCircle, Cancel, HourglassEmpty } from "@mui/icons-material";
+import {
+  Work,
+  AccessAlarmOutlined,
+  CheckCircle,
+  Cancel,
+  HourglassEmpty,
+} from "@mui/icons-material";
+import { LocationOn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -92,6 +99,10 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                       marginTop: "10px",
                       border: getBorderColor(applicant),
                       minHeight: "200px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around", // Evenly distributes elements
+                      alignItems: "normal",
                     }}
                     onClick={() =>
                       handleCardClick(applicant._id, applicant.job_id)
@@ -105,12 +116,26 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                         marginBottom: "16px",
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <Work style={{ marginRight: "8px", fontWeight: "bold" }} />
-                        <span style={{ fontSize: "18px", fontWeight: "bold"}}>{applicant.job_id ? applicant.job_id.title : applicant.job_title}</span>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Work
+                          style={{ marginRight: "8px", fontWeight: "bold" }}
+                        />
+                        <span style={{ fontSize: "18px", fontWeight: "bold" }}>
+                          {applicant.job_id
+                            ? applicant.job_id.title
+                            : applicant.job_title}
+                        </span>
                       </div>
                       {!applicant.job_id && (
-                        <span style={{ marginTop: "8px", color: "red" }}>This Job Is No Longer Available</span>
+                        <span style={{ marginTop: "8px", color: "red" }}>
+                          This Job Is No Longer Available
+                        </span>
                       )}
                     </div>
                     <div
@@ -122,7 +147,9 @@ const AppliedJobs = ({ primaryColor, cardColor }) => {
                       }}
                     >
                       <AccessAlarmOutlined style={{ marginRight: "8px" }} />
-                      <span>{applicant.job_id ? applicant.job_id.role : 'N/A'}</span>
+                      <span>
+                        {applicant.job_id ? applicant.job_id.role : "N/A"}
+                      </span>
                     </div>
                     <div
                       style={{

@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 
 const HeroSection = ({ primaryColor, primaryFontColor,opacity, onSearch }) => {
   return (
-    <div className="container-fluid text-sm-center py-sm-3" style={{ background: primaryColor, opacity:opacity,}}>
+    <div className="container-fluid text-sm-center py-sm-3" style={{ background: primaryColor, opacity:opacity}}>
       <div className="row">
         <div className="col-md-12 col-sm-12 p-md-5">
             <div className="hero-text px-lg-5 px-0 text-center ">
@@ -14,7 +14,7 @@ const HeroSection = ({ primaryColor, primaryFontColor,opacity, onSearch }) => {
               <h6 className="mt-4" style={{ color: primaryFontColor }}>
                 Manage and Oversee All Candidates              </h6>
             </div>
-            <div className="search-bar p-lg-5 p-0">
+            <div className="search-bar">
             <SearchBar onSearch={onSearch} />
           </div>
         </div>

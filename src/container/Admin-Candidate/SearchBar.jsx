@@ -11,8 +11,10 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-bar-container">
-      <Form className="d-flex justify-content-center justify-content-start">
+    <div className=" container search-bar-container">
+      <div className="row">
+        <div className="offset-md-3 col-md-6 " >
+        <Form className="d-flex justify-content-center justify-content-start">
         <Form.Control
           type="search"
           placeholder="Search candidates..."
@@ -20,15 +22,15 @@ const SearchBar = ({ onSearch }) => {
           aria-label="Search"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          style={{
-            backgroundColor: "white",
-            borderRadius: "25px",
-            border: "none",
-            paddingLeft: "15px",
-            paddingRight: "15px",
-            width: "300px",
-            color: "black",
-          }}
+          // style={{
+          //   backgroundColor: "white",
+          //   borderRadius: "25px",
+          //   border: "none",
+          //   paddingLeft: "15px",
+          //   paddingRight: "15px",
+          //   width: "300px",
+          //   color: "black",
+          // }}
         />
          <span
             className="input-group-text"
@@ -38,6 +40,9 @@ const SearchBar = ({ onSearch }) => {
             <FontAwesomeIcon icon={faSearch} />
           </span>
       </Form>
+        </div>
+      </div>
+      
     </div>
   );
 };

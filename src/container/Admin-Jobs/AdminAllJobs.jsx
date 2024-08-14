@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Pagination } from "@mui/material";
+import { Button, Card, Pagination } from "@mui/material";
 import { LocationOn, Schedule, Book } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -70,21 +70,21 @@ const AdminAllJobs = ({
           >
             Job Lists
           </h2>
-          <div className="row my-2 justify-content-center">
+          <div className="row">
             {jobList.map((job, index) => (
-              <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <div
-                  className="card position-relative"
+              <div key={index} className=" col-md-4 col-sm-12">
+                <Card
+                  className="card-container"
                   style={{
-                    background: cardColor,
-                    borderRadius: "40px",
-                    height: "300px",
+                    backgroundColor: "rgb(239, 240, 249)",
+                     borderRadius: "15px",
+                     minHeight: "225px",
                   }}
                 >
-                  <div className="card-body text-center d-flex flex-column justify-content-between">
+                  <div className="card-body text-center">
                     <div>
                       <h5
-                        className="card-text mt-4"
+                        className="card-text"
                         style={{ fontWeight: "bold" }}
                       >
                         {job.title}
@@ -102,14 +102,14 @@ const AdminAllJobs = ({
                         {job.skills.join(", ")}
                       </p>
                     </div>
-                    <div className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center mt-3">
                       <Button
                         variant="contained"
                         style={{
                           backgroundColor: primaryColor,
                           color: primaryFontColor,
                           width: "150px",
-                          padding: "12px",
+                          padding: "8px",
                           borderRadius: "10px",
                           border: "1px solid",
                         }}
@@ -119,7 +119,7 @@ const AdminAllJobs = ({
                       </Button>
                     </div>
                   </div>
-                </div>
+                </Card>
               </div>
             ))}
           </div>
@@ -128,26 +128,26 @@ const AdminAllJobs = ({
         {/* Expired Jobs Section */}
         <div className="col-md-12">
           <h2
-            className="text-center"
+            className="text-center mt-5"
             style={{ color: SecondaryFontColor, marginBottom: "20px" }}
           >
             Expired Jobs
           </h2>
-          <div className="row my-2 justify-content-center">
+          <div className="row ">
             {expiredJobs.map((job, index) => (
-              <div key={index} className="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <div
-                  className="card position-relative"
+              <div key={index} className="col-md-4 col-sm-12">
+                <Card
+                  className="card-container "
                   style={{
-                    background: cardColor,
-                    borderRadius: "40px",
-                    height: "300px",
+                    background: "rgb(239, 240, 249)",
+                    borderRadius: "15px",
+                    minHeight: "225px",
                   }}
                 >
-                  <div className="card-body text-center d-flex flex-column justify-content-between">
+                  <div className="card-body text-center">
                     <div>
                       <h5
-                        className="card-text mt-4"
+                        className="card-text"
                         style={{ fontWeight: "bold" }}
                       >
                         {job.title}
@@ -165,14 +165,14 @@ const AdminAllJobs = ({
                         {job.skills.join(", ")}
                       </p>
                     </div>
-                    <div className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center mt-3">
                       <Button
                         variant="contained"
                         style={{
                           backgroundColor: primaryColor,
                           color: primaryFontColor,
                           width: "150px",
-                          padding: "12px",
+                          padding: "8px",
                           borderRadius: "10px",
                           border: "1px solid",
                         }}
@@ -182,7 +182,7 @@ const AdminAllJobs = ({
                       </Button>
                     </div>
                   </div>
-                </div>
+                </Card>
               </div>
             ))}
           </div>

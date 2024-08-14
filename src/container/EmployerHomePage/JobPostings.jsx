@@ -147,6 +147,11 @@ const JobPostings = ({ primaryFontColor, cardColor }) => {
                     textAlign: "center",
                     position: "relative",
                     cursor: "pointer",
+                    height:"225px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between", // Evenly distribute elements
+                    alignItems: "center",
                   }}
                   onClick={() => handleOpenUpdateModal(job)}
                 >

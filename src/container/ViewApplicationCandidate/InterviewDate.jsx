@@ -136,15 +136,15 @@ const InterviewDate = () => {
           <div className="col-md-10 col-sm-12">
             <Card className="p-5" style={{ borderRadius: "80px" }}>
               <div className="text-center">
-                <h1 className="mt-3">{applicantDetails.job_id.title}</h1>
-                <h2 className="mt-3" style={{ color: primaryColor }}>
+                <h1 className="mt-5" style={{ color: primaryColor }}>{applicantDetails.job_id.title}</h1>
+                <h2 className="mt-5" style={{ color: primaryColor }}>
                   {applicantDetails.company_id.name}
                 </h2>
-                <h2 className="mt-4">{applicantDetails.job_id.location.street}, {applicantDetails.job_id.location.city}, {applicantDetails.job_id.location.province}, {applicantDetails.job_id.location.country}, {applicantDetails.job_id.location.postalCode}</h2>
+                <h2 className="mt-5" style={{color:"black"}}>{applicantDetails.job_id.location.street}, {applicantDetails.job_id.location.city}, {applicantDetails.job_id.location.province}, {applicantDetails.job_id.location.country}, {applicantDetails.job_id.location.postalCode}</h2>
               </div>
 
               <div className="p-5 text-center" style={{ margin: "10px" }}>
-                <h3 className="" style={{ color: primaryColor }}>
+                <h3 className="" style={{ color: "black" }}>
                   Skills, Experience and Qualifications
                 </h3>
                 <ul>
@@ -161,7 +161,7 @@ const InterviewDate = () => {
 
               {applicantDetails.status === "Submitted" && (
                 <div className="text-center">
-                  <h3 style={{}}>
+                  <h3 style={{color: primaryColor}}>
                     Application under review. We will get back to you when we
                     make a decision.
                   </h3>
@@ -170,7 +170,7 @@ const InterviewDate = () => {
 
               {applicantDetails.status === "Rejected" && (
                 <div className="text-center">
-                  <h3 style={{ color: red }}>
+                  <h3 style={{ color: "red" }}>
                     Application rejected. We have decided to move on with
                     another candidate.
                   </h3>
@@ -179,7 +179,7 @@ const InterviewDate = () => {
 
               {applicantDetails.status === "Approved" && (
                 <div className="text-center">
-                  <h3 style={{ color: green }}>
+                  <h3 style={{ color: "green" }}>
                     Congratulations! We would like to offer you the position. We
                     will get in touch with you for the onboarding process.
                   </h3>

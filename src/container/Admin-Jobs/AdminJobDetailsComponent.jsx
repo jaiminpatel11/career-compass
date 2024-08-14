@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
+import {Card, Button} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationArrow,
@@ -14,11 +14,13 @@ const AdminJobDeatilComponent = ({
   primaryColor,
   primaryFontColor,
   CardColor,
+  handleDeleteClick
 }) => {
   return (
     <div className="container mt-4">
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-4"></div>
+        <div className="col-md-4">
           <Card
             style={{
               background: CardColor,
@@ -29,8 +31,8 @@ const AdminJobDeatilComponent = ({
             }}
           >
             <h5
-              className="card-title"
-              style={{ fontWeight: "bold", marginBottom: "16px" }}
+              className="card-title mt-3"
+              style={{ fontWeight: "bold" }}
             >
               {job.title}
             </h5>
@@ -87,8 +89,26 @@ const AdminJobDeatilComponent = ({
               />
               <span>{new Date(job.expiry_date).toLocaleDateString()}</span>
             </div>
+            <div className="d-flex justify-content-center mt-4" style={{ marginBottom: "20px", marginTop: "40px" }}>
+        <Button
+          variant="contained"
+          style={{
+            backgroundColor: primaryColor,
+            color: primaryFontColor,
+            width: "150px",
+            padding: "12px",
+            borderRadius: "10px",
+            border: "1px solid"
+          }}
+          onClick={handleDeleteClick}
+        >
+          Delete
+        </Button>
+      </div>
           </Card>
         </div>
+        <div className="col-md-4"></div>
+        
       </div>
     </div>
   );

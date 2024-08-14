@@ -128,10 +128,12 @@ const ApplyPage = () => {
         primaryColor={primaryColor}
       />
       <div className="container mt-5">
-        <h2 className="text-center mb-4">Apply for {job.title}</h2>
-        <form>
-          <h3 className="mb-3" style={{ color: secondaryFontColor }}>Personal Details</h3>
-          <div className="mb-3 d-flex justify-content-between">
+        <h2 className="text-center mb-4" style={{ color: secondaryFontColor }}>Apply for {job.title}</h2>
+        <form className="my-5">
+          <h3 className="mt-5 text-center" style={{ color: secondaryFontColor }}>Personal Details</h3>
+          <div className="row">
+            <div className="mt-5 col-md-2"></div>
+          <div className="mt-5 col-md-4">
             <TextField
               fullWidth
               variant="outlined"
@@ -142,7 +144,7 @@ const ApplyPage = () => {
               required
               error={!!errors.firstName}
               helperText={errors.firstName}
-              style={{ marginRight: "10px" }}
+              style={{ marginBottom: "20px" }}
             />
             <TextField
               fullWidth
@@ -156,7 +158,7 @@ const ApplyPage = () => {
               helperText={errors.lastName}
             />
           </div>
-          <div className="mb-3 d-flex justify-content-between">
+          <div className="mt-5 col-md-4">
             <TextField
               fullWidth
               variant="outlined"
@@ -167,7 +169,7 @@ const ApplyPage = () => {
               required
               error={!!errors.email}
               helperText={errors.email}
-              style={{ marginRight: "10px" }}
+              style={{ marginBottom: "20px" }}
             />
             <TextField
               fullWidth
@@ -181,8 +183,13 @@ const ApplyPage = () => {
               helperText={errors.phoneNumber}
             />
           </div>
-          <h3 className="mb-3" style={{ color: secondaryFontColor }}>Upload Resume</h3>
-          <div className="mb-3">
+          <div className="mt-5 col-md-2"></div>
+          </div>
+          <div className="row">
+          <div className="col-md-4"></div>
+          <div className="col-md-4 text-center">
+            <h3 className="mt-5" style={{ color: secondaryFontColor }}>Upload Resume</h3>
+          <div className="mt-3">
             <input
               accept="application/pdf, application/msword"
               style={{ display: "none" }}
@@ -210,8 +217,8 @@ const ApplyPage = () => {
               <p className="text-danger mt-2">{errors.resume}</p>
             )}
           </div>
-          <h3 className="mb-3" style={{ color: secondaryFontColor }}>Cover Letter</h3>
-          <div className="mb-3">
+          <h3 className="mt-5" style={{ color: secondaryFontColor }}>Cover Letter</h3>
+          <div className="mt-3">
             <input
               accept="application/pdf, application/msword"
               style={{ display: "none" }}
@@ -239,8 +246,8 @@ const ApplyPage = () => {
               <p className="text-danger mt-2">{errors.coverLetter}</p>
             )}
           </div>
-          <h3 className="mb-3" style={{ color: secondaryFontColor }}>Portfolio</h3>
-          <div className="mb-3">
+          <h3 className="mt-5" style={{ color: secondaryFontColor }}>Portfolio</h3>
+          <div className="mt-3">
             <input
               accept="application/pdf, application/msword, image/*"
               style={{ display: "none" }}
@@ -268,7 +275,7 @@ const ApplyPage = () => {
               <p className="text-danger mt-2">{errors.portfolio}</p>
             )}
           </div>
-          <div className="text-center mb-5" style={{ marginTop: "25px" }}>
+          <div className="text-center mt-5" style={{ marginTop: "25px" }}>
             <Button
               variant="contained"
               style={{
@@ -298,7 +305,11 @@ const ApplyPage = () => {
             >
               Apply
             </Button>
+          </div></div>
+          <div className="col-md-4"></div>
           </div>
+          
+          
         </form>
         <Snackbar
           open={snackbarOpen}

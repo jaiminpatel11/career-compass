@@ -29,24 +29,24 @@ const AdminDashboardOverview = ({ primaryColor, primaryFontColor, secondaryFontC
             <h1 style={{ color: primaryColor }}>Overview</h1>
             <div className="row mt-4">
                 <div className="col-md-4">
-                    <div className="card p-4" style={{ backgroundColor: '#f8f9fa', borderRadius: '20px' }}>
+                    <div className="card p-4" style={{ backgroundColor: '#f8f9fa', borderRadius: '20px', minHeight:"200px" }}>
                         <h1 style={{ color: 'black' }}>{counts.candidates}</h1>
-                        <FontAwesomeIcon icon={faPerson} style={{ marginRight: "8px" }} />
-                        <p style={{ color: 'black' }}>Candidates</p>
+                        <FontAwesomeIcon className='mt-3' icon={faPerson} style={{ marginRight: "8px" , fontSize:"25px" }} />
+                        <p className='mt-4' style={{ color: 'black' }}>Candidates</p>
                     </div>
                 </div>
                 <div className="col-md-4">
-                    <div className="card p-4" style={{ backgroundColor: '#f8f9fa', borderRadius: '20px' }}>
+                    <div className="card p-4" style={{ backgroundColor: '#f8f9fa', borderRadius: '20px', minHeight:"200px" }}>
                         <h1 style={{ color: 'black' }}>{counts.jobs}</h1>
-                        <FontAwesomeIcon icon={faBriefcase} style={{ marginRight: "8px" }} />
-                        <p style={{ color: 'black' }}>Jobs</p>
+                        <FontAwesomeIcon className='mt-3' icon={faBriefcase} style={{ marginRight: "8px" , fontSize:"25px" }} />
+                        <p className='mt-4' style={{ color: 'black' }}>Jobs</p>
                     </div>
                 </div>
                 <div className="col-md-4">
-                    <div className="card p-4" style={{ backgroundColor: '#f8f9fa', borderRadius: '20px' }}>
+                    <div className="card p-4" style={{ backgroundColor: '#f8f9fa', borderRadius: '20px', minHeight:"200px" }}>
                         <h1 style={{ color: 'black' }}>{counts.employers}</h1>
-                        <FontAwesomeIcon icon={faBuildingColumns} style={{ marginRight: "8px" }} />
-                        <p style={{ color: 'black' }}>Employers</p>
+                        <FontAwesomeIcon className='mt-3' icon={faBuildingColumns} style={{ marginRight: "8px" , fontSize:"25px" }} />
+                        <p className='mt-4' style={{ color: 'black' }}>Employers</p>
                     </div>
                 </div>
             </div>

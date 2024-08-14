@@ -103,8 +103,14 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
               href={link.url}
               className="navbar-link-custom"
               style={{
-                color: primaryFontColor,
+                // color: primaryFontColor,
                 fontWeight: location.pathname === link.url ? "bold" : "normal",
+                fontSize: location.pathname === link.url ? "18px " : "normal",
+                // textDecoration: location.pathname === link.url ? " overline " : "normal",
+                // textDecoration: location.pathname === link.url ? " underline " : "normal",
+                backgroundColor: location.pathname === link.url ? " white " : "normal",
+                color: location.pathname === link.url ? primaryColor : "white",
+                borderRadius: location.pathname === link.url ? "10px" : "0",
               }}
               onClick={link.onClick}
             >
