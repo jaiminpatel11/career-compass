@@ -55,7 +55,9 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
           employer.companyDescription
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          employer.address.city.toLowerCase().includes(searchTerm.toLowerCase())
+          employer.address?.city
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
       );
       setFilteredEmployers(filtered);
     } else {
@@ -98,7 +100,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
       );
       console.log(selectedEmployerId);
       const updatedEmployers = employers.filter(
-        (employer) => employer.userId._id !== selectedEmployerId
+        (employer) => employer.userId?._id !== selectedEmployerId
       );
       setEmployers(updatedEmployers);
       setFilteredEmployers(updatedEmployers);
@@ -123,17 +125,24 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
               <div>There are no Employers at this time</div>
             ) : (
               paginatedEmployers.map((employer) => (
-                <div className="col-md-4 mb-4" key={employer.userId._id}>
+                <div className="col-md-4 mb-4" key={employer.userId?._id || employer.id}>
                   <Card
                     className="card-container"
-                    style={{ background: cardColor, minHeight:"225px", display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center" }}
-                    onClick={() => handleCardClick(employer.userId._id)}
+                    style={{
+                      background: cardColor,
+                      minHeight: "225px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                    }}
+                    onClick={() => handleCardClick(employer.userId?._id)}
                   >
                     <IconButton
                       className="delete-button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteClick(employer.userId._id);
+                        handleDeleteClick(employer.userId?._id);
                       }}
                     >
                       <Delete />
@@ -141,11 +150,11 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
                     <h5 className="card-title">{employer.companyName}</h5>
                     <div className="icon-text">
                       <Work className="mx-2" />
-                      {employer.companyDescription}
+                      {employer.companyDescription || "No description provided"}
                     </div>
                     <div className="icon-text">
                       <LocationOn className="mx-2" />
-                      {employer.address.city}, {employer.address.country}
+                      {employer.address?.city || "No city provided"}, {employer.address?.country || "No country provided"}
                     </div>
                   </Card>
                 </div>

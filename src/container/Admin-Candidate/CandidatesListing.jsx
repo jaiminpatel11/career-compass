@@ -48,16 +48,11 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   useEffect(() => {
     if (searchTerm) {
-      const filtered = candidates.filter(
-        (candidate) =>
-          candidate.firstName
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          candidate.userId.email
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          candidate.skills.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = candidates.filter((candidate) =>
+        candidate.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        candidate.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (candidate.userId?.email?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+        candidate.skills.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredCandidates(filtered);
     } else {
@@ -91,7 +86,7 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
       );
       // Remove the deleted candidate from the state
       const updatedCandidates = candidates.filter(
-        (candidate) => candidate.userId._id !== selectedUserId
+        (candidate) => candidate.userId?._id !== selectedUserId
       );
       setCandidates(updatedCandidates);
       setFilteredCandidates(updatedCandidates);
@@ -128,17 +123,17 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
               </div>
             ) : (
               displayedCandidates.map((candidate) => (
-                <div className="col-md-4 mb-4" key={candidate.userId._id}>
+                <div className="col-md-4 mb-4" key={candidate.userId?._id || candidate.id}>
                   <Card
                     className="card-container"
                     style={{ background: cardColor }}
-                    onClick={() => handleCardClick(candidate.userId._id)}
+                    onClick={() => handleCardClick(candidate.userId?._id)}
                   >
                     <IconButton
                       className="delete-button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteClick(candidate.userId._id);
+                        handleDeleteClick(candidate.userId?._id);
                       }}
                     >
                       <Delete />
@@ -148,15 +143,15 @@ const CandidatesListing = ({ primaryColor, cardColor, searchTerm }) => {
                     </h5>
                     <div className="icon-text">
                       <Email className="mx-2" />
-                      {candidate.userId.email}
+                      {candidate.userId?.email || "No email provided"}
                     </div>
                     <div className="icon-text">
                       <LocationOn className="mx-2" />
-                      {candidate.address.city}, {candidate.address.province}
+                      {candidate.address?.city || "No city provided"}, {candidate.address?.province || "No province provided"}
                     </div>
                     <div className="icon-text">
                       <Work className="mx-2" />
-                      {candidate.skills}
+                      {candidate.skills || "No skills provided"}
                     </div>
                   </Card>
                 </div>
