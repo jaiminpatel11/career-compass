@@ -126,7 +126,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
                 <div className="col-md-4 mb-4" key={employer.userId._id}>
                   <Card
                     className="card-container"
-                    style={{ background: cardColor }}
+                    style={{ background: cardColor, minHeight:"225px", display:"flex", flexDirection:"column", justifyContent:"space-around", alignItems:"center" }}
                     onClick={() => handleCardClick(employer.userId._id)}
                   >
                     <IconButton

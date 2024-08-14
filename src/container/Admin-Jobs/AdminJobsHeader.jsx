@@ -3,7 +3,7 @@ import Searchbar from "../../components/Common/Searchbar";
 
 const AdminJobsHeader = ({ primaryColor, primaryFontColor, opacity }) => {
   return (
-    <div className="container-fluid d-flex justify-content-center align-items-center" style={{ background: primaryColor, opacity: opacity, height: "65vh" }}>
+    <div className="container-fluid d-flex justify-content-center align-items-center" style={{ background: primaryColor, opacity: opacity }}>
       <div className="row w-100">
         <div className="col-md-6 offset-md-3 col-sm-12 p-md-5 p-0 d-flex flex-column align-items-center text-center">
           <div className="hero-text">

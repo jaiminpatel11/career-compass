@@ -105,7 +105,7 @@ const Navbar = ({ logo, primaryFontColor, primaryColor }) => {
               style={{
                 // color: primaryFontColor,
                 fontWeight: location.pathname === link.url ? "bold" : "normal",
-                fontSize: location.pathname === link.url ? "22px " : "normal",
+                fontSize: location.pathname === link.url ? "18px " : "normal",
                 // textDecoration: location.pathname === link.url ? " overline " : "normal",
                 // textDecoration: location.pathname === link.url ? " underline " : "normal",
                 backgroundColor: location.pathname === link.url ? " white " : "normal",
