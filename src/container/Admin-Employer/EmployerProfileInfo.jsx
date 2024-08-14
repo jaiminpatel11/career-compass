@@ -166,9 +166,13 @@ const EmployerProfileInfo = () => {
       <div className="row">
         <div className="col-2"></div>
         <div className="col-8 text-center p-5">
-          <h2 className="section-title">Employer Profile</h2>
-          <img src={companyLogo} alt="Company Logo" className="profile-image" />
-
+          <img
+            src={`http://localhost:5000/uploads/${companyLogo
+              .split("\\")
+              .pop()}`}
+            alt="Profile"
+            className="profile-image"
+          />
           <div className="info-item">
             <label>Email:</label>
             <input className="text-color" type="text" value={email} disabled />
@@ -246,11 +250,11 @@ const EmployerProfileInfo = () => {
         <div className="col-2"></div>
 
         {/* Jobs Section */}
-        
+
         <div className="row text-center">
-        <h2 className="section-title ">
-          Jobs Posting ({jobs ? jobs.length : 0})
-        </h2>
+          <h2 className="section-title ">
+            Jobs Posting ({jobs ? jobs.length : 0})
+          </h2>
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => (
               <div key={job._id} className="col-lg-4 col-md-6 mb-4">
@@ -264,7 +268,7 @@ const EmployerProfileInfo = () => {
                       <strong>Description:</strong> {job.description}
                     </p>
                     <p>
-                      <strong>Location:</strong> {job.location}
+                      <strong>Location:</strong> {job.location.city}
                     </p>
                     <p>
                       <strong>Salary:</strong> {job.salary}
