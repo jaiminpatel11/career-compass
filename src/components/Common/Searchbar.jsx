@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -8,50 +8,69 @@ import ListGroup from "react-bootstrap/ListGroup";
 
 const Searchbar = () => {
   const [input, setInput] = useState("");
+  const [allJobs, setAllJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [noJobsFound, setNoJobsFound] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const fetchData = async (value) => {
-    try {
-      const token = sessionStorage.getItem("user");
-      const response = await axios.get("http://localhost:5000/api/jobs/all", {
-        headers: {
-          "x-auth-token": token,
-        },
-      });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = sessionStorage.getItem("user");
+        const response = await axios.get("http://localhost:5000/api/jobs/all", {
+          headers: {
+            "x-auth-token": token,
+          },
+        });
+        setAllJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-      // Filter jobs by title if value matches a title, otherwise by location
-      const titleSearchResult = response.data.filter(
-        (job) => job.title && job.title.toLowerCase().includes(value.toLowerCase())
-      );
+    fetchData();
+  }, []);
 
-      const locationSearchResult = response.data.filter(
-        (job) => job.location && job.location.city && job.location.city.toLowerCase().includes(value.toLowerCase())
-      );
+  const filterJobs = (value) => {
+    const lowercasedValue = value.toLowerCase();
+    const titleSearchResult = allJobs.filter(
+      (job) => job.title && job.title.toLowerCase().includes(lowercasedValue)
+    );
 
-      // Concatenate unique jobs from title and location search results
-      const searchResult = [...new Set([...titleSearchResult, ...locationSearchResult])];
+    const locationSearchResult = allJobs.filter(
+      (job) => job.location && job.location.city && job.location.city.toLowerCase().includes(lowercasedValue)
+    );
 
-      setFilteredJobs(searchResult);
-      setSuggestions(searchResult.slice(0, 5)); // Limit suggestions to 5 items
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    // Concatenate unique jobs from title and location search results
+    const searchResult = [...new Set([...titleSearchResult, ...locationSearchResult])];
+
+    setFilteredJobs(searchResult);
+    setSuggestions(searchResult.slice(0, 5)); // Limit suggestions to 5 items
+    setNoJobsFound(searchResult.length === 0 && !errorMessage); // Set noJobsFound based on search result
+    setErrorMessage(""); // Clear error message when new input is given
   };
 
   const handleInputChange = (value) => {
     setInput(value);
     if (value.trim() !== "") {
-      fetchData(value);
+      filterJobs(value);
     } else {
       setSuggestions([]);
+      setNoJobsFound(false); // Reset noJobsFound when input is cleared
+      setErrorMessage(""); // Clear error message when input is cleared
     }
   };
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      navigate("/search-jobs", { state: { jobs: filteredJobs } });
+      if (filteredJobs.length > 0) {
+        navigate("/search-jobs", { state: { jobs: filteredJobs } });
+      } else {
+        setErrorMessage("No jobs found for the given keyword.");
+        setNoJobsFound(false); // Ensure noJobsFound message is hidden when showing error message
+      }
     }
   };
 
@@ -59,6 +78,15 @@ const Searchbar = () => {
     navigate("/search-jobs", { state: { jobs: [job] } });
     setInput(""); // Clear input after suggestion click
     setSuggestions([]); // Clear suggestions after suggestion click
+    setNoJobsFound(false); // Reset noJobsFound after suggestion click
+    setErrorMessage(""); // Clear error message after suggestion click
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
+    }
   };
 
   return (
@@ -72,6 +100,7 @@ const Searchbar = () => {
             aria-label="Search"
             value={input}
             onChange={(e) => handleInputChange(e.target.value)}
+            onKeyDown={handleKeyDown}
             style={{
               position: "relative"
             }}
@@ -109,6 +138,16 @@ const Searchbar = () => {
               </ListGroup.Item>
             ))}
           </ListGroup>
+        )}
+        {noJobsFound && !errorMessage && (
+          <div style={{ width: "inherit", textAlign: "center", marginTop: "10px" }}>
+            <p style={{ color: "white", fontWeight: "bold" }}>No jobs found</p>
+          </div>
+        )}
+        {errorMessage && (
+          <div style={{ width: "inherit", textAlign: "center", marginTop: "10px" }}>
+            <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
+          </div>
         )}
       </div>
     </div>

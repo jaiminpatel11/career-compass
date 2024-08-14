@@ -546,7 +546,7 @@ const EmployersListing = ({ primaryColor, cardColor, searchTerm }) => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.get(
+      await axios.delete(
         `http://localhost:5000/api/profile/deleteEmployerProfile/${selectedEmployerId}`,
         {
           headers: {
